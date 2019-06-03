@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-toolbar color="tertiary">
+      <ion-title>Entrar em uma atividade</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <div padding>
+      
+      <ion-label>Insira aqui o código da atividade disponibilizado pelo professor</ion-label>
+  
+      <ion-item>
+        <!-- <ion-label position="stacked">Código da atividade</ion-label> -->
+        <ion-input required type="text" placeholder="Código da atividade" [(ngModel)]="codigoAtividade"></ion-input>
+      </ion-item>
+      <ion-button expand="full" (click)="entrarNaAtividade()">Entrar</ion-button>
+      
+    </div>
+  </ion-content>
+  

@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Criar conta
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form #form="ngForm" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label stacked>Nome completo</ion-label>
+        <ion-input type="text" name="nome" [(ngModel)]="nomeCompleto" #nome="ngModel" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="nome.errors && (nome.dirty || nome.touched)" class="text-danger">
+        O campo é obrigatório
+      </ion-item>
+      
+      <ion-item>
+        <ion-label stacked>E-mail</ion-label>
+        <ion-input type="text" name="email" [(ngModel)]="usuario.email" #email="ngModel" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="email.errors && (email.dirty || email.touched)" class="text-danger">
+        O campo é obrigatório
+      </ion-item>
+      
+      <ion-item>
+        <ion-label stacked>Senha</ion-label>
+        <ion-input type="password" name="password" [(ngModel)]="usuario.senha" #password="ngModel" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="password.errors && (password.dirty || password.touched)" class="text-danger">
+        O campo é obrigatório
+      </ion-item>
+    </ion-list>
+    <ion-button color="primary" expand="full" [disabled]="!form.form.valid" (click)="createAccount()">
+      Criar conta
+    </ion-button>
+  </form>
+</ion-content>

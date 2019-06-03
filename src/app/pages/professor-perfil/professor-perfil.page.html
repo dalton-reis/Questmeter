@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list lines="full">
+        <ion-item *ngIf="professor">
+          <ion-label position="stacked">Nome completo</ion-label>
+          <ion-input disabled="true" type="text" [(ngModel)]="professor.nomeCompleto"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="emailUsuarioCorrente">
+          <ion-label position="stacked">E-mail</ion-label>
+          <ion-input disabled="true" type="email" [(ngModel)]="emailUsuarioCorrente"></ion-input>
+        </ion-item>
+    </ion-list>
+    <ion-button expand="full">Excluir conta - ver</ion-button>
+    <ion-button expand="full">Sair - ver</ion-button>
+</ion-content>

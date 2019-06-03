@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/aluno-atividade/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Atividade</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  
+  <div padding>
+    <ion-segment [(ngModel)]="segmentAtividade" mode="ios">
+      <ion-segment-button value="edicao">
+        <ion-label>Informações</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="respostas">
+        <ion-label>Respostas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  
+  <div [ngSwitch]="segmentAtividade">
+    
+    <div *ngSwitchCase="'edicao'">
+      <ion-list lines="full">
+        <ion-item *ngIf="atividade">
+          <ion-label position="stacked">Nome</ion-label>
+          <ion-input disabled="true" type="text" [(ngModel)]="atividade.nome"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="atividade">
+          <ion-label position="stacked">Problema/Desafio</ion-label>
+          <ion-textarea disabled="true" rows="4" [(ngModel)]="atividade.problema"></ion-textarea>
+        </ion-item>
+        <ion-item *ngIf="atividade">
+          <ion-label position="stacked">Termina em</ion-label>
+          <ion-datetime disabled="true" displayFormat="DD/MM/YYYY hh:mm" [(ngModel)]="atividade.dataTermino"></ion-datetime>
+        </ion-item>
+      </ion-list>
+    </div>
+    
+    <div *ngSwitchCase="'respostas'">
+      <ion-list>
+        <ion-item-sliding *ngFor="let resposta of respostas">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Votos: {{resposta.votos}}</ion-card-title>
+            </ion-card-header>
+            
+            <ion-card-content>
+              {{resposta.conteudo}}
+            </ion-card-content>
+            <ion-button end (click)="votar(resposta.id, resposta)" *ngIf="mostraBotaoVotar" style="float: right; margin-right: 2%">Votar</ion-button>
+          </ion-card>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

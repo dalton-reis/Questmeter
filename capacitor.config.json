@@ -1,0 +1,6 @@
+{
+  "appId": "br.inf.furb.tecedu.questmeter",
+  "appName": "Questmeter",
+  "bundledWebRuntime": false,
+  "webDir": "www"
+}

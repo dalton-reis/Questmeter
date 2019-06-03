@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-avatar style="margin: auto; width: 100px; height: 100px;">
+    <ion-img src="{{urlImagem}}"></ion-img>
+  </ion-avatar>
+  <ion-list lines="full">
+    <ion-item-sliding>
+      <ion-item *ngIf="aluno">
+        <ion-label position="stacked">Nome completo</ion-label>
+        <ion-input disabled="true" type="text" [(ngModel)]="aluno.nomeCompleto"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="emailUsuarioCorrente">
+        <ion-label position="stacked">E-mail</ion-label>
+        <ion-input disabled="true" type="email" [(ngModel)]="emailUsuarioCorrente"></ion-input>
+      </ion-item>
+      <ion-item lines="none" *ngIf="aluno">
+        <ion-label>Pontuação</ion-label>
+      </ion-item>
+      <ion-item lines="none" *ngIf="aluno">
+        <ion-progress-bar color="secondary" [(value)]="pontuacao" style="height: 50%;">Pontuação</ion-progress-bar>
+      </ion-item>
+      <ion-item lines="none" *ngIf="aluno" style="float:right">
+        <ion-label color="secondary">{{aluno.pontuacao}} / {{pontuacaoMaxima}}</ion-label>
+      </ion-item>
+      <ion-item lines="none" *ngIf="aluno">
+        <ion-label>Nível</ion-label>
+      </ion-item>
+      <ion-item lines="none" *ngIf="aluno">
+        <ion-chip color="primary" *ngIf="aluno" style="margin-left: 40%; height: 80%; font-size: 250%; text-align: center;">
+          <ion-label color="secondary">{{aluno.nivel}}</ion-label>
+        </ion-chip>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

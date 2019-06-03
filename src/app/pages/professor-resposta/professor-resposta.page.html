@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resposta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list lines="full">
+    <ion-item *ngIf="resposta">
+      <ion-label position="stacked">Conteúdo</ion-label>
+      <ion-textarea required rows="3" [(ngModel)]="resposta.conteudo"></ion-textarea>
+    </ion-item>
+    <ion-item *ngIf="resposta">
+      <ion-label position="stacked">Correta</ion-label>
+      <ion-checkbox [(ngModel)]="resposta.correta"></ion-checkbox>
+    </ion-item>
+    <ion-item *ngIf="resposta">
+      <ion-label position="stacked">Pontuação</ion-label>
+      <ion-input type="number" [(ngModel)]="resposta.pontuacao"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="resposta">
+      <ion-label position="stacked">Votos</ion-label>
+      <ion-input disabled="true" type="number" [(ngModel)]="resposta.votos"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="full" (click)="save()">Salvar</ion-button>
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" color="danger">
+    <ion-fab-button color="danger" (click)="onRemoveAtividade(idAtividade)" routerLink="/" 
+    routerDirection="forward">
+    <ion-icon name="trash"></ion-icon>
+  </ion-fab-button>
+</ion-fab> -->
+</ion-content>

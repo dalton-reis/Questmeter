@@ -1,7 +1,8 @@
 {
-  "name": "vai",
+  "name": "Questmeter",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }
