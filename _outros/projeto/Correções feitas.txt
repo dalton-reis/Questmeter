@@ -1,0 +1,36 @@
+Página 01 - todas as correções foram feitas
+
+Página 02 - 
+
+Página 03 - 
+observação 01: retirei as letras maiúsculas, não alterei a fonte; 
+observação 02 (Referências): não entendi, faltou citações?
+observações 03 (palavras): corrigido
+
+Página 04 - 
+observação 01 (Referências): não entendi, faltou citações? Não estava citando nada, apenas escrevendo o que observei
+observação 02 (Adjetivos): retirei todos
+observação 03 (Mudar termo): troquei de "escolhida" para "utilizada"
+observações 04 (siglas): coloquei o significado das siglas e a sigla entre parênteses
+
+Página 05 - corrigido
+
+Página 06 - 
+observação 01 (Quadro): troquei "Questlab" pela citação do artigo
+observações 02: corrigido texto e retirados os adjetivos
+
+Página 07 - 
+observação 01: returei todo o texto que falava sobre aplicativos Web não serem bons por causa da URL
+observação 02: coloquei todos os RFs antes dos RNFs e os termos por extenso somente a primeira vez
+
+Página 08 - 
+observação 01: 
+observação 02: coloquei como plataformas: iOS, Android e Web
+observação 03 (palavras): corrigido
+observação 04: coloquei as ferramentas para os diagramas, mas não sei o que colocar na etapa de implementação
+*O professor de TCC 1 colocou na avaliação dele que a Metodologia atende parcialmente, isso foi apenas por causa das Ferramentas? Não ficou claro pra mim
+
+Página 09 - 
+observação 01: AVA (primeira vez que o termo aparece e é na revisão), devemos realmente colocar isso na revisão?
+observação 02: Ionic (não acho necessário), continuamos com o Ionic na revisão?
+observação 03: coloquei o significado das siglas e a sigla entre parênteses
