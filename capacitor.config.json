@@ -1,6 +1,6 @@
 {
-  "appId": "br.inf.furb.tecedu.questmeter",
-  "appName": "Questmeter",
+  "appId": "AppTCC",
+  "appName": "AppTCC",
   "bundledWebRuntime": false,
   "webDir": "www"
 }

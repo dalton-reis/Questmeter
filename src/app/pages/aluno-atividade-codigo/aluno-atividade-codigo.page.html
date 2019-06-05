@@ -7,11 +7,10 @@
   <ion-content padding>
     <div padding>
       
-      <ion-label>Insira aqui o código da atividade disponibilizado pelo professor</ion-label>
+      <ion-label>Insira aqui o token da atividade disponibilizado pelo professor</ion-label>
   
       <ion-item>
-        <!-- <ion-label position="stacked">Código da atividade</ion-label> -->
-        <ion-input required type="text" placeholder="Código da atividade" [(ngModel)]="codigoAtividade"></ion-input>
+        <ion-input type="text" placeholder="Token da atividade" [(ngModel)]="tokenAtividade"></ion-input>
       </ion-item>
       <ion-button expand="full" (click)="entrarNaAtividade()">Entrar</ion-button>
       

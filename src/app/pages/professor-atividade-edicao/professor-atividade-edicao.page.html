@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/professor-atividade/"></ion-back-button>
+      <ion-back-button defaultHref="/professor-inicio"></ion-back-button>
     </ion-buttons>
     <ion-title>Atividade</ion-title>
   </ion-toolbar>
@@ -10,91 +10,79 @@
 <ion-content padding>
   
   <div padding>
-    <!-- <ion-segment (ionChange)="segmentChanged($event)" value="dogs" mode="ios"> -->
-      <ion-segment [(ngModel)]="segmentAtividade" mode="ios">
-        <ion-segment-button value="edicao">
-          <ion-label>Informações</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="respostas">
-          <ion-label>Respostas</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="alunos">
-          <ion-label>Alunos</ion-label>
-        </ion-segment-button>
-      </ion-segment>
+    <ion-segment [(ngModel)]="segmentAtividade" mode="ios">
+      <ion-segment-button value="edicao">
+        <ion-label>Informações</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="questoes">
+        <ion-label>Questões</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="turmas">
+        <ion-label>Turmas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  
+  <div [ngSwitch]="segmentAtividade">
+    
+    <div *ngSwitchCase="'edicao'">
+      <ion-list lines="full">
+        <ion-item *ngIf="atividade">
+          <ion-label position="stacked">Disciplina</ion-label>
+          <ion-input required type="text" max-length="5" [(ngModel)]="atividade.disciplina"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="atividade">
+          <ion-label position="stacked">Nome</ion-label>
+          <ion-input required type="text" max-length="10" [(ngModel)]="atividade.nome"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="atividade">
+          <ion-label position="stacked">Termina em</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY HH:mm" [(ngModel)]="atividade.dataTermino"></ion-datetime>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="full" (click)="save()">Salvar</ion-button>
+      <ion-button expand="full" (click)="gerarCodigoTurma()">Gerar turma</ion-button>
+      <ion-button expand="full" (click)="apresentar()">Apresentar</ion-button>
     </div>
     
-    <div [ngSwitch]="segmentAtividade">
-      
-      <div *ngSwitchCase="'edicao'">
-        <ion-list lines="full">
-          <ion-item *ngIf="atividade">
-            <ion-label position="stacked">Nome</ion-label>
-            <ion-input required type="text" [(ngModel)]="atividade.nome"></ion-input>
-          </ion-item>
-          <ion-item *ngIf="atividade">
-            <ion-label position="stacked">Problema/Desafio</ion-label>
-            <ion-textarea required rows="4" [(ngModel)]="atividade.problema"></ion-textarea>
-          </ion-item>
-          <!-- <ion-item *ngIf="atividade">
-            <ion-select required placeholder="Tipo" [(ngModel)]="atividade.tipo">
-              <ion-select-option value="M">Multipla escolha</ion-select-option>
-              <ion-select-option value="D">Descritiva</ion-select-option>
-            </ion-select>
-          </ion-item> -->
-          <ion-item *ngIf="atividade">
-            <ion-label position="stacked">Termina em</ion-label>
-            <ion-datetime required displayFormat="DD/MM/YYYY hh:mm" [(ngModel)]="atividade.dataTermino"></ion-datetime>
-          </ion-item>
-          <ion-item *ngIf="atividade">
-            <ion-label position="stacked">Código</ion-label>
-            <ion-input type="text" disabled="true" [(ngModel)]="atividade.codigo"></ion-input>
-          </ion-item>
-        </ion-list>
-        <ion-button expand="full" (click)="save()">Salvar</ion-button>
-        <ion-button expand="full" (click)="gerarCodigoTurma()">Gerar código turma</ion-button>
-        <ion-button expand="full" (click)="apresentar()">Apresentar</ion-button>
-        <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" color="danger">
-          <ion-fab-button color="danger" (click)="onRemoveAtividade(idAtividade)" routerLink="/" 
-          routerDirection="forward">
-          <ion-icon name="trash"></ion-icon>
-        </ion-fab-button>
-      </ion-fab> -->
-    </div>
-    
-    <div *ngSwitchCase="'respostas'">
+    <div *ngSwitchCase="'questoes'">
       <ion-list>
-        <ion-list-header>
-          <ion-label color="primary">Respostas/Votos</ion-label>
-        </ion-list-header>
-        <ion-item-sliding *ngFor="let resposta of respostas">
-          <ion-item lines="inset" button [routerLink]="['/professor-resposta', resposta.id]">
-            <ion-label>{{ resposta.conteudo }}</ion-label>
-            <ion-badge color="secondary" slot="end">{{ resposta.votos }}</ion-badge>
+        <ion-item-sliding *ngFor="let questao of questoes">
+          <ion-item lines="inset" button [routerLink]="['/professor-questao-edicao', questao.id]">
+            <ion-label>{{ questao.apelido }}</ion-label>
           </ion-item>
           
           <ion-item-options side="end">
-            <ion-item-option (click)="onRemoveResposta(resposta.id)" color="danger">
+            <ion-item-option (click)="onRemoveQuestao(questao.id)" color="danger">
               <ion-label>Apagar</ion-label>
-              <!-- <ion-icon name="trash" slot="end"></ion-icon> -->
             </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
       </ion-list>
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button [routerLink]="['/professor-resposta/atividade', idAtividade]" routerDirection="forward">
+        <ion-fab-button [routerLink]="['/professor-questao/atividade', idAtividade]" routerDirection="forward">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </div>
     
-    <div *ngSwitchCase="'alunos'">
-      <ion-item-sliding *ngFor="let aluno of alunos">
-        <ion-item>
-          <ion-label>{{ aluno.nomeCompleto }}</ion-label>
-          <ion-badge color="secondary" slot="end">{{ aluno.pontuacao }}</ion-badge>
-        </ion-item>
-      </ion-item-sliding>
+    <div *ngSwitchCase="'turmas'">
+      <ion-list>
+        <ion-list-header>
+          <ion-label color="primary">Nome | Token</ion-label>
+        </ion-list-header>
+        <ion-item-sliding *ngFor="let turma of turmas">
+          <ion-item lines="inset" button [routerLink]="['/professor-turma-edicao/', turma.id]">
+            <ion-label>{{ turma.nome }} | {{ turma.token }}</ion-label>
+          </ion-item>
+          
+          <ion-item-options side="end">
+            <ion-item-option (click)="onRemoveTurma(turma.id)" color="danger">
+              <ion-label>Apagar</ion-label>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
     </div>
     
   </div>

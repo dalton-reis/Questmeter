@@ -1,12 +1,12 @@
-import { AlunoService } from './../../services/aluno.service';
-import { AtividadeAlunoService } from './../../services/atividade-aluno.service';
+import { TurmaService } from 'src/app/services/turma.service';
+import { QuestaoService } from './../../services/questao.service';
 import { AtividadeService } from './../../services/atividade.service';
 import { NavController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { IResposta } from './../../models/resposta';
 import { IAtividade } from './../../models/atividade';
 import { Component, OnInit } from '@angular/core';
-import { RespostaService } from 'src/app/services/resposta.service';
+import { IQuestao } from 'src/app/models/questao';
+import { ITurma } from 'src/app/models/turma';
 
 @Component({
   selector: 'app-professor-atividade-edicao',
@@ -16,47 +16,35 @@ import { RespostaService } from 'src/app/services/resposta.service';
 export class ProfessorAtividadeEdicaoPage implements OnInit {
   
   atividade: IAtividade = {
-    nome: '',
     professor: '', //FK
-    problema: '',
-    tipo: '',
+    disciplina: '',
+    nome: '',
     dataTermino: new Date(),
-    iniciada: false,
-    codigo: ''
+    dataCriacao: new Date()
   }
 
   idAtividade= null;
-  respostas: IResposta[];
-  alunos: Aluno[] = [];
+  questoes: IQuestao[];
+  turmas: ITurma[];
   segmentAtividade = 'edicao';
   
   constructor(private route: ActivatedRoute, private nav: NavController, 
     private loadingController: LoadingController,
-    private atividadeService: AtividadeService, private respostaService: RespostaService,
-    private atividadeAlunoService: AtividadeAlunoService, private alunoService: AlunoService) { }
+    private atividadeService: AtividadeService, private questaoService: QuestaoService,
+    private turmaService: TurmaService) { }
     
     ngOnInit() {
       this.idAtividade = this.route.snapshot.params['id'];
+      
       if(this.idAtividade) {
         this.load();
         
-        this.respostaService.getByAtividade(this.idAtividade).subscribe((resultado) => {
-          this.respostas = resultado;
+        this.questaoService.getByAtividade(this.idAtividade).subscribe((resultado) => {
+          this.questoes = resultado;
         });
-        
-        this.atividadeAlunoService.getByAtividade(this.idAtividade)
-        .subscribe((resultado) => {
-          resultado.forEach(f => 
-            this.alunoService.get(f.aluno).subscribe((resAluno) => { 
-              
-              if (this.alunos.findIndex(v => v.id == f.id) < 0) {
-                let aluno = new Aluno();
-                aluno.id = f.id;
-                aluno.nomeCompleto = resAluno.nomeCompleto;
-                aluno.pontuacao = f.alunoPontuacao;
-                this.alunos.push(aluno);
-              }
-            }));
+
+        this.turmaService.getByAtividade(this.idAtividade).subscribe((resultado) => {
+          this.turmas = resultado;
         });
       }
     }
@@ -99,40 +87,25 @@ export class ProfessorAtividadeEdicaoPage implements OnInit {
       this.atividadeService.remove(id);
     }
     
-    async onRemoveResposta(id: string) {
-      this.atividadeService.remove(id);
+    async onRemoveQuestao(id: string) {
+      this.questaoService.remove(id);
+    }
+
+    async onRemoveTurma(id: string) {
+      this.turmaService.remove(id);
     }
     
     async gerarCodigoTurma() {
       if (this.idAtividade) {
-        const loading = await this.loadingController.create({
-          message: 'Salvando'
-        });
-        await loading.present();
-        
-        let codigo = this.idAtividade.substring(0, 7);
-        this.atividade.codigo = codigo.toString().toUpperCase();
-        
-        this.atividadeService.update(this.idAtividade, this.atividade).then(() => {
-          loading.dismiss();
-        });
+        this.nav.navigateForward('/professor-turma/atividade/' + this.idAtividade);  
       }
     }
 
     apresentar() {
-      this.nav.navigateForward('/professor-atividade-apresentacao/' + this.idAtividade);
+      if (this.idAtividade) {
+        this.nav.navigateForward('/professor-atividade-apresentacao-turma/atividade/' + this.idAtividade);
+      }
     }
   }
 
-export class Aluno {
-  id: string;
-  nomeCompleto: string;
-  pontuacao: number;
-
-  public Aluno() {
-    this.id = '';
-    this.nomeCompleto = '';
-    this.pontuacao = 0;
-  }
-}
   

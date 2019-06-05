@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
@@ -13,7 +13,7 @@
   <form #form="ngForm" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label stacked>Nome completo</ion-label>
+        <ion-label position="stacked">Nome completo</ion-label>
         <ion-input type="text" name="nome" [(ngModel)]="nomeCompleto" #nome="ngModel" required></ion-input>
       </ion-item>
       <ion-item *ngIf="nome.errors && (nome.dirty || nome.touched)" class="text-danger">
@@ -21,7 +21,7 @@
       </ion-item>
       
       <ion-item>
-        <ion-label stacked>E-mail</ion-label>
+        <ion-label position="stacked">E-mail</ion-label>
         <ion-input type="text" name="email" [(ngModel)]="usuario.email" #email="ngModel" required></ion-input>
       </ion-item>
       <ion-item *ngIf="email.errors && (email.dirty || email.touched)" class="text-danger">
@@ -29,7 +29,7 @@
       </ion-item>
       
       <ion-item>
-        <ion-label stacked>Senha</ion-label>
+        <ion-label position="stacked">Senha</ion-label>
         <ion-input type="password" name="password" [(ngModel)]="usuario.senha" #password="ngModel" required></ion-input>
       </ion-item>
       <ion-item *ngIf="password.errors && (password.dirty || password.touched)" class="text-danger">

@@ -5,6 +5,7 @@ import { IAtividade } from './../../models/atividade';
 import { NavController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-professor-atividade-criacao',
@@ -14,13 +15,11 @@ import { Component, OnInit } from '@angular/core';
 export class ProfessorAtividadeCriacaoPage implements OnInit {
   
   atividade: IAtividade = {
-    nome: '',
     professor: '', //FK
-    problema: '',
-    tipo: '',
+    disciplina: '',
+    nome: '',
     dataTermino: new Date(),
-    iniciada: false,
-    codigo: ''
+    dataCriacao: new Date()
   }
   usuarioCorrente = null;
   
@@ -41,10 +40,14 @@ export class ProfessorAtividadeCriacaoPage implements OnInit {
       this.professorService.getByUsuario(this.usuarioCorrente).then((professor) => {
         
         this.atividade.professor = professor[0].id;
+        this.atividade.dataCriacao = new Date(Date.now());
+        
         this.atividadeService.add(this.atividade).then(() => {
           loading.dismiss();
           
-          this.nav.navigateForward('/professor-atividade');
+          this.atividadeService.getByProfessorOrdenaPorData(this.atividade.professor).subscribe((resultado) => {
+            this.nav.navigateBack('/professor-atividade-edicao/' + resultado[0].id);
+          });
         });
       });
     }

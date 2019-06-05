@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/professor-atividade/"></ion-back-button>
     </ion-buttons>
     <ion-title>Atividade</ion-title>
   </ion-toolbar>
@@ -12,24 +12,18 @@
   <div padding>
     <ion-list lines="full">
       <ion-item *ngIf="atividade">
-        <ion-label position="stacked">Nome</ion-label>
-        <ion-input required type="text" [(ngModel)]="atividade.nome"></ion-input>
+        <ion-label position="stacked">Disciplina</ion-label>
+        <ion-input required type="text" max-length="5" [(ngModel)]="atividade.disciplina"></ion-input>
       </ion-item>
       <ion-item *ngIf="atividade">
-        <ion-label position="stacked">Problema/Desafio</ion-label>
-        <ion-textarea required rows="4" [(ngModel)]="atividade.problema"></ion-textarea>
+        <ion-label position="stacked">Nome</ion-label>
+        <ion-input required type="text" max-length="10" [(ngModel)]="atividade.nome"></ion-input>
       </ion-item>
-      <!-- <ion-item *ngIf="atividade">
-        <ion-select required placeholder="Tipo" [(ngModel)]="atividade.tipo">
-          <ion-select-option value="M">Multipla escolha</ion-select-option>
-          <ion-select-option value="D">Descritiva</ion-select-option>
-        </ion-select>
-      </ion-item> -->
       <ion-item *ngIf="atividade">
         <ion-label position="stacked">Termina em</ion-label>
-        <ion-datetime required displayFormat="DD/MM/YYYY hh:mm" [(ngModel)]="atividade.dataTermino"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" [(ngModel)]="atividade.dataTermino"></ion-datetime>
       </ion-item>
     </ion-list>
     <ion-button expand="full" (click)="save()">Salvar</ion-button>
-</div>
+  </div>
 </ion-content>

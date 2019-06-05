@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Apresentar atividade</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-label>Clique na turma para apresentar</ion-label>
+  <ion-list>
+    <ion-item-sliding *ngFor="let turma of turmas">
+      <ion-button expand="full" (click)="apresentar(turma.id)">{{ turma.nome }}</ion-button>
+    </ion-item-sliding>    
+  </ion-list>
+</ion-content>

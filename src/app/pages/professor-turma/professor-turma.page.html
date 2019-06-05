@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar color="tertiary">
+    <ion-title>Criando turma</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list lines="full">
+    <ion-item *ngIf="turma">
+      <ion-label position="stacked">Nome</ion-label>
+      <ion-input required type="text" max-length="10" [(ngModel)]="turma.nome"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="full" (click)="gerarTurma()">Gerar</ion-button>
+  <ion-button expand="full" (click)="cancelar()">Cancelar</ion-button>
+</ion-content>

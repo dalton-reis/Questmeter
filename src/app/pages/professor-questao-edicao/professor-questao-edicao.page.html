@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="['/professor-atividade-edicao/', questao.atividade]"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Questão</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  
+  <div padding>
+    <ion-segment [(ngModel)]="segmentQuestao" mode="ios">
+      <ion-segment-button value="edicao">
+        <ion-label>Informações</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="respostas">
+        <ion-label>Respostas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  
+  <div [ngSwitch]="segmentQuestao">
+    
+    <div *ngSwitchCase="'edicao'">
+      <ion-list lines="full">
+        <ion-item *ngIf="questao">
+          <ion-label position="stacked">Apelido</ion-label>
+          <ion-input required type="text" max-length="10" [(ngModel)]="questao.apelido"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="questao">
+          <ion-label position="stacked">Problema/Desafio</ion-label>
+          <ion-textarea required rows="4" [(ngModel)]="questao.problema"></ion-textarea>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="full" (click)="save()">Salvar</ion-button>
+    </div>
+    
+    <div *ngSwitchCase="'respostas'">
+      <ion-list>
+        <ion-item-sliding *ngFor="let resposta of respostas">
+          <ion-item lines="inset" button [routerLink]="['/professor-resposta/', resposta.id]">
+            <ion-label>{{ resposta.conteudo }}</ion-label>
+          </ion-item>
+          
+          <ion-item-options side="end">
+            <ion-item-option (click)="onRemoveResposta(resposta.id)" color="danger">
+              <ion-label>Apagar</ion-label>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button [routerLink]="['/professor-resposta/questao', idQuestao]" routerDirection="forward">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </div>
+    
+    <!-- <div *ngSwitchCase="'respostas'">
+      <ion-button horizontal="end" slot="fixed" [routerLink]="['/professor-resposta/questao', idQuestao]" routerDirection="forward">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+      <ion-list>
+        <ion-item-sliding *ngFor="let resposta of respostas">
+          <ion-card button [routerLink]="['/professor-resposta/', resposta.id]">
+            <ion-card-header>
+              <ion-card-title *ngIf="resposta.correta">Correta: Sim</ion-card-title>
+              <ion-card-title *ngIf="!resposta.correta">Correta: Não</ion-card-title>
+            </ion-card-header>
+            
+            <ion-card-content>
+              <p>Pontuação: {{resposta.pontuacao}}</p>
+              <p>Conteúdo: {{resposta.conteudo}}</p>
+            </ion-card-content>
+            
+            <ion-button end (click)="onRemoveResposta(resposta.id)" style="float: right; margin-right: 2%">Apagar</ion-button>
+          </ion-card>
+        </ion-item-sliding>
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button [routerLink]="['/professor-resposta/questao', idQuestao]" routerDirection="forward">
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-list>
+    </div> -->
+  </div>
+</ion-content>

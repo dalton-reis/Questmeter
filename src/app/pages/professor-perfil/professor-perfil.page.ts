@@ -1,6 +1,6 @@
 import { AutenticacaoService } from './../../services/autenticacao.service';
 import { ProfessorService } from './../../services/professor.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { IProfessor } from 'src/app/models/professor';
 
@@ -20,7 +20,7 @@ export class ProfessorPerfilPage implements OnInit {
   emailUsuarioCorrente = null;
   usuarioCorrente = null;
   
-  constructor(private loadingController: LoadingController,
+  constructor(private loadingController: LoadingController, private nav: NavController,
     private professorService: ProfessorService, private autenticacaoService: AutenticacaoService) { }
   
     ngOnInit() {
@@ -39,6 +39,12 @@ export class ProfessorPerfilPage implements OnInit {
       this.professorService.getByUsuario(this.usuarioCorrente).then((professor) => {
         loading.dismiss();
         this.professor = professor[0];
+      });
+    }
+
+    sair() {
+      this.autenticacaoService.signOut().then(() => {
+        this.nav.navigateForward('/abertura');
       });
     }
 }

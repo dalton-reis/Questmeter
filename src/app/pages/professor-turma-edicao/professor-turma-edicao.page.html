@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="['/professor-atividade-edicao/', turma.atividade]"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Turma</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list lines="full">
+    <ion-item *ngIf="turma">
+      <ion-label position="stacked">Nome</ion-label>
+      <ion-input disabled="true" type="text" max-length="10" [(ngModel)]="turma.nome"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="turma">
+      <ion-label position="stacked">Token</ion-label>
+      <ion-input disabled="true" type="text" max-length="10" [(ngModel)]="turma.token"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="turma">
+      <ion-label>Turma já fez a atividade</ion-label>
+      <ion-checkbox disabled="true" type="text" [(ngModel)]="turma.atividadeFinalizada"></ion-checkbox>
+    </ion-item>
+    
+    <ion-list>
+      <ion-list-header>
+        <ion-label color="primary">Aluno | Pontuação</ion-label>
+      </ion-list-header>
+      <ion-item-sliding *ngFor="let aluno of alunos">
+        <ion-item>
+          <ion-label>{{ aluno.nomeCompleto }}</ion-label>
+          <ion-badge color="secondary" slot="end">{{ aluno.pontuacao }}</ion-badge>
+        </ion-item>
+      </ion-item-sliding>    
+    </ion-list>
+  </ion-list>
+</ion-content>

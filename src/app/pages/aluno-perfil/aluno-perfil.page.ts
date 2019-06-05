@@ -27,7 +27,7 @@ export class AlunoPerfilPage implements OnInit {
   pontuacaoMaxima = 0;
   urlImagem = null;
   
-  constructor(private loadingController: LoadingController, private fb: FirebaseApp,
+  constructor(private loadingController: LoadingController, private nav: NavController, private fb: FirebaseApp,
     private alunoService: AlunoService, private autenticacaoService: AutenticacaoService) { }
     
     ngOnInit() {
@@ -79,6 +79,12 @@ export class AlunoPerfilPage implements OnInit {
           // Unknown error occurred, inspect the server response
           break;
         }
+      });
+    }
+
+    sair() {
+      this.autenticacaoService.signOut().then(() => {
+        this.nav.navigateForward('/abertura');
       });
     }
   }

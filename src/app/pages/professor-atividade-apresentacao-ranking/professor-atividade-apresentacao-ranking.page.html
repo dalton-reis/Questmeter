@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/professor-atividade/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ranking</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-list-header>
+      <ion-label color="primary">Aluno | Pontuação</ion-label>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let aluno of alunos">
+      <ion-item>
+        <ion-label>{{ aluno.nomeCompleto }}</ion-label>
+        <ion-badge color="secondary" slot="end">{{ aluno.pontuacao }}</ion-badge>
+      </ion-item>
+    </ion-item-sliding>    
+  </ion-list>
+  <ion-button id="btn_finalizar" expand="full" (click)="finalizar()">Finalizar atividade</ion-button>
+</ion-content>

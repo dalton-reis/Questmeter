@@ -7,8 +7,8 @@
 <ion-content padding>
   <ion-list>
     <ion-item-sliding *ngFor="let atividade of atividades">
-      <ion-item lines="inset" button [routerLink]="['/aluno-atividade-abrir', atividade.codigo]">
-        <ion-label>{{ atividade.nome }}</ion-label>
+      <ion-item lines="inset" button (click)="goTelaAluno(atividade)">
+        <ion-label>{{atividade.turma}} | {{ atividade.nome }}</ion-label>
       </ion-item>
     </ion-item-sliding>
   </ion-list>

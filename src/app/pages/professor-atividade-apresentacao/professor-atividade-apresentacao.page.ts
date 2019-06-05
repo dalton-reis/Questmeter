@@ -1,7 +1,14 @@
+import { TurmaAlunoRespostaService } from './../../services/turma-aluno-resposta.service';
+import { AtividadeService } from './../../services/atividade.service';
+import { ITurma } from './../../models/turma';
 import { IResposta } from './../../models/resposta';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { RespostaService } from 'src/app/services/resposta.service';
+import { TurmaService } from 'src/app/services/turma.service';
+import { QuestaoService } from 'src/app/services/questao.service';
+import { IQuestao } from 'src/app/models/questao';
+import { NavController } from '@ionic/angular';
 
 declare var google;
 
@@ -12,128 +19,223 @@ declare var google;
 })
 export class ProfessorAtividadeApresentacaoPage implements OnInit {
   
-  idAtividade= null;
-  respostas: IResposta[];
-  
-  constructor(private route: ActivatedRoute, private respostaService: RespostaService) { }
-  
-  ngOnInit() {
-    this.idAtividade = this.route.snapshot.params['atividade'];
-    
-    this.respostaService.getByAtividade(this.idAtividade).subscribe((resultado) => {
-      this.respostas = resultado;
-      
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Topping');
-      data.addColumn('number', 'Slices');
-      
-      var chave = [];
-      var valor = [];
-      for (var i = 0; i < resultado.length; i++) {
-        chave[i]=resultado[i].conteudo;
-        valor[i]=resultado[i].votos;
-      }
-      
-      data.addRows(resultado.length);
-      for (var i = 0; i < chave.length; i++) {
-        data.setCell(i, 0, chave[i]);
-        data.setCell(i, 1, valor[i]);
-      }
-
-      var options = {
-      'width':'80%',
-      'height':'80%',
-      pieHole: 0.4};
-      
-      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    });
-    
-    //OUTROS EXEMPLOS
-    //colunas grossas
-    // var data = google.visualization.arrayToDataTable([
-    //   ["Element", "Density", { role: "style" } ],
-    //   ["Copper", 8.94, "#b87333"],
-    //   ["Silver", 10.49, "silver"],
-    //   ["Gold", 19.30, "gold"],
-    //   ["Platinum", 21.45, "color: #e5e4e2"]
-    // ]);
-    
-    // var view = new google.visualization.DataView(data);
-    // view.setColumns([0, 1,
-    //                  { calc: "stringify",
-    //                    sourceColumn: 1,
-    //                    type: "string"},
-    //                  2]);
-    
-    // var options = {
-    //   title: "Density of Precious Metals, in g/cm^3",
-    //   width: 600,
-    //   height: 400,
-    //   bar: {groupWidth: "95%"},
-    //   legend: { position: "none" },
-    // };
-    // var chart = new google.visualization.ColumnChart(document.getElementById("chart_div"));
-    // chart.draw(view, options);
-    
-    //colunas finas
-    // var data = new google.visualization.DataTable();
-    // data.addColumn('timeofday', 'Time of Day');
-    // data.addColumn('number', 'Motivation Level');
-    
-    // data.addRows([
-    //   [{v: [8, 0, 0], f: '8 am'}, 1],
-    //   [{v: [9, 0, 0], f: '9 am'}, 2],
-    //   [{v: [10, 0, 0], f:'10 am'}, 3],
-    //   [{v: [11, 0, 0], f: '11 am'}, 4],
-    //   [{v: [12, 0, 0], f: '12 pm'}, 5],
-    //   [{v: [13, 0, 0], f: '1 pm'}, 6],
-    //   [{v: [14, 0, 0], f: '2 pm'}, 7],
-    //   [{v: [15, 0, 0], f: '3 pm'}, 8],
-    //   [{v: [16, 0, 0], f: '4 pm'}, 9],
-    //   [{v: [17, 0, 0], f: '5 pm'}, 10],
-    // ]);
-    
-    // var options = {
-    //   title: 'Motivation Level Throughout the Day',
-    //   hAxis: {
-    //     title: 'Time of Day',
-    //     format: 'h:mm a',
-    //     viewWindow: {
-    //       min: [7, 30, 0],
-    //       max: [17, 30, 0]
-    //     }
-    //   },
-    //   vAxis: {
-    //     title: 'Rating (scale of 1-10)'
-    //   }
-    // };
-    
-    // var chart = new google.visualization.ColumnChart(
-    //   document.getElementById('chart_div'));
-    
-    // chart.draw(data, options);
-    
-    // Pizza
-    // var data = new google.visualization.DataTable();
-    // data.addColumn('string', 'Topping');
-    // data.addColumn('number', 'Slices');
-    // data.addRows([
-    //   ['Mushrooms', 3],
-    //   ['Onions', 1],
-    //   ['Olives', 1],
-    //   ['Zucchini', 1],
-    //   ['Pepperoni', 2]
-    // ]);
-    
-    // // Set chart options
-    // var options = {'title':'How Much Pizza I Ate Last Night',
-    //                'width':400,
-    //                'height':300};
-    
-    // // Instantiate and draw our chart, passing in some options.
-    // var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    // chart.draw(data, options);
+  turma: ITurma = {
+    id: '',
+    atividade: '', //FK
+    nome: '',
+    token: '',
+    dataCriacao: new Date(),
+    atividadeIniciada: false,
+    atividadeFinalizada: false,
+    questaoAtual: ''
   }
   
-}
+  questaoCorrente: Questao = new Questao();
+  
+  idTurma = null;
+  tokenTurma = null;
+  mostrarFinal = false;
+  questoes: Questao[] = [];
+  
+  constructor(private route: ActivatedRoute, private nav: NavController, 
+    private turmaService: TurmaService, private atividadeService: AtividadeService,
+    private questaoService: QuestaoService, private respostaService: RespostaService,
+    private turmaAlunoRespostaService: TurmaAlunoRespostaService) { }
+    
+    ngOnInit() {
+      this.idTurma = this.route.snapshot.params['turma'];
+      
+      this.turmaService.get(this.idTurma).subscribe((turma) => {
+        this.tokenTurma = turma.token;
+        this.turma = turma;
+        
+        this.questaoService.getByAtividadeAsc(turma.atividade).subscribe((resultado) => {
+          resultado.forEach(f => {
+            if (this.questoes.findIndex(c => c.id == f.id) < 0) {
+              this.questoes.push(this.preencherQuestaoClasse(f.id, f, f.id == turma.questaoAtual));
+            }
+          });
+        });
+        
+        if (!turma.atividadeFinalizada) {
+          if (turma.questaoAtual) {
+            document.getElementById('div_questoes').style.visibility = "visible";
+            document.getElementById('div_iniciar').style.display = "none";
+            
+            this.questaoService.get(turma.questaoAtual).subscribe((questao) => {
+              this.questaoCorrente = this.preencherQuestaoClasse(turma.questaoAtual, questao, true);
+              this.apresentarGrafico(this.idTurma, turma.questaoAtual);
+            });
+          }
+        } 
+        
+        if (this.mostrarFinal) {
+          document.getElementById('btn_ranking').style.visibility = "visible";
+          document.getElementById('btn_finalizar').style.visibility = "visible";
+          document.getElementById('div_questoes').style.display = "none";
+          document.getElementById('div_iniciar').style.display = "none";
+        }
+      });
+    }
+    
+    iniciarAtividade() {
+      //Deixa a tela do gráfico visível e inicia a primeira questão
+      document.getElementById('div_questoes').style.visibility = "visible";
+      document.getElementById('div_iniciar').style.display = "none";
+      
+      this.questaoService.getByAtividadeAsc(this.turma.atividade).subscribe((questao) => {
+        this.turma.questaoAtual = questao[0].id;
+        this.turma.atividadeIniciada = true;
+        this.turmaService.update(this.idTurma, this.turma).then(() => {
+          this.questaoCorrente = this.preencherQuestaoClasse(questao[0].id, questao[0], true);
+        });
+      });
+    }
+    
+    proximaQuestao() {
+      //pega a ultima questao que ainda não foi iniciada
+      //se não tiver mais questões, apresentar mensagem e ranking
+      
+      var index2 = 0;
+      var qtdQuestoes = this.questoes.length; 
+      var index = this.questoes.findIndex(c => c.id == this.questaoCorrente.id);
+      index2 = index ==  qtdQuestoes ? qtdQuestoes : (index+1);
+      this.questaoCorrente = this.questoes[index2];
+
+      // console.log('questoes', this.questoes);
+      // console.log('questao atual', this.questaoCorrente);
+      // console.log('index', index2);
+      // console.log('qtd', qtdQuestoes);
+      
+      if (index2 >= qtdQuestoes) {
+        this.mostrarFinal = true;
+        this.turma.atividadeIniciada = false;
+        this.turma.atividadeFinalizada = true;
+        this.turma.questaoAtual = null;
+        this.turmaService.update(this.idTurma, this.turma);
+      } 
+      else {
+        this.turma.questaoAtual = this.questaoCorrente.id;
+        this.turmaService.update(this.idTurma, this.turma);
+      }
+    }
+    
+    mostrarRanking() {
+      if (this.turma.atividadeFinalizada)
+      this.nav.navigateForward('/professor-atividade-apresentacao-ranking/turma/' + this.idTurma);  
+    }
+    
+    finalizar() {
+      if (this.turma.atividadeFinalizada)
+      this.nav.navigateForward('/professor-atividade-edicao/' + this.turma.atividade);  
+    }
+    
+    apresentarGrafico(idTurma, idQuestao) {
+      this.respostaService.getByQuestao(idQuestao).subscribe((respostas) => {
+        this.turmaAlunoRespostaService.getByTurma(idTurma).subscribe((resultado) => {
+          
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          
+          var chave = [];
+          var valor = [];
+          for (var i = 0; i < respostas.length; i++) {
+            var votos = 0;
+            resultado.forEach(f => {
+              if (f.resposta == respostas[i].id) {
+                votos += 1;
+              }
+            });
+
+            chave[i] = respostas[i].conteudo;
+            valor[i] = votos;
+          }
+          
+          data.addRows(respostas.length);
+          for (var i = 0; i < chave.length; i++) {
+            data.setCell(i, 0, chave[i]);
+            data.setCell(i, 1, valor[i]);
+          }
+          
+          var options = {
+            'width':'80%',
+            'height':'80%',
+            pieHole: 0.4};
+            
+            var chart = new google.visualization.PieChart(document.getElementById('div_chart'));
+            chart.draw(data, options);
+          });
+        });
+      }
+      
+      // apresentarGrafico(idQuestao) {
+      //   this.respostaService.getByQuestao(idQuestao).subscribe((respostas) => {
+      
+      //     var data = new google.visualization.DataTable();
+      //     data.addColumn('string', 'Topping');
+      //     data.addColumn('number', 'Slices');
+      
+      //     var chave = [];
+      //     var valor = [];
+      //     for (var i = 0; i < respostas.length; i++) {
+      //       chave[i] = respostas[i].conteudo;
+      
+      //       this.turmaAlunoRespostaService.getByResposta(respostas[i].id).subscribe((resultado) => {
+      //         if (resultado[0]) {
+      //           this.alunoRespostas[0] = resultado[0];
+      //           console.log('resppp', resultado.length);
+      //           valor[i] = resultado.length;
+      //         }
+      //       });
+      //     }
+      //     console.log('chave', chave);
+      //     console.log('valor', valor);
+      
+      //     data.addRows(respostas.length);
+      //     for (var i = 0; i < chave.length; i++) {
+      //       data.setCell(i, 0, chave[i]);
+      //       data.setCell(i, 1, valor[i]);
+      //     }
+      
+      //     var options = {
+      //       'width':'80%',
+      //       'height':'80%',
+      //       pieHole: 0.4};
+      
+      //       var chart = new google.visualization.PieChart(document.getElementById('div_chart'));
+      //       chart.draw(data, options);
+      //     });
+      //   }
+      
+      preencherQuestaoClasse(id: string, questaoInterface: IQuestao, atual: boolean): Questao {
+        let questao = new Questao();
+        questao.id = id;
+        questao.atividade = questaoInterface.atividade;
+        questao.apelido = questaoInterface.apelido;
+        questao.problema = questaoInterface.problema;
+        questao.dataCriacao = questaoInterface.dataCriacao;
+        questao.atual = atual;
+        
+        return questao;
+      }
+    }
+    
+    export class Questao {
+      id: string;
+      atividade: string;
+      apelido: string;
+      problema: string;
+      dataCriacao: Date;
+      atual: boolean;    
+      
+      public Questao() {
+        this.id = '';
+        this.atividade = '';
+        this.apelido = '';
+        this.problema = '';
+        this.dataCriacao = new Date();
+        this.atual = false;
+      }
+    }
+    

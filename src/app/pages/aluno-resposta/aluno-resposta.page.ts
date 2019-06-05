@@ -1,6 +1,6 @@
+import { TurmaAlunoService } from './../../services/turma-aluno.service';
 import { AutenticacaoService } from './../../services/autenticacao.service';
 import { AlunoService } from './../../services/aluno.service';
-import { AtividadeAlunoService } from './../../services/atividade-aluno.service';
 import { IResposta } from './../../models/resposta';
 import { NavController, LoadingController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
@@ -15,11 +15,10 @@ import { RespostaService } from 'src/app/services/resposta.service';
 export class AlunoRespostaPage implements OnInit {
   
   resposta: IResposta = {
+    questao: '', //FK
     conteudo: '',
-    atividade: '', //FK
     correta: false,
-    pontuacao: 0,
-    votos: 0
+    pontuacao: 0
   }
   
   idResposta = null;
@@ -28,7 +27,7 @@ export class AlunoRespostaPage implements OnInit {
   
   constructor(private route: ActivatedRoute, private nav: NavController, private toastController: ToastController,
     private loadingController: LoadingController, private respostaService: RespostaService,
-    private atividadeAlunoService: AtividadeAlunoService, private alunoService: AlunoService,
+    private turmaAlunoService: TurmaAlunoService, private alunoService: AlunoService,
     private autenticacaoService: AutenticacaoService) { }
     
     ngOnInit() {
@@ -52,11 +51,11 @@ export class AlunoRespostaPage implements OnInit {
         
         this.usuarioCorrente = this.autenticacaoService.getID();
         this.alunoService.getByUsuario(this.usuarioCorrente).then((aluno) =>{
-          this.atividadeAlunoService.getByAtividadeAlunoVoto(this.resposta.atividade, aluno[0].id)
-          .subscribe((resultado) => {
-            //se já respondeu deixa o botão 'Votar' bloqueado
-            this.desabilitaBotaoVotar = (resultado.length <= 0)
-          });
+          // this.turmaAlunoService.getByTurmaAlunoVoto(this.resposta.questao, aluno[0].id)
+          // .subscribe((resultado) => {
+          //   //se já respondeu deixa o botão 'Votar' bloqueado
+          //   this.desabilitaBotaoVotar = (resultado.length <= 0)
+          // });
         });
       });
     }
@@ -64,21 +63,21 @@ export class AlunoRespostaPage implements OnInit {
     async votar() {
       this.usuarioCorrente = this.autenticacaoService.getID();
       this.alunoService.getByUsuario(this.usuarioCorrente).then((aluno) =>{
-        this.atividadeAlunoService.getByAtividadeAlunoVoto(this.resposta.atividade, aluno[0].id)
-        .subscribe((resultado) => {
-          if (resultado.length > 0) {
-            this.resposta.votos++;
+        // this.turmaAlunoService.getByTurmaAlunoVoto(this.resposta.questao, aluno[0].id)
+        // .subscribe((resultado) => {
+        //   if (resultado.length > 0) {
+        //     this.resposta.votos++;
 
-            this.respostaService.update(this.idResposta, this.resposta).then(() => {
-              resultado[0].alunoVotou = true;
-              resultado[0].alunoPontuacao = this.resposta.pontuacao;
+        //     this.respostaService.update(this.idResposta, this.resposta).then(() => {
+        //       resultado[0].alunoVotou = true;
+        //       resultado[0].alunoPontuacao = this.resposta.pontuacao;
 
-              this.atividadeAlunoService.update(resultado[0].id, resultado[0]).then(() =>{
-                this.nav.navigateForward('/aluno-atividade-abrir/' + this.resposta.atividade.substring(0, 7).toUpperCase());
-              });
-            });
-          }
-        });
+        //       this.atividadeAlunoService.update(resultado[0].id, resultado[0]).then(() =>{
+        //         this.nav.navigateForward('/aluno-atividade-abrir/' + this.resposta.atividade.substring(0, 7).toUpperCase());
+        //       });
+        //     });
+        //   }
+        // });
       });
     }
     

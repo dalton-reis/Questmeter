@@ -1,22 +1,18 @@
 <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/aluno-atividade-abrir/"></ion-back-button>
-      </ion-buttons>
-      <ion-title>Resposta</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content padding>
-    <ion-list lines="full">
-      <ion-item *ngIf="resposta">
-        <ion-label position="stacked">Conteúdo</ion-label>
-        <ion-textarea disabled="true" rows="3" [(ngModel)]="resposta.conteudo"></ion-textarea>
-      </ion-item>
-      <ion-item *ngIf="resposta">
-        <ion-label position="stacked">Votos</ion-label>
-        <ion-input disabled="true" type="number" [(ngModel)]="resposta.votos"></ion-input>
-      </ion-item>
-    </ion-list>
-    <ion-button expand="full" (click)="votar()" [disabled]="desabilitaBotaoVotar">Votar</ion-button>
-  </ion-content>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/aluno-atividade-abrir/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resposta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list lines="full">
+    <ion-item *ngIf="resposta">
+      <ion-label position="stacked">Conteúdo  </ion-label>
+      <ion-textarea disabled="true" rows="3" [(ngModel)]="resposta.conteudo"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="full" (click)="votar()" [disabled]="desabilitaBotaoVotar">Votar</ion-button>
+</ion-content>

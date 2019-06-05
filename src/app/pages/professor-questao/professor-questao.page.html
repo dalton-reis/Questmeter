@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Questão</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list lines="full">
+    <ion-item *ngIf="questao">
+      <ion-label position="stacked">Apelido</ion-label>
+      <ion-input required type="text" max-length="10" [(ngModel)]="questao.apelido"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="questao">
+      <ion-label position="stacked">Problema/Desafio</ion-label>
+      <ion-textarea required rows="4" [(ngModel)]="questao.problema"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="full" (click)="save()">Salvar</ion-button>
+</ion-content>

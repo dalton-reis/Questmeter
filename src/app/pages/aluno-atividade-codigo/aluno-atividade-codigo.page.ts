@@ -1,12 +1,13 @@
+import { TurmaAlunoService } from './../../services/turma-aluno.service';
+import { ITurmaAluno } from './../../models/turma-aluno';
 import { IAluno } from './../../models/aluno';
 import { IAtividade } from './../../models/atividade';
 import { AutenticacaoService } from './../../services/autenticacao.service';
 import { AlunoService } from './../../services/aluno.service';
 import { AtividadeService } from './../../services/atividade.service';
-import { AtividadeAlunoService } from './../../services/atividade-aluno.service';
 import { ToastController, NavController, LoadingController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { IAtividadeAluno } from 'src/app/models/atividade-aluno';
+import { TurmaService } from 'src/app/services/turma.service';
 
 @Component({
   selector: 'app-aluno-atividade-codigo',
@@ -14,60 +15,71 @@ import { IAtividadeAluno } from 'src/app/models/atividade-aluno';
   styleUrls: ['./aluno-atividade-codigo.page.scss'],
 })
 export class AlunoAtividadeCodigoPage implements OnInit {
-
-  atividadeAluno: IAtividadeAluno = {
-    atividade: '',
+  
+  turmaAluno: ITurmaAluno = {
+    turma: '',
     aluno: '',
-    alunoVotou: false,
     alunoPontuacao: 0
   }
-
-  codigoAtividade = null;
+  
+  tokenAtividade = null;
   usuarioCorrente = null;
-
+  
   constructor(private nav: NavController, private loadingController: LoadingController, 
-    private toastController: ToastController, private atividadeAlunoService: AtividadeAlunoService,
+    private toastController: ToastController, 
+    private turmaAlunoService: TurmaAlunoService, private turmaService: TurmaService,
     private atividadeService: AtividadeService, private alunoService: AlunoService,
     private autenticacaoService: AutenticacaoService) { }
-
-  ngOnInit() { }
-
-  async entrarNaAtividade(){
-    const loading = await this.loadingController.create({
-      message: 'Carregando'
-    });
-    await loading.present();
-
-    if (this.codigoAtividade) {
-      this.usuarioCorrente = this.autenticacaoService.getID();
-      this.atividadeService.getByCodigo(this.codigoAtividade).then((atividade) => {
-        this.alunoService.getByUsuario(this.usuarioCorrente).then((aluno) =>{
-          this.atividadeAlunoService.getByAtividadeAluno(atividade[0].id, aluno[0].id)
-          .subscribe((resultado) => {
-            //arrumar
-            if(resultado.length <= 0) {
-              this.atividadeAluno.atividade = atividade[0].id;
-              this.atividadeAluno.aluno = aluno[0].id;
-              
-              this.atividadeAlunoService.add(this.atividadeAluno).then(() => {
-                loading.dismiss();
-                //this.nav.navigateForward('/tabs-aluno/aluno-atividade');
+    
+    ngOnInit() { }
+    
+    async entrarNaAtividade(){
+      const loading = await this.loadingController.create({
+        message: 'Carregando'
+      });
+      await loading.present();
+      
+      if (this.tokenAtividade) {
+        this.usuarioCorrente = this.autenticacaoService.getID();
+        
+        this.turmaService.getByToken(this.tokenAtividade).subscribe((turma) => {
+          if (turma.length > 0) {
+            this.alunoService.getByUsuario(this.usuarioCorrente).then((aluno) => {
+              this.turmaAlunoService.getByTurmaAluno(turma[0].id, aluno[0].id)
+              .subscribe((resultado) => {
+                
+                if (resultado.length <= 0) {
+                  this.turmaAluno.turma = turma[0].id;
+                  this.turmaAluno.aluno = aluno[0].id;
+                  
+                  this.turmaAlunoService.add(this.turmaAluno).then(() => {
+                    loading.dismiss();
+                    this.tokenAtividade = null;
+                    this.nav.navigateForward('/aluno-atividade-abrir/turma/' + turma[0].id);
+                  });
+                }
               });
-           } //else {
-            //   loading.dismiss();
-            //   this.presentToast('Você já está adicionado nesta atividade.');
-            // }
-          });
+            });
+          }
+          else {
+            loading.dismiss();
+            this.presentToast("Código inválido");
+          }
         });
-       });
+      }
+      else {
+        loading.dismiss();
+        this.presentToast('É necessário digitar o token para entrar na atividade.');
+      }
+    }
+    
+    async presentToast(message: string) {
+      const toast = await this.toastController.create({
+        message: message,
+        duration: 3000,
+        position: 'bottom'
+      });
+      toast.present();
     }
   }
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 3000,
-      position: 'bottom'
-    });
-    toast.present();
-  }
-}
+  

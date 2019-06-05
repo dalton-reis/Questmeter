@@ -1,3 +1,5 @@
+import { ProfessorService } from './../../services/professor.service';
+import { AlunoService } from './../../services/aluno.service';
 import { ActivatedRoute } from '@angular/router';
 import { Usuario } from './../../models/usuario';
 import { AutenticacaoService } from './../../services/autenticacao.service';
@@ -20,7 +22,9 @@ export class AutenticacaoPage implements OnInit {
   constructor(private route: ActivatedRoute,
     public nav: NavController,
     private toastController: ToastController,
-    private autenticacaoService: AutenticacaoService) {
+    private autenticacaoService: AutenticacaoService, 
+    private alunoService: AlunoService,
+    private professorService: ProfessorService) {
     }
     
     ngOnInit(){ 
@@ -36,11 +40,26 @@ export class AutenticacaoPage implements OnInit {
         let toastMessage = '';
         
         this.autenticacaoService.signIn(this.usuario)
-        .then(() => {
+        .then((usuario) => {
           if (this.tipoUsuario == 'aluno') {
-            this.nav.navigateForward('/aluno-inicio');
-          } else if (this.tipoUsuario == 'professor') {
-            this.nav.navigateForward('/professor-inicio');
+            this.alunoService.getByUsuario(usuario.user.uid).then((resultado) => {
+              if (resultado[0]) {
+                this.nav.navigateForward('/aluno-inicio');
+              }
+              else {
+                this.presentToast("Você não está cadastrado como aluno.");
+              }
+            });
+          } 
+          else if (this.tipoUsuario == 'professor') {
+            this.professorService.getByUsuario(usuario.user.uid).then((resultado) => {
+              if (resultado[0]) {
+                this.nav.navigateForward('/professor-inicio');
+              } 
+              else {
+                this.presentToast("Você não está cadastrado como professor.");
+              }
+            });
           }
         })
         .catch((error: any) => {

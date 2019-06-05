@@ -33,6 +33,7 @@ export class AtividadeService {
     return this.collectionAtividades.doc<IAtividade>(id).valueChanges();
   }
 
+  //modificar: pegar a atividade que o aluno pertence
   getByCodigo(codigo: string) {
     return new Promise(resolve => {
       this.db.collection<IAtividade>('atividades', ref => ref.where('codigo', '==', codigo)).
@@ -50,7 +51,21 @@ export class AtividadeService {
   }
 
   getByProfessor(professor: string) {
-    return this.db.collection<IAtividade>('atividades', ref => ref.where('professor', '==', professor)).
+    return this.db.collection<IAtividade>
+    ('atividades', ref => ref.where('professor', '==', professor).orderBy("disciplina").orderBy("nome")).
+      snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data};
+        });
+    }));
+  }
+
+  getByProfessorOrdenaPorData(professor: string) {
+    return this.db.collection<IAtividade>
+    ('atividades', ref => ref.where('professor', '==', professor).orderBy("dataCriacao", "desc")).
       snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

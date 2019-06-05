@@ -13,20 +13,19 @@ export class ProfessorRespostaPage implements OnInit {
 
   resposta: IResposta = {
     conteudo: '',
-    atividade: null, //FK
+    questao: null, //FK
     correta: false,
-    pontuacao: 0,
-    votos: 0
+    pontuacao: 0
   }
 
   idResposta = null;
-  idAtividade = null;
+  idQuestao = null;
 
   constructor(private route: ActivatedRoute, private nav: NavController, 
     private loadingController: LoadingController, private respostaService: RespostaService) { }
 
     ngOnInit() {
-      this.idAtividade= this.route.snapshot.params['atividade'];
+      this.idQuestao = this.route.snapshot.params['questao'];
       this.idResposta = this.route.snapshot.params['id'];
 
       if(this.idResposta) {
@@ -57,13 +56,13 @@ export class ProfessorRespostaPage implements OnInit {
         this.respostaService.update(this.idResposta, this.resposta).then(() => {
           loading.dismiss();
 
-          this.nav.navigateForward('/professor-atividade-edicao/' + this.resposta.atividade);
+          this.nav.navigateForward('/professor-questao-edicao/' + this.resposta.questao);
         });
       } else {
-        this.respostaService.add(this.resposta, this.idAtividade).then(() => {
+        this.respostaService.add(this.resposta, this.idQuestao).then(() => {
           loading.dismiss();
 
-          this.nav.navigateForward('/professor-atividade-edicao/' + this.idAtividade);
+          this.nav.navigateForward('/professor-questao-edicao/' + this.idQuestao);
         });
       }
     }

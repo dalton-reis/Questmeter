@@ -30,24 +30,37 @@ export class RespostaService {
       return this.listRespostas;
     }
     
-    getByAtividade(atividade: string) {
-
-      //Tentando buscar as respostas por referecia
-      // this.collectionRespostas.doc<IResposta>('atividades/' + atividade)
-      // .valueChanges().subscribe( r => console.log('resp', r));
-
-      // return this.db.collection<IResposta>('respostas/atividades/' + atividade).
-      // snapshotChanges().pipe(
-      //   map(actions => {
-      //     return actions.map(a => {
-      //       const data = a.payload.doc.data();
-      //       const id = a.payload.doc.id;
-      //       return {id, ...data};
-      //     });
-      //   })
-      // );
-      
-      return this.db.collection<IResposta>('respostas', ref => ref.where('atividade', '==', atividade)).
+    // getByAtividade(atividade: string) {
+    
+    //   //Tentando buscar as respostas por referecia
+    //   // this.collectionRespostas.doc<IResposta>('atividades/' + atividade)
+    //   // .valueChanges().subscribe( r => console.log('resp', r));
+    
+    //   // return this.db.collection<IResposta>('respostas/atividades/' + atividade).
+    //   // snapshotChanges().pipe(
+    //   //   map(actions => {
+    //   //     return actions.map(a => {
+    //   //       const data = a.payload.doc.data();
+    //   //       const id = a.payload.doc.id;
+    //   //       return {id, ...data};
+    //   //     });
+    //   //   })
+    //   // );
+    
+    //   return this.db.collection<IResposta>('respostas', ref => ref.where('atividade', '==', atividade)).
+    //   snapshotChanges().pipe(
+    //     map(actions => {
+    //       return actions.map(a => {
+    //         const data = a.payload.doc.data();
+    //         const id = a.payload.doc.id;
+    //         return {id, ...data};
+    //       });
+    //     })
+    //   );
+    // }
+    
+    getByQuestao(questao: string) {
+      return this.db.collection<IResposta>('respostas', ref => ref.where('questao', '==', questao)).
       snapshotChanges().pipe(
         map(actions => {
           return actions.map(a => {
@@ -56,27 +69,43 @@ export class RespostaService {
             return {id, ...data};
           });
         })
-      );
-    }
+        );
+      }
       
-    get(id: string) {
-      return this.collectionRespostas.doc<IResposta>(id).valueChanges();
-    }
+      getByQuestaoComID(questao: string) {
+        return new Promise(resolve => {
+          this.db.collection<IResposta>('respostas', ref => ref.where('questao', '==', questao)).
+          snapshotChanges().pipe(
+            map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return {id, ...data};
+              });
+            })).subscribe((data:any) => {
+              resolve(data);
+            });
+          });
+        }
+        
+        get(id: string) {
+          return this.collectionRespostas.doc<IResposta>(id).valueChanges();
+        }
+        
+        add(resposta: IResposta, questao: string) {
+          //Adicionada resposta com atividade por referecia (mas nao deu pra buscar)
+          //resposta.atividade = this.db.doc('atividades/' + atividade).ref;
+          resposta.questao = questao;
+          return this.collectionRespostas.add(resposta);
+        }
+        
+        update(id: string, resposta: IResposta) {
+          return this.collectionRespostas.doc(id).update(resposta);
+        }
+        
+        remove(id: string) {
+          return this.collectionRespostas.doc(id).delete();
+        }
+      }
       
-    add(resposta: IResposta, atividade: string) {
-      //Adicionada resposta com atividade por referecia (mas nao deu pra buscar)
-      //resposta.atividade = this.db.doc('atividades/' + atividade).ref;
-      resposta.atividade = atividade;
-      return this.collectionRespostas.add(resposta);
-    }
       
-    update(id: string, resposta: IResposta) {
-      return this.collectionRespostas.doc(id).update(resposta);
-    }
-      
-    remove(id: string) {
-      return this.collectionRespostas.doc(id).delete();
-    }
-}
-    
-    
