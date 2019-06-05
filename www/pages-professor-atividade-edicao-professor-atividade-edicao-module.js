@@ -58,7 +58,7 @@ var ProfessorAtividadeEdicaoPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-back-button defaultHref=\"/professor-atividade/\"></ion-back-button>\n    </ion-buttons>\n    <ion-title>Atividade</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  \n  <div padding>\n    <!-- <ion-segment (ionChange)=\"segmentChanged($event)\" value=\"dogs\" mode=\"ios\"> -->\n      <ion-segment [(ngModel)]=\"segmentAtividade\" mode=\"ios\">\n        <ion-segment-button value=\"edicao\">\n          <ion-label>Informações</ion-label>\n        </ion-segment-button>\n        <ion-segment-button value=\"respostas\">\n          <ion-label>Respostas</ion-label>\n        </ion-segment-button>\n        <ion-segment-button value=\"alunos\">\n          <ion-label>Alunos</ion-label>\n        </ion-segment-button>\n      </ion-segment>\n    </div>\n    \n    <div [ngSwitch]=\"segmentAtividade\">\n      \n      <div *ngSwitchCase=\"'edicao'\">\n        <ion-list lines=\"full\">\n          <ion-item *ngIf=\"atividade\">\n            <ion-label position=\"stacked\">Nome</ion-label>\n            <ion-input required type=\"text\" [(ngModel)]=\"atividade.nome\"></ion-input>\n          </ion-item>\n          <ion-item *ngIf=\"atividade\">\n            <ion-label position=\"stacked\">Problema/Desafio</ion-label>\n            <ion-textarea required rows=\"4\" [(ngModel)]=\"atividade.problema\"></ion-textarea>\n          </ion-item>\n          <!-- <ion-item *ngIf=\"atividade\">\n            <ion-select required placeholder=\"Tipo\" [(ngModel)]=\"atividade.tipo\">\n              <ion-select-option value=\"M\">Multipla escolha</ion-select-option>\n              <ion-select-option value=\"D\">Descritiva</ion-select-option>\n            </ion-select>\n          </ion-item> -->\n          <ion-item *ngIf=\"atividade\">\n            <ion-label position=\"stacked\">Termina em</ion-label>\n            <ion-datetime required displayFormat=\"DD/MM/YYYY hh:mm\" [(ngModel)]=\"atividade.dataTermino\"></ion-datetime>\n          </ion-item>\n          <ion-item *ngIf=\"atividade\">\n            <ion-label position=\"stacked\">Código</ion-label>\n            <ion-input type=\"text\" disabled=\"true\" [(ngModel)]=\"atividade.codigo\"></ion-input>\n          </ion-item>\n        </ion-list>\n        <ion-button expand=\"full\" (click)=\"save()\">Salvar</ion-button>\n        <ion-button expand=\"full\" (click)=\"gerarCodigoTurma()\">Gerar código turma</ion-button>\n        <ion-button expand=\"full\" (click)=\"apresentar()\">Apresentar</ion-button>\n        <!-- <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\" color=\"danger\">\n          <ion-fab-button color=\"danger\" (click)=\"onRemoveAtividade(idAtividade)\" routerLink=\"/\" \n          routerDirection=\"forward\">\n          <ion-icon name=\"trash\"></ion-icon>\n        </ion-fab-button>\n      </ion-fab> -->\n    </div>\n    \n    <div *ngSwitchCase=\"'respostas'\">\n      <ion-list>\n        <ion-list-header>\n          <ion-label color=\"primary\">Respostas/Votos</ion-label>\n        </ion-list-header>\n        <ion-item-sliding *ngFor=\"let resposta of respostas\">\n          <ion-item lines=\"inset\" button [routerLink]=\"['/professor-resposta', resposta.id]\">\n            <ion-label>{{ resposta.conteudo }}</ion-label>\n            <ion-badge color=\"secondary\" slot=\"end\">{{ resposta.votos }}</ion-badge>\n          </ion-item>\n          \n          <ion-item-options side=\"end\">\n            <ion-item-option (click)=\"onRemoveResposta(resposta.id)\" color=\"danger\">\n              <ion-label>Apagar</ion-label>\n              <!-- <ion-icon name=\"trash\" slot=\"end\"></ion-icon> -->\n            </ion-item-option>\n          </ion-item-options>\n        </ion-item-sliding>\n      </ion-list>\n      <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\">\n        <ion-fab-button [routerLink]=\"['/professor-resposta/atividade', idAtividade]\" routerDirection=\"forward\">\n          <ion-icon name=\"add\"></ion-icon>\n        </ion-fab-button>\n      </ion-fab>\n    </div>\n    \n    <div *ngSwitchCase=\"'alunos'\">\n      <ion-item-sliding *ngFor=\"let aluno of alunos\">\n        <ion-item>\n          <ion-label>{{ aluno.nomeCompleto }}</ion-label>\n          <ion-badge color=\"secondary\" slot=\"end\">{{ aluno.pontuacao }}</ion-badge>\n        </ion-item>\n      </ion-item-sliding>\n    </div>\n    \n  </div>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-buttons slot=\"start\">\n      <ion-back-button defaultHref=\"/professor-inicio\"></ion-back-button>\n    </ion-buttons>\n    <ion-title>Atividade</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  \n  <div padding>\n    <ion-segment [(ngModel)]=\"segmentAtividade\" mode=\"ios\">\n      <ion-segment-button value=\"edicao\">\n        <ion-label>Informações</ion-label>\n      </ion-segment-button>\n      <ion-segment-button value=\"questoes\">\n        <ion-label>Questões</ion-label>\n      </ion-segment-button>\n      <ion-segment-button value=\"turmas\">\n        <ion-label>Turmas</ion-label>\n      </ion-segment-button>\n    </ion-segment>\n  </div>\n  \n  <div [ngSwitch]=\"segmentAtividade\">\n    \n    <div *ngSwitchCase=\"'edicao'\">\n      <ion-list lines=\"full\">\n        <ion-item *ngIf=\"atividade\">\n          <ion-label position=\"stacked\">Disciplina</ion-label>\n          <ion-input required type=\"text\" max-length=\"5\" [(ngModel)]=\"atividade.disciplina\"></ion-input>\n        </ion-item>\n        <ion-item *ngIf=\"atividade\">\n          <ion-label position=\"stacked\">Nome</ion-label>\n          <ion-input required type=\"text\" max-length=\"10\" [(ngModel)]=\"atividade.nome\"></ion-input>\n        </ion-item>\n        <ion-item *ngIf=\"atividade\">\n          <ion-label position=\"stacked\">Termina em</ion-label>\n          <ion-datetime displayFormat=\"DD/MM/YYYY HH:mm\" [(ngModel)]=\"atividade.dataTermino\"></ion-datetime>\n        </ion-item>\n      </ion-list>\n      <ion-button expand=\"full\" (click)=\"save()\">Salvar</ion-button>\n      <ion-button expand=\"full\" (click)=\"gerarCodigoTurma()\">Gerar turma</ion-button>\n      <ion-button expand=\"full\" (click)=\"apresentar()\">Apresentar</ion-button>\n    </div>\n    \n    <div *ngSwitchCase=\"'questoes'\">\n      <ion-list>\n        <ion-item-sliding *ngFor=\"let questao of questoes\">\n          <ion-item lines=\"inset\" button [routerLink]=\"['/professor-questao-edicao', questao.id]\">\n            <ion-label>{{ questao.apelido }}</ion-label>\n          </ion-item>\n          \n          <ion-item-options side=\"end\">\n            <ion-item-option (click)=\"onRemoveQuestao(questao.id)\" color=\"danger\">\n              <ion-label>Apagar</ion-label>\n            </ion-item-option>\n          </ion-item-options>\n        </ion-item-sliding>\n      </ion-list>\n      <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\">\n        <ion-fab-button [routerLink]=\"['/professor-questao/atividade', idAtividade]\" routerDirection=\"forward\">\n          <ion-icon name=\"add\"></ion-icon>\n        </ion-fab-button>\n      </ion-fab>\n    </div>\n    \n    <div *ngSwitchCase=\"'turmas'\">\n      <ion-list>\n        <ion-list-header>\n          <ion-label color=\"primary\">Nome | Token</ion-label>\n        </ion-list-header>\n        <ion-item-sliding *ngFor=\"let turma of turmas\">\n          <ion-item lines=\"inset\" button [routerLink]=\"['/professor-turma-edicao/', turma.id]\">\n            <ion-label>{{ turma.nome }} | {{ turma.token }}</ion-label>\n          </ion-item>\n          \n          <ion-item-options side=\"end\">\n            <ion-item-option (click)=\"onRemoveTurma(turma.id)\" color=\"danger\">\n              <ion-label>Apagar</ion-label>\n            </ion-item-option>\n          </ion-item-options>\n        </ion-item-sliding>\n      </ion-list>\n    </div>\n    \n  </div>\n</ion-content>\n"
 
 /***/ }),
 
@@ -77,22 +77,19 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*!*************************************************************************************!*\
   !*** ./src/app/pages/professor-atividade-edicao/professor-atividade-edicao.page.ts ***!
   \*************************************************************************************/
-/*! exports provided: ProfessorAtividadeEdicaoPage, Aluno */
+/*! exports provided: ProfessorAtividadeEdicaoPage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfessorAtividadeEdicaoPage", function() { return ProfessorAtividadeEdicaoPage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Aluno", function() { return Aluno; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _services_aluno_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/aluno.service */ "./src/app/services/aluno.service.ts");
-/* harmony import */ var _services_atividade_aluno_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/atividade-aluno.service */ "./src/app/services/atividade-aluno.service.ts");
+/* harmony import */ var src_app_services_turma_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/turma.service */ "./src/app/services/turma.service.ts");
+/* harmony import */ var _services_questao_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/questao.service */ "./src/app/services/questao.service.ts");
 /* harmony import */ var _services_atividade_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../services/atividade.service */ "./src/app/services/atividade.service.ts");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_services_resposta_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/services/resposta.service */ "./src/app/services/resposta.service.ts");
-
 
 
 
@@ -101,25 +98,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ProfessorAtividadeEdicaoPage = /** @class */ (function () {
-    function ProfessorAtividadeEdicaoPage(route, nav, loadingController, atividadeService, respostaService, atividadeAlunoService, alunoService) {
+    function ProfessorAtividadeEdicaoPage(route, nav, loadingController, atividadeService, questaoService, turmaService) {
         this.route = route;
         this.nav = nav;
         this.loadingController = loadingController;
         this.atividadeService = atividadeService;
-        this.respostaService = respostaService;
-        this.atividadeAlunoService = atividadeAlunoService;
-        this.alunoService = alunoService;
+        this.questaoService = questaoService;
+        this.turmaService = turmaService;
         this.atividade = {
-            nome: '',
             professor: '',
-            problema: '',
-            tipo: '',
+            disciplina: '',
+            nome: '',
             dataTermino: new Date(),
-            iniciada: false,
-            codigo: ''
+            dataCriacao: new Date()
         };
         this.idAtividade = null;
-        this.alunos = [];
         this.segmentAtividade = 'edicao';
     }
     ProfessorAtividadeEdicaoPage.prototype.ngOnInit = function () {
@@ -127,22 +120,11 @@ var ProfessorAtividadeEdicaoPage = /** @class */ (function () {
         this.idAtividade = this.route.snapshot.params['id'];
         if (this.idAtividade) {
             this.load();
-            this.respostaService.getByAtividade(this.idAtividade).subscribe(function (resultado) {
-                _this.respostas = resultado;
+            this.questaoService.getByAtividade(this.idAtividade).subscribe(function (resultado) {
+                _this.questoes = resultado;
             });
-            this.atividadeAlunoService.getByAtividade(this.idAtividade)
-                .subscribe(function (resultado) {
-                resultado.forEach(function (f) {
-                    return _this.alunoService.get(f.aluno).subscribe(function (resAluno) {
-                        if (_this.alunos.findIndex(function (v) { return v.id == f.id; }) < 0) {
-                            var aluno = new Aluno();
-                            aluno.id = f.id;
-                            aluno.nomeCompleto = resAluno.nomeCompleto;
-                            aluno.pontuacao = f.alunoPontuacao;
-                            _this.alunos.push(aluno);
-                        }
-                    });
-                });
+            this.turmaService.getByAtividade(this.idAtividade).subscribe(function (resultado) {
+                _this.turmas = resultado;
             });
         }
     };
@@ -208,42 +190,36 @@ var ProfessorAtividadeEdicaoPage = /** @class */ (function () {
             });
         });
     };
-    ProfessorAtividadeEdicaoPage.prototype.onRemoveResposta = function (id) {
+    ProfessorAtividadeEdicaoPage.prototype.onRemoveQuestao = function (id) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
-                this.atividadeService.remove(id);
+                this.questaoService.remove(id);
+                return [2 /*return*/];
+            });
+        });
+    };
+    ProfessorAtividadeEdicaoPage.prototype.onRemoveTurma = function (id) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                this.turmaService.remove(id);
                 return [2 /*return*/];
             });
         });
     };
     ProfessorAtividadeEdicaoPage.prototype.gerarCodigoTurma = function () {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
-            var loading_1, codigo;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!this.idAtividade) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.loadingController.create({
-                                message: 'Salvando'
-                            })];
-                    case 1:
-                        loading_1 = _a.sent();
-                        return [4 /*yield*/, loading_1.present()];
-                    case 2:
-                        _a.sent();
-                        codigo = this.idAtividade.substring(0, 7);
-                        this.atividade.codigo = codigo.toString().toUpperCase();
-                        this.atividadeService.update(this.idAtividade, this.atividade).then(function () {
-                            loading_1.dismiss();
-                        });
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                if (this.idAtividade) {
+                    this.nav.navigateForward('/professor-turma/atividade/' + this.idAtividade);
                 }
+                return [2 /*return*/];
             });
         });
     };
     ProfessorAtividadeEdicaoPage.prototype.apresentar = function () {
-        this.nav.navigateForward('/professor-atividade-apresentacao/' + this.idAtividade);
+        if (this.idAtividade) {
+            this.nav.navigateForward('/professor-atividade-apresentacao-turma/atividade/' + this.idAtividade);
+        }
     };
     ProfessorAtividadeEdicaoPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_6__["Component"])({
@@ -253,21 +229,292 @@ var ProfessorAtividadeEdicaoPage = /** @class */ (function () {
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"], _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"],
-            _services_atividade_service__WEBPACK_IMPORTED_MODULE_3__["AtividadeService"], src_app_services_resposta_service__WEBPACK_IMPORTED_MODULE_7__["RespostaService"],
-            _services_atividade_aluno_service__WEBPACK_IMPORTED_MODULE_2__["AtividadeAlunoService"], _services_aluno_service__WEBPACK_IMPORTED_MODULE_1__["AlunoService"]])
+            _services_atividade_service__WEBPACK_IMPORTED_MODULE_3__["AtividadeService"], _services_questao_service__WEBPACK_IMPORTED_MODULE_2__["QuestaoService"],
+            src_app_services_turma_service__WEBPACK_IMPORTED_MODULE_1__["TurmaService"]])
     ], ProfessorAtividadeEdicaoPage);
     return ProfessorAtividadeEdicaoPage;
 }());
 
-var Aluno = /** @class */ (function () {
-    function Aluno() {
+
+
+/***/ }),
+
+/***/ "./src/app/services/atividade.service.ts":
+/*!***********************************************!*\
+  !*** ./src/app/services/atividade.service.ts ***!
+  \***********************************************/
+/*! exports provided: AtividadeService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AtividadeService", function() { return AtividadeService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+var AtividadeService = /** @class */ (function () {
+    function AtividadeService(db) {
+        this.db = db;
+        this.collectionAtividades = db.collection('atividades');
+        this.listAtividades = this.collectionAtividades.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
     }
-    Aluno.prototype.Aluno = function () {
-        this.id = '';
-        this.nomeCompleto = '';
-        this.pontuacao = 0;
+    AtividadeService.prototype.getAll = function () {
+        return this.listAtividades;
     };
-    return Aluno;
+    AtividadeService.prototype.get = function (id) {
+        return this.collectionAtividades.doc(id).valueChanges();
+    };
+    //modificar: pegar a atividade que o aluno pertence
+    AtividadeService.prototype.getByCodigo = function (codigo) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.db.collection('atividades', function (ref) { return ref.where('codigo', '==', codigo); }).
+                snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+                return actions.map(function (a) {
+                    var data = a.payload.doc.data();
+                    var id = a.payload.doc.id;
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+                });
+            })).subscribe(function (data) {
+                resolve(data);
+            });
+        });
+    };
+    AtividadeService.prototype.getByProfessor = function (professor) {
+        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor).orderBy("disciplina").orderBy("nome"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    AtividadeService.prototype.getByProfessorOrdenaPorData = function (professor) {
+        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor).orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    AtividadeService.prototype.add = function (atividade) {
+        return this.collectionAtividades.add(atividade);
+    };
+    AtividadeService.prototype.update = function (id, atividade) {
+        return this.collectionAtividades.doc(id).update(atividade);
+    };
+    AtividadeService.prototype.remove = function (id) {
+        return this.collectionAtividades.doc(id).delete();
+    };
+    AtividadeService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], AtividadeService);
+    return AtividadeService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/questao.service.ts":
+/*!*********************************************!*\
+  !*** ./src/app/services/questao.service.ts ***!
+  \*********************************************/
+/*! exports provided: QuestaoService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestaoService", function() { return QuestaoService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+
+
+var QuestaoService = /** @class */ (function () {
+    function QuestaoService(db) {
+        this.db = db;
+        this.collectionQuestoes = db.collection('questoes');
+        this.listQuestoes = this.collectionQuestoes.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    }
+    QuestaoService.prototype.getAll = function () {
+        return this.listQuestoes;
+    };
+    QuestaoService.prototype.get = function (id) {
+        return this.collectionQuestoes.doc(id).valueChanges();
+    };
+    QuestaoService.prototype.getByAtividade = function (atividade) {
+        return this.db.collection('questoes', function (ref) { return ref.where('atividade', '==', atividade).orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    QuestaoService.prototype.getByAtividadeAsc = function (atividade) {
+        return this.db.collection('questoes', function (ref) { return ref.where('atividade', '==', atividade).orderBy("dataCriacao"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    QuestaoService.prototype.add = function (questao, atividade) {
+        questao.atividade = atividade;
+        return this.collectionQuestoes.add(questao);
+    };
+    QuestaoService.prototype.update = function (id, questao) {
+        return this.collectionQuestoes.doc(id).update(questao);
+    };
+    QuestaoService.prototype.remove = function (id) {
+        return this.collectionQuestoes.doc(id).delete();
+    };
+    QuestaoService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], QuestaoService);
+    return QuestaoService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/turma.service.ts":
+/*!*******************************************!*\
+  !*** ./src/app/services/turma.service.ts ***!
+  \*******************************************/
+/*! exports provided: TurmaService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TurmaService", function() { return TurmaService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+
+
+var TurmaService = /** @class */ (function () {
+    function TurmaService(db) {
+        this.db = db;
+        this.collectionTurmas = db.collection('turmas');
+        this.listTurmas = this.collectionTurmas.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    }
+    TurmaService.prototype.getAll = function () {
+        return this.listTurmas;
+    };
+    TurmaService.prototype.get = function (id) {
+        return this.collectionTurmas.doc(id).valueChanges();
+    };
+    TurmaService.prototype.getByAtividade = function (atividade) {
+        return this.db.collection('turmas', function (ref) { return ref.where('atividade', '==', atividade).orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    TurmaService.prototype.getByAtividadePromise = function (atividade) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.db.collection('turmas', function (ref) { return ref.where('atividade', '==', atividade).orderBy("dataCriacao", "desc"); }).
+                snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+                return actions.map(function (a) {
+                    var data = a.payload.doc.data();
+                    var id = a.payload.doc.id;
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+                });
+            })).subscribe(function (data) {
+                resolve(data);
+            });
+        });
+    };
+    TurmaService.prototype.getByAtividadeNaoFinalizadas = function (atividade) {
+        return this.db.collection('turmas', function (ref) { return ref.where('atividade', '==', atividade).
+            where('atividadeFinalizada', '==', false).
+            orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    TurmaService.prototype.getByToken = function (token) {
+        return this.db.collection('turmas', function (ref) { return ref.where('token', '==', token); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    TurmaService.prototype.add = function (turma, atividade) {
+        turma.atividade = atividade;
+        return this.collectionTurmas.add(turma);
+    };
+    TurmaService.prototype.update = function (id, turma) {
+        return this.collectionTurmas.doc(id).update(turma);
+    };
+    TurmaService.prototype.remove = function (id) {
+        return this.collectionTurmas.doc(id).delete();
+    };
+    TurmaService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], TurmaService);
+    return TurmaService;
 }());
 
 

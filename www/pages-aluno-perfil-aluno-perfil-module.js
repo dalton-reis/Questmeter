@@ -22543,7 +22543,7 @@ var AlunoPerfilPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-title>Perfil</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-avatar style=\"margin: auto; width: 100px; height: 100px;\">\n    <ion-img src=\"{{urlImagem}}\"></ion-img>\n  </ion-avatar>\n  <ion-list lines=\"full\">\n    <ion-item-sliding>\n      <ion-item *ngIf=\"aluno\">\n        <ion-label position=\"stacked\">Nome completo</ion-label>\n        <ion-input disabled=\"true\" type=\"text\" [(ngModel)]=\"aluno.nomeCompleto\"></ion-input>\n      </ion-item>\n      <ion-item *ngIf=\"emailUsuarioCorrente\">\n        <ion-label position=\"stacked\">E-mail</ion-label>\n        <ion-input disabled=\"true\" type=\"email\" [(ngModel)]=\"emailUsuarioCorrente\"></ion-input>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\">\n        <ion-label>Pontuação</ion-label>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\">\n        <ion-progress-bar color=\"secondary\" [(value)]=\"pontuacao\" style=\"height: 50%;\">Pontuação</ion-progress-bar>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\" style=\"float:right\">\n        <ion-label color=\"secondary\">{{aluno.pontuacao}} / {{pontuacaoMaxima}}</ion-label>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\">\n        <ion-label>Nível</ion-label>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\">\n        <ion-chip color=\"primary\" *ngIf=\"aluno\" style=\"margin-left: 40%; height: 80%; font-size: 250%; text-align: center;\">\n          <ion-label color=\"secondary\">{{aluno.nivel}}</ion-label>\n        </ion-chip>\n      </ion-item>\n    </ion-item-sliding>\n  </ion-list>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-title>Perfil</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-avatar style=\"margin: auto; width: 100px; height: 100px;\">\n    <ion-img src=\"{{urlImagem}}\"></ion-img>\n  </ion-avatar>\n  <ion-list lines=\"full\">\n    <ion-item-sliding>\n      <ion-item *ngIf=\"aluno\">\n        <ion-label position=\"stacked\">Nome completo</ion-label>\n        <ion-input disabled=\"true\" type=\"text\" [(ngModel)]=\"aluno.nomeCompleto\"></ion-input>\n      </ion-item>\n      <ion-item *ngIf=\"emailUsuarioCorrente\">\n        <ion-label position=\"stacked\">E-mail</ion-label>\n        <ion-input disabled=\"true\" type=\"email\" [(ngModel)]=\"emailUsuarioCorrente\"></ion-input>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\">\n        <ion-label>Pontuação</ion-label>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\">\n        <ion-progress-bar color=\"secondary\" [(value)]=\"pontuacao\" style=\"height: 50%;\">Pontuação</ion-progress-bar>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\" style=\"float:right\">\n        <ion-label color=\"secondary\">{{aluno.pontuacao}} / {{pontuacaoMaxima}}</ion-label>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\">\n        <ion-label>Nível</ion-label>\n      </ion-item>\n      <ion-item lines=\"none\" *ngIf=\"aluno\">\n        <ion-chip color=\"primary\" *ngIf=\"aluno\" style=\"margin-left: 40%; height: 80%; font-size: 250%; text-align: center;\">\n          <ion-label color=\"secondary\">{{aluno.nivel}}</ion-label>\n        </ion-chip>\n      </ion-item>\n    </ion-item-sliding>\n  </ion-list>\n  <ion-button expand=\"full\" (click)=\"sair()\">Sair</ion-button>\n</ion-content>\n"
 
 /***/ }),
 
@@ -22585,8 +22585,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var AlunoPerfilPage = /** @class */ (function () {
-    function AlunoPerfilPage(loadingController, fb, alunoService, autenticacaoService) {
+    function AlunoPerfilPage(loadingController, nav, fb, alunoService, autenticacaoService) {
         this.loadingController = loadingController;
+        this.nav = nav;
         this.fb = fb;
         this.alunoService = alunoService;
         this.autenticacaoService = autenticacaoService;
@@ -22659,13 +22660,19 @@ var AlunoPerfilPage = /** @class */ (function () {
             }
         });
     };
+    AlunoPerfilPage.prototype.sair = function () {
+        var _this = this;
+        this.autenticacaoService.signOut().then(function () {
+            _this.nav.navigateForward('/abertura');
+        });
+    };
     AlunoPerfilPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"])({
             selector: 'app-aluno-perfil',
             template: __webpack_require__(/*! ./aluno-perfil.page.html */ "./src/app/pages/aluno-perfil/aluno-perfil.page.html"),
             styles: [__webpack_require__(/*! ./aluno-perfil.page.scss */ "./src/app/pages/aluno-perfil/aluno-perfil.page.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["LoadingController"], angularfire2__WEBPACK_IMPORTED_MODULE_5__["FirebaseApp"],
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["LoadingController"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["NavController"], angularfire2__WEBPACK_IMPORTED_MODULE_5__["FirebaseApp"],
             _services_aluno_service__WEBPACK_IMPORTED_MODULE_3__["AlunoService"], _services_autenticacao_service__WEBPACK_IMPORTED_MODULE_1__["AutenticacaoService"]])
     ], AlunoPerfilPage);
     return AlunoPerfilPage;

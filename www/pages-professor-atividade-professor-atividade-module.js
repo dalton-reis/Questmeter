@@ -52,7 +52,7 @@ var ProfessorAtividadePageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-title>Atividades</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list>\n    <ion-item-sliding *ngFor=\"let atividade of atividades\">\n      <ion-item lines=\"inset\" button [routerLink]=\"['/professor-atividade-edicao', atividade.id]\">\n        <ion-label>{{ atividade.nome }}</ion-label>\n        <!-- <ion-icon name=\"arrow-dropright\"></ion-icon> -->\n      </ion-item>\n      \n      <ion-item-options side=\"end\">\n        <ion-item-option (click)=\"onRemove(atividade.id)\" color=\"danger\">\n          <ion-label>Apagar</ion-label>\n          <!-- <ion-icon name=\"trash\" slot=\"end\"></ion-icon> -->\n        </ion-item-option>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n  <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button routerLink=\"/professor-atividade-criacao\" routerDirection=\"forward\">\n      <ion-icon name=\"add\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n</ion-content>\n\n"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-title>Atividades</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list>\n    <ion-list-header>\n     <ion-label color=\"primary\">Disciplina | Atividade</ion-label> \n    </ion-list-header>\n    <ion-item-sliding *ngFor=\"let atividade of atividades\">\n      <ion-item lines=\"inset\" button [routerLink]=\"['/professor-atividade-edicao', atividade.id]\">\n        <ion-label>{{ atividade.disciplina }} | {{ atividade.nome }}</ion-label>\n      </ion-item>\n      \n      <ion-item-options side=\"end\">\n        <ion-item-option (click)=\"onRemove(atividade.id)\" color=\"danger\">\n          <ion-label>Apagar</ion-label>\n        </ion-item-option>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n  <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button routerLink=\"/professor-atividade-criacao\" routerDirection=\"forward\">\n      <ion-icon name=\"add\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n</ion-content>\n\n"
 
 /***/ }),
 
@@ -117,6 +117,101 @@ var ProfessorAtividadePage = /** @class */ (function () {
             _services_autenticacao_service__WEBPACK_IMPORTED_MODULE_1__["AutenticacaoService"]])
     ], ProfessorAtividadePage);
     return ProfessorAtividadePage;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/atividade.service.ts":
+/*!***********************************************!*\
+  !*** ./src/app/services/atividade.service.ts ***!
+  \***********************************************/
+/*! exports provided: AtividadeService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AtividadeService", function() { return AtividadeService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+var AtividadeService = /** @class */ (function () {
+    function AtividadeService(db) {
+        this.db = db;
+        this.collectionAtividades = db.collection('atividades');
+        this.listAtividades = this.collectionAtividades.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    }
+    AtividadeService.prototype.getAll = function () {
+        return this.listAtividades;
+    };
+    AtividadeService.prototype.get = function (id) {
+        return this.collectionAtividades.doc(id).valueChanges();
+    };
+    //modificar: pegar a atividade que o aluno pertence
+    AtividadeService.prototype.getByCodigo = function (codigo) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.db.collection('atividades', function (ref) { return ref.where('codigo', '==', codigo); }).
+                snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+                return actions.map(function (a) {
+                    var data = a.payload.doc.data();
+                    var id = a.payload.doc.id;
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+                });
+            })).subscribe(function (data) {
+                resolve(data);
+            });
+        });
+    };
+    AtividadeService.prototype.getByProfessor = function (professor) {
+        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor).orderBy("disciplina").orderBy("nome"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    AtividadeService.prototype.getByProfessorOrdenaPorData = function (professor) {
+        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor).orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    AtividadeService.prototype.add = function (atividade) {
+        return this.collectionAtividades.add(atividade);
+    };
+    AtividadeService.prototype.update = function (id, atividade) {
+        return this.collectionAtividades.doc(id).update(atividade);
+    };
+    AtividadeService.prototype.remove = function (id) {
+        return this.collectionAtividades.doc(id).delete();
+    };
+    AtividadeService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], AtividadeService);
+    return AtividadeService;
 }());
 
 

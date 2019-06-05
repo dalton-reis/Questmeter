@@ -58,7 +58,7 @@ var AlunoAtividadeCodigoPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n    <ion-toolbar color=\"tertiary\">\n      <ion-title>Entrar em uma atividade</ion-title>\n    </ion-toolbar>\n  </ion-header>\n  \n  <ion-content padding>\n    <div padding>\n      \n      <ion-label>Insira aqui o código da atividade disponibilizado pelo professor</ion-label>\n  \n      <ion-item>\n        <!-- <ion-label position=\"stacked\">Código da atividade</ion-label> -->\n        <ion-input required type=\"text\" placeholder=\"Código da atividade\" [(ngModel)]=\"codigoAtividade\"></ion-input>\n      </ion-item>\n      <ion-button expand=\"full\" (click)=\"entrarNaAtividade()\">Entrar</ion-button>\n      \n    </div>\n  </ion-content>\n  "
+module.exports = "<ion-header>\n    <ion-toolbar color=\"tertiary\">\n      <ion-title>Entrar em uma atividade</ion-title>\n    </ion-toolbar>\n  </ion-header>\n  \n  <ion-content padding>\n    <div padding>\n      \n      <ion-label>Insira aqui o token da atividade disponibilizado pelo professor</ion-label>\n  \n      <ion-item>\n        <ion-input type=\"text\" placeholder=\"Token da atividade\" [(ngModel)]=\"tokenAtividade\"></ion-input>\n      </ion-item>\n      <ion-button expand=\"full\" (click)=\"entrarNaAtividade()\">Entrar</ion-button>\n      \n    </div>\n  </ion-content>\n  "
 
 /***/ }),
 
@@ -84,12 +84,14 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlunoAtividadeCodigoPage", function() { return AlunoAtividadeCodigoPage; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _services_autenticacao_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/autenticacao.service */ "./src/app/services/autenticacao.service.ts");
-/* harmony import */ var _services_aluno_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/aluno.service */ "./src/app/services/aluno.service.ts");
-/* harmony import */ var _services_atividade_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../services/atividade.service */ "./src/app/services/atividade.service.ts");
-/* harmony import */ var _services_atividade_aluno_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../services/atividade-aluno.service */ "./src/app/services/atividade-aluno.service.ts");
+/* harmony import */ var _services_turma_aluno_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/turma-aluno.service */ "./src/app/services/turma-aluno.service.ts");
+/* harmony import */ var _services_autenticacao_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/autenticacao.service */ "./src/app/services/autenticacao.service.ts");
+/* harmony import */ var _services_aluno_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../services/aluno.service */ "./src/app/services/aluno.service.ts");
+/* harmony import */ var _services_atividade_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../services/atividade.service */ "./src/app/services/atividade.service.ts");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_turma_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/services/turma.service */ "./src/app/services/turma.service.ts");
+
 
 
 
@@ -98,21 +100,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var AlunoAtividadeCodigoPage = /** @class */ (function () {
-    function AlunoAtividadeCodigoPage(nav, loadingController, toastController, atividadeAlunoService, atividadeService, alunoService, autenticacaoService) {
+    function AlunoAtividadeCodigoPage(nav, loadingController, toastController, turmaAlunoService, turmaService, atividadeService, alunoService, autenticacaoService) {
         this.nav = nav;
         this.loadingController = loadingController;
         this.toastController = toastController;
-        this.atividadeAlunoService = atividadeAlunoService;
+        this.turmaAlunoService = turmaAlunoService;
+        this.turmaService = turmaService;
         this.atividadeService = atividadeService;
         this.alunoService = alunoService;
         this.autenticacaoService = autenticacaoService;
-        this.atividadeAluno = {
-            atividade: '',
+        this.turmaAluno = {
+            turma: '',
             aluno: '',
-            alunoVotou: false,
             alunoPontuacao: 0
         };
-        this.codigoAtividade = null;
+        this.tokenAtividade = null;
         this.usuarioCorrente = null;
     }
     AlunoAtividadeCodigoPage.prototype.ngOnInit = function () { };
@@ -130,27 +132,34 @@ var AlunoAtividadeCodigoPage = /** @class */ (function () {
                         return [4 /*yield*/, loading.present()];
                     case 2:
                         _a.sent();
-                        if (this.codigoAtividade) {
+                        if (this.tokenAtividade) {
                             this.usuarioCorrente = this.autenticacaoService.getID();
-                            this.atividadeService.getByCodigo(this.codigoAtividade).then(function (atividade) {
-                                _this.alunoService.getByUsuario(_this.usuarioCorrente).then(function (aluno) {
-                                    _this.atividadeAlunoService.getByAtividadeAluno(atividade[0].id, aluno[0].id)
-                                        .subscribe(function (resultado) {
-                                        //arrumar
-                                        if (resultado.length <= 0) {
-                                            _this.atividadeAluno.atividade = atividade[0].id;
-                                            _this.atividadeAluno.aluno = aluno[0].id;
-                                            _this.atividadeAlunoService.add(_this.atividadeAluno).then(function () {
-                                                loading.dismiss();
-                                                //this.nav.navigateForward('/tabs-aluno/aluno-atividade');
-                                            });
-                                        } //else {
-                                        //   loading.dismiss();
-                                        //   this.presentToast('Você já está adicionado nesta atividade.');
-                                        // }
+                            this.turmaService.getByToken(this.tokenAtividade).subscribe(function (turma) {
+                                if (turma.length > 0) {
+                                    _this.alunoService.getByUsuario(_this.usuarioCorrente).then(function (aluno) {
+                                        _this.turmaAlunoService.getByTurmaAluno(turma[0].id, aluno[0].id)
+                                            .subscribe(function (resultado) {
+                                            if (resultado.length <= 0) {
+                                                _this.turmaAluno.turma = turma[0].id;
+                                                _this.turmaAluno.aluno = aluno[0].id;
+                                                _this.turmaAlunoService.add(_this.turmaAluno).then(function () {
+                                                    loading.dismiss();
+                                                    _this.tokenAtividade = null;
+                                                    _this.nav.navigateForward('/aluno-atividade-abrir/turma/' + turma[0].id);
+                                                });
+                                            }
+                                        });
                                     });
-                                });
+                                }
+                                else {
+                                    loading.dismiss();
+                                    _this.presentToast("Código inválido");
+                                }
                             });
+                        }
+                        else {
+                            loading.dismiss();
+                            this.presentToast('É necessário digitar o token para entrar na atividade.');
                         }
                         return [2 /*return*/];
                 }
@@ -182,11 +191,214 @@ var AlunoAtividadeCodigoPage = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./aluno-atividade-codigo.page.scss */ "./src/app/pages/aluno-atividade-codigo/aluno-atividade-codigo.page.scss")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_5__["NavController"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["LoadingController"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["ToastController"], _services_atividade_aluno_service__WEBPACK_IMPORTED_MODULE_4__["AtividadeAlunoService"],
-            _services_atividade_service__WEBPACK_IMPORTED_MODULE_3__["AtividadeService"], _services_aluno_service__WEBPACK_IMPORTED_MODULE_2__["AlunoService"],
-            _services_autenticacao_service__WEBPACK_IMPORTED_MODULE_1__["AutenticacaoService"]])
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["ToastController"],
+            _services_turma_aluno_service__WEBPACK_IMPORTED_MODULE_1__["TurmaAlunoService"], src_app_services_turma_service__WEBPACK_IMPORTED_MODULE_7__["TurmaService"],
+            _services_atividade_service__WEBPACK_IMPORTED_MODULE_4__["AtividadeService"], _services_aluno_service__WEBPACK_IMPORTED_MODULE_3__["AlunoService"],
+            _services_autenticacao_service__WEBPACK_IMPORTED_MODULE_2__["AutenticacaoService"]])
     ], AlunoAtividadeCodigoPage);
     return AlunoAtividadeCodigoPage;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/atividade.service.ts":
+/*!***********************************************!*\
+  !*** ./src/app/services/atividade.service.ts ***!
+  \***********************************************/
+/*! exports provided: AtividadeService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AtividadeService", function() { return AtividadeService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+var AtividadeService = /** @class */ (function () {
+    function AtividadeService(db) {
+        this.db = db;
+        this.collectionAtividades = db.collection('atividades');
+        this.listAtividades = this.collectionAtividades.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    }
+    AtividadeService.prototype.getAll = function () {
+        return this.listAtividades;
+    };
+    AtividadeService.prototype.get = function (id) {
+        return this.collectionAtividades.doc(id).valueChanges();
+    };
+    //modificar: pegar a atividade que o aluno pertence
+    AtividadeService.prototype.getByCodigo = function (codigo) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.db.collection('atividades', function (ref) { return ref.where('codigo', '==', codigo); }).
+                snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+                return actions.map(function (a) {
+                    var data = a.payload.doc.data();
+                    var id = a.payload.doc.id;
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+                });
+            })).subscribe(function (data) {
+                resolve(data);
+            });
+        });
+    };
+    AtividadeService.prototype.getByProfessor = function (professor) {
+        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor).orderBy("disciplina").orderBy("nome"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    AtividadeService.prototype.getByProfessorOrdenaPorData = function (professor) {
+        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor).orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    AtividadeService.prototype.add = function (atividade) {
+        return this.collectionAtividades.add(atividade);
+    };
+    AtividadeService.prototype.update = function (id, atividade) {
+        return this.collectionAtividades.doc(id).update(atividade);
+    };
+    AtividadeService.prototype.remove = function (id) {
+        return this.collectionAtividades.doc(id).delete();
+    };
+    AtividadeService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], AtividadeService);
+    return AtividadeService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/turma.service.ts":
+/*!*******************************************!*\
+  !*** ./src/app/services/turma.service.ts ***!
+  \*******************************************/
+/*! exports provided: TurmaService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TurmaService", function() { return TurmaService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+
+
+var TurmaService = /** @class */ (function () {
+    function TurmaService(db) {
+        this.db = db;
+        this.collectionTurmas = db.collection('turmas');
+        this.listTurmas = this.collectionTurmas.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    }
+    TurmaService.prototype.getAll = function () {
+        return this.listTurmas;
+    };
+    TurmaService.prototype.get = function (id) {
+        return this.collectionTurmas.doc(id).valueChanges();
+    };
+    TurmaService.prototype.getByAtividade = function (atividade) {
+        return this.db.collection('turmas', function (ref) { return ref.where('atividade', '==', atividade).orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    TurmaService.prototype.getByAtividadePromise = function (atividade) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.db.collection('turmas', function (ref) { return ref.where('atividade', '==', atividade).orderBy("dataCriacao", "desc"); }).
+                snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+                return actions.map(function (a) {
+                    var data = a.payload.doc.data();
+                    var id = a.payload.doc.id;
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+                });
+            })).subscribe(function (data) {
+                resolve(data);
+            });
+        });
+    };
+    TurmaService.prototype.getByAtividadeNaoFinalizadas = function (atividade) {
+        return this.db.collection('turmas', function (ref) { return ref.where('atividade', '==', atividade).
+            where('atividadeFinalizada', '==', false).
+            orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    TurmaService.prototype.getByToken = function (token) {
+        return this.db.collection('turmas', function (ref) { return ref.where('token', '==', token); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    TurmaService.prototype.add = function (turma, atividade) {
+        turma.atividade = atividade;
+        return this.collectionTurmas.add(turma);
+    };
+    TurmaService.prototype.update = function (id, turma) {
+        return this.collectionTurmas.doc(id).update(turma);
+    };
+    TurmaService.prototype.remove = function (id) {
+        return this.collectionTurmas.doc(id).delete();
+    };
+    TurmaService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], TurmaService);
+    return TurmaService;
 }());
 
 

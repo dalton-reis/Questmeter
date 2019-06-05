@@ -58,7 +58,7 @@ var ProfessorRespostaPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-back-button defaultHref=\"/\"></ion-back-button>\n    </ion-buttons>\n    <ion-title>Resposta</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list lines=\"full\">\n    <ion-item *ngIf=\"resposta\">\n      <ion-label position=\"stacked\">Conteúdo</ion-label>\n      <ion-textarea required rows=\"3\" [(ngModel)]=\"resposta.conteudo\"></ion-textarea>\n    </ion-item>\n    <ion-item *ngIf=\"resposta\">\n      <ion-label position=\"stacked\">Correta</ion-label>\n      <ion-checkbox [(ngModel)]=\"resposta.correta\"></ion-checkbox>\n    </ion-item>\n    <ion-item *ngIf=\"resposta\">\n      <ion-label position=\"stacked\">Pontuação</ion-label>\n      <ion-input type=\"number\" [(ngModel)]=\"resposta.pontuacao\"></ion-input>\n    </ion-item>\n    <ion-item *ngIf=\"resposta\">\n      <ion-label position=\"stacked\">Votos</ion-label>\n      <ion-input disabled=\"true\" type=\"number\" [(ngModel)]=\"resposta.votos\"></ion-input>\n    </ion-item>\n  </ion-list>\n  <ion-button expand=\"full\" (click)=\"save()\">Salvar</ion-button>\n  <!-- <ion-fab vertical=\"bottom\" horizontal=\"end\" slot=\"fixed\" color=\"danger\">\n    <ion-fab-button color=\"danger\" (click)=\"onRemoveAtividade(idAtividade)\" routerLink=\"/\" \n    routerDirection=\"forward\">\n    <ion-icon name=\"trash\"></ion-icon>\n  </ion-fab-button>\n</ion-fab> -->\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-buttons slot=\"start\">\n      <ion-back-button defaultHref=\"/\"></ion-back-button>\n    </ion-buttons>\n    <ion-title>Resposta</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list lines=\"full\">\n    <ion-item *ngIf=\"resposta\">\n      <ion-label position=\"stacked\">Conteúdo</ion-label>\n      <ion-textarea required rows=\"3\" [(ngModel)]=\"resposta.conteudo\"></ion-textarea>\n    </ion-item>\n    <ion-item *ngIf=\"resposta\">\n      <ion-label>Correta</ion-label>\n      <ion-checkbox [(ngModel)]=\"resposta.correta\"></ion-checkbox>\n    </ion-item>\n    <ion-item *ngIf=\"resposta\">\n      <ion-label position=\"stacked\">Pontuação</ion-label>\n      <ion-input type=\"number\" [(ngModel)]=\"resposta.pontuacao\"></ion-input>\n    </ion-item>\n  </ion-list>\n  <ion-button expand=\"full\" (click)=\"save()\">Salvar</ion-button>\n</ion-content>\n"
 
 /***/ }),
 
@@ -101,16 +101,15 @@ var ProfessorRespostaPage = /** @class */ (function () {
         this.respostaService = respostaService;
         this.resposta = {
             conteudo: '',
-            atividade: null,
+            questao: null,
             correta: false,
-            pontuacao: 0,
-            votos: 0
+            pontuacao: 0
         };
         this.idResposta = null;
-        this.idAtividade = null;
+        this.idQuestao = null;
     }
     ProfessorRespostaPage.prototype.ngOnInit = function () {
-        this.idAtividade = this.route.snapshot.params['atividade'];
+        this.idQuestao = this.route.snapshot.params['questao'];
         this.idResposta = this.route.snapshot.params['id'];
         if (this.idResposta) {
             this.load();
@@ -156,13 +155,13 @@ var ProfessorRespostaPage = /** @class */ (function () {
                         if (this.idResposta) {
                             this.respostaService.update(this.idResposta, this.resposta).then(function () {
                                 loading.dismiss();
-                                _this.nav.navigateForward('/professor-atividade-edicao/' + _this.resposta.atividade);
+                                _this.nav.navigateForward('/professor-questao-edicao/' + _this.resposta.questao);
                             });
                         }
                         else {
-                            this.respostaService.add(this.resposta, this.idAtividade).then(function () {
+                            this.respostaService.add(this.resposta, this.idQuestao).then(function () {
                                 loading.dismiss();
-                                _this.nav.navigateForward('/professor-atividade-edicao/' + _this.idAtividade);
+                                _this.nav.navigateForward('/professor-questao-edicao/' + _this.idQuestao);
                             });
                         }
                         return [2 /*return*/];
@@ -188,6 +187,118 @@ var ProfessorRespostaPage = /** @class */ (function () {
             _ionic_angular__WEBPACK_IMPORTED_MODULE_1__["LoadingController"], src_app_services_resposta_service__WEBPACK_IMPORTED_MODULE_4__["RespostaService"]])
     ], ProfessorRespostaPage);
     return ProfessorRespostaPage;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/resposta.service.ts":
+/*!**********************************************!*\
+  !*** ./src/app/services/resposta.service.ts ***!
+  \**********************************************/
+/*! exports provided: RespostaService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RespostaService", function() { return RespostaService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+
+
+var RespostaService = /** @class */ (function () {
+    function RespostaService(db) {
+        this.db = db;
+        this.collectionRespostas = db.collection('respostas');
+        this.listRespostas = this.collectionRespostas.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    }
+    RespostaService.prototype.getAll = function () {
+        return this.listRespostas;
+    };
+    // getByAtividade(atividade: string) {
+    //   //Tentando buscar as respostas por referecia
+    //   // this.collectionRespostas.doc<IResposta>('atividades/' + atividade)
+    //   // .valueChanges().subscribe( r => console.log('resp', r));
+    //   // return this.db.collection<IResposta>('respostas/atividades/' + atividade).
+    //   // snapshotChanges().pipe(
+    //   //   map(actions => {
+    //   //     return actions.map(a => {
+    //   //       const data = a.payload.doc.data();
+    //   //       const id = a.payload.doc.id;
+    //   //       return {id, ...data};
+    //   //     });
+    //   //   })
+    //   // );
+    //   return this.db.collection<IResposta>('respostas', ref => ref.where('atividade', '==', atividade)).
+    //   snapshotChanges().pipe(
+    //     map(actions => {
+    //       return actions.map(a => {
+    //         const data = a.payload.doc.data();
+    //         const id = a.payload.doc.id;
+    //         return {id, ...data};
+    //       });
+    //     })
+    //   );
+    // }
+    RespostaService.prototype.getByQuestao = function (questao) {
+        return this.db.collection('respostas', function (ref) { return ref.where('questao', '==', questao); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    RespostaService.prototype.getByQuestaoComID = function (questao) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.db.collection('respostas', function (ref) { return ref.where('questao', '==', questao); }).
+                snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+                return actions.map(function (a) {
+                    var data = a.payload.doc.data();
+                    var id = a.payload.doc.id;
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+                });
+            })).subscribe(function (data) {
+                resolve(data);
+            });
+        });
+    };
+    RespostaService.prototype.get = function (id) {
+        return this.collectionRespostas.doc(id).valueChanges();
+    };
+    RespostaService.prototype.add = function (resposta, questao) {
+        //Adicionada resposta com atividade por referecia (mas nao deu pra buscar)
+        //resposta.atividade = this.db.doc('atividades/' + atividade).ref;
+        resposta.questao = questao;
+        return this.collectionRespostas.add(resposta);
+    };
+    RespostaService.prototype.update = function (id, resposta) {
+        return this.collectionRespostas.doc(id).update(resposta);
+    };
+    RespostaService.prototype.remove = function (id) {
+        return this.collectionRespostas.doc(id).delete();
+    };
+    RespostaService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], RespostaService);
+    return RespostaService;
 }());
 
 

@@ -189,190 +189,6 @@ var AlunoService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/services/atividade-aluno.service.ts":
-/*!*****************************************************!*\
-  !*** ./src/app/services/atividade-aluno.service.ts ***!
-  \*****************************************************/
-/*! exports provided: AtividadeAlunoService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AtividadeAlunoService", function() { return AtividadeAlunoService; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-
-
-
-
-var AtividadeAlunoService = /** @class */ (function () {
-    function AtividadeAlunoService(db) {
-        this.db = db;
-        this.collectionAtividadesAlunos = db.collection('atividades-alunos');
-        this.listAtividadesAlunos = this.collectionAtividadesAlunos.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
-            return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-            });
-        }));
-    }
-    AtividadeAlunoService.prototype.getAll = function () {
-        return this.listAtividadesAlunos;
-    };
-    AtividadeAlunoService.prototype.get = function (id) {
-        return this.collectionAtividadesAlunos.doc(id).valueChanges();
-    };
-    AtividadeAlunoService.prototype.getByAtividadeAluno = function (atividade, aluno) {
-        return this.db.collection('atividades-alunos', function (ref) { return ref.where('atividade', '==', atividade).where('aluno', '==', aluno); }).
-            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
-            return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-            });
-        }));
-    };
-    AtividadeAlunoService.prototype.getByAtividadeAlunoVoto = function (atividade, aluno) {
-        return this.db.collection('atividades-alunos', function (ref) { return ref.where('atividade', '==', atividade).where('aluno', '==', aluno)
-            .where('alunoVotou', '==', false); }).
-            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
-            return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-            });
-        }));
-    };
-    AtividadeAlunoService.prototype.getByAluno = function (aluno) {
-        return this.db.collection('atividades-alunos', function (ref) { return ref.where('aluno', '==', aluno); }).
-            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
-            return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-            });
-        }));
-    };
-    AtividadeAlunoService.prototype.getByAtividade = function (atividade) {
-        return this.db.collection('atividades-alunos', function (ref) { return ref.where('atividade', '==', atividade); }).
-            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
-            return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-            });
-        }));
-    };
-    AtividadeAlunoService.prototype.add = function (atividadeAluno) {
-        return this.collectionAtividadesAlunos.add(atividadeAluno);
-    };
-    AtividadeAlunoService.prototype.update = function (id, atividadeAluno) {
-        return this.collectionAtividadesAlunos.doc(id).update(atividadeAluno);
-    };
-    AtividadeAlunoService.prototype.remove = function (id) {
-        return this.collectionAtividadesAlunos.doc(id).delete();
-    };
-    AtividadeAlunoService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])({
-            providedIn: 'root'
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
-    ], AtividadeAlunoService);
-    return AtividadeAlunoService;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/services/atividade.service.ts":
-/*!***********************************************!*\
-  !*** ./src/app/services/atividade.service.ts ***!
-  \***********************************************/
-/*! exports provided: AtividadeService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AtividadeService", function() { return AtividadeService; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-
-
-
-
-var AtividadeService = /** @class */ (function () {
-    function AtividadeService(db) {
-        this.db = db;
-        this.collectionAtividades = db.collection('atividades');
-        this.listAtividades = this.collectionAtividades.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
-            return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-            });
-        }));
-    }
-    AtividadeService.prototype.getAll = function () {
-        return this.listAtividades;
-    };
-    AtividadeService.prototype.get = function (id) {
-        return this.collectionAtividades.doc(id).valueChanges();
-    };
-    AtividadeService.prototype.getByCodigo = function (codigo) {
-        var _this = this;
-        return new Promise(function (resolve) {
-            _this.db.collection('atividades', function (ref) { return ref.where('codigo', '==', codigo); }).
-                snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
-                return actions.map(function (a) {
-                    var data = a.payload.doc.data();
-                    var id = a.payload.doc.id;
-                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-                });
-            })).subscribe(function (data) {
-                resolve(data);
-            });
-        });
-    };
-    AtividadeService.prototype.getByProfessor = function (professor) {
-        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor); }).
-            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
-            return actions.map(function (a) {
-                var data = a.payload.doc.data();
-                var id = a.payload.doc.id;
-                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-            });
-        }));
-    };
-    AtividadeService.prototype.add = function (atividade) {
-        return this.collectionAtividades.add(atividade);
-    };
-    AtividadeService.prototype.update = function (id, atividade) {
-        return this.collectionAtividades.doc(id).update(atividade);
-    };
-    AtividadeService.prototype.remove = function (id) {
-        return this.collectionAtividades.doc(id).delete();
-    };
-    AtividadeService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-            providedIn: 'root'
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
-    ], AtividadeService);
-    return AtividadeService;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/services/autenticacao.service.ts":
 /*!**************************************************!*\
   !*** ./src/app/services/autenticacao.service.ts ***!
@@ -502,16 +318,16 @@ var ProfessorService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/services/resposta.service.ts":
-/*!**********************************************!*\
-  !*** ./src/app/services/resposta.service.ts ***!
-  \**********************************************/
-/*! exports provided: RespostaService */
+/***/ "./src/app/services/turma-aluno.service.ts":
+/*!*************************************************!*\
+  !*** ./src/app/services/turma-aluno.service.ts ***!
+  \*************************************************/
+/*! exports provided: TurmaAlunoService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RespostaService", function() { return RespostaService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TurmaAlunoService", function() { return TurmaAlunoService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
@@ -521,11 +337,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var RespostaService = /** @class */ (function () {
-    function RespostaService(db) {
+var TurmaAlunoService = /** @class */ (function () {
+    function TurmaAlunoService(db) {
         this.db = db;
-        this.collectionRespostas = db.collection('respostas');
-        this.listRespostas = this.collectionRespostas.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+        this.collectionTurmaAlunos = db.collection('turma-aluno');
+        this.listTurmaAlunos = this.collectionTurmaAlunos.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
             return actions.map(function (a) {
                 var data = a.payload.doc.data();
                 var id = a.payload.doc.id;
@@ -533,24 +349,14 @@ var RespostaService = /** @class */ (function () {
             });
         }));
     }
-    RespostaService.prototype.getAll = function () {
-        return this.listRespostas;
+    TurmaAlunoService.prototype.getAll = function () {
+        return this.listTurmaAlunos;
     };
-    RespostaService.prototype.getByAtividade = function (atividade) {
-        //Tentando buscar as respostas por referecia
-        // this.collectionRespostas.doc<IResposta>('atividades/' + atividade)
-        // .valueChanges().subscribe( r => console.log('resp', r));
-        // return this.db.collection<IResposta>('respostas/atividades/' + atividade).
-        // snapshotChanges().pipe(
-        //   map(actions => {
-        //     return actions.map(a => {
-        //       const data = a.payload.doc.data();
-        //       const id = a.payload.doc.id;
-        //       return {id, ...data};
-        //     });
-        //   })
-        // );
-        return this.db.collection('respostas', function (ref) { return ref.where('atividade', '==', atividade); }).
+    TurmaAlunoService.prototype.get = function (id) {
+        return this.collectionTurmaAlunos.doc(id).valueChanges();
+    };
+    TurmaAlunoService.prototype.getByTurmaAluno = function (turma, aluno) {
+        return this.db.collection('turma-aluno', function (ref) { return ref.where('turma', '==', turma).where('aluno', '==', aluno); }).
             snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
             return actions.map(function (a) {
                 var data = a.payload.doc.data();
@@ -559,28 +365,42 @@ var RespostaService = /** @class */ (function () {
             });
         }));
     };
-    RespostaService.prototype.get = function (id) {
-        return this.collectionRespostas.doc(id).valueChanges();
+    TurmaAlunoService.prototype.getByAluno = function (aluno) {
+        return this.db.collection('turma-aluno', function (ref) { return ref.where('aluno', '==', aluno); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
     };
-    RespostaService.prototype.add = function (resposta, atividade) {
-        //Adicionada resposta com atividade por referecia (mas nao deu pra buscar)
-        //resposta.atividade = this.db.doc('atividades/' + atividade).ref;
-        resposta.atividade = atividade;
-        return this.collectionRespostas.add(resposta);
+    TurmaAlunoService.prototype.getByTurma = function (turma) {
+        return this.db.collection('turma-aluno', function (ref) { return ref.where('turma', '==', turma); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
     };
-    RespostaService.prototype.update = function (id, resposta) {
-        return this.collectionRespostas.doc(id).update(resposta);
+    TurmaAlunoService.prototype.add = function (turmaAluno) {
+        return this.collectionTurmaAlunos.add(turmaAluno);
     };
-    RespostaService.prototype.remove = function (id) {
-        return this.collectionRespostas.doc(id).delete();
+    TurmaAlunoService.prototype.update = function (id, turmaAluno) {
+        return this.collectionTurmaAlunos.doc(id).update(turmaAluno);
     };
-    RespostaService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    TurmaAlunoService.prototype.remove = function (id) {
+        return this.collectionTurmaAlunos.doc(id).delete();
+    };
+    TurmaAlunoService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])({
             providedIn: 'root'
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
-    ], RespostaService);
-    return RespostaService;
+    ], TurmaAlunoService);
+    return TurmaAlunoService;
 }());
 
 

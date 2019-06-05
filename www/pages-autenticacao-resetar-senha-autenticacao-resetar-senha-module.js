@@ -58,7 +58,7 @@ var AutenticacaoResetarSenhaPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n    <ion-toolbar>\n      <ion-title>\n        Resetar minha senha\n      </ion-title>\n    </ion-toolbar>\n  </ion-header>\n  \n  <ion-content padding>\n    <form #form=\"ngForm\" novalidate>\n      <ion-list>\n  \n        <ion-item>\n          <ion-label stacked>E-mail</ion-label>\n          <ion-input type=\"text\" name=\"email\" [(ngModel)]=\"userEmail\" #email=\"ngModel\" required></ion-input>\n        </ion-item>\n        <ion-item *ngIf=\"email.errors && (email.dirty || email.touched)\" class=\"text-danger\">\n          O campo é obrigatório\n        </ion-item>\n  \n      </ion-list>\n  \n      <ion-button block color=\"primary\" [disabled]=\"!form.form.valid\" (click)=\"resetPassword()\">\n        Resetar minha senha\n      </ion-button>\n    </form>\n  </ion-content>"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-title>\n      Resetar minha senha\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <form #form=\"ngForm\" novalidate>\n    <ion-list>\n      \n      <ion-item>\n        <ion-label stacked>E-mail</ion-label>\n        <ion-input type=\"text\" name=\"email\" [(ngModel)]=\"userEmail\" #email=\"ngModel\" required></ion-input>\n      </ion-item>\n      <ion-item *ngIf=\"email.errors && (email.dirty || email.touched)\" class=\"text-danger\">\n        O campo é obrigatório\n      </ion-item>\n      \n    </ion-list>\n    \n    <ion-button block color=\"primary\" [disabled]=\"!form.form.valid\" (click)=\"resetPassword()\">\n      Resetar minha senha\n    </ion-button>\n  </form>\n</ion-content>"
 
 /***/ }),
 

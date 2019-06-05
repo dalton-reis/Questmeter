@@ -58,7 +58,7 @@ var AberturaPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-content padding>\n  <ion-item lines=\"none\">\n    <ion-label>Bem-vindo ao App</ion-label>\n  </ion-item>\n  <ion-item lines=\"none\">\n    <ion-label>Você é ...</ion-label>\n  </ion-item>\n  <ion-button expand=\"full\" (click)=\"autenticar('aluno')\">Aluno</ion-button>\n  <ion-button expand=\"full\" (click)=\"autenticar('professor')\">Professor</ion-button>\n</ion-content>\n"
+module.exports = "<ion-content padding>\n  <ion-item lines=\"none\">\n    <ion-label>Bem-vindo ao Questmeter</ion-label>\n  </ion-item>\n  <ion-item lines=\"none\">\n    <ion-label>Você é ...</ion-label>\n  </ion-item>\n  <ion-button expand=\"full\" (click)=\"autenticar('aluno')\">Aluno</ion-button>\n  <ion-button expand=\"full\" (click)=\"autenticar('professor')\">Professor</ion-button>\n</ion-content>\n"
 
 /***/ }),
 

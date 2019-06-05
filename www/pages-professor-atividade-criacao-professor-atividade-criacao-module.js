@@ -58,7 +58,7 @@ var ProfessorAtividadeCriacaoPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-back-button defaultHref=\"/\"></ion-back-button>\n    </ion-buttons>\n    <ion-title>Atividade</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  \n  <div padding>\n    <ion-list lines=\"full\">\n      <ion-item *ngIf=\"atividade\">\n        <ion-label position=\"stacked\">Nome</ion-label>\n        <ion-input required type=\"text\" [(ngModel)]=\"atividade.nome\"></ion-input>\n      </ion-item>\n      <ion-item *ngIf=\"atividade\">\n        <ion-label position=\"stacked\">Problema/Desafio</ion-label>\n        <ion-textarea required rows=\"4\" [(ngModel)]=\"atividade.problema\"></ion-textarea>\n      </ion-item>\n      <!-- <ion-item *ngIf=\"atividade\">\n        <ion-select required placeholder=\"Tipo\" [(ngModel)]=\"atividade.tipo\">\n          <ion-select-option value=\"M\">Multipla escolha</ion-select-option>\n          <ion-select-option value=\"D\">Descritiva</ion-select-option>\n        </ion-select>\n      </ion-item> -->\n      <ion-item *ngIf=\"atividade\">\n        <ion-label position=\"stacked\">Termina em</ion-label>\n        <ion-datetime required displayFormat=\"DD/MM/YYYY hh:mm\" [(ngModel)]=\"atividade.dataTermino\"></ion-datetime>\n      </ion-item>\n    </ion-list>\n    <ion-button expand=\"full\" (click)=\"save()\">Salvar</ion-button>\n</div>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-buttons slot=\"start\">\n      <ion-back-button defaultHref=\"/professor-atividade/\"></ion-back-button>\n    </ion-buttons>\n    <ion-title>Atividade</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  \n  <div padding>\n    <ion-list lines=\"full\">\n      <ion-item *ngIf=\"atividade\">\n        <ion-label position=\"stacked\">Disciplina</ion-label>\n        <ion-input required type=\"text\" max-length=\"5\" [(ngModel)]=\"atividade.disciplina\"></ion-input>\n      </ion-item>\n      <ion-item *ngIf=\"atividade\">\n        <ion-label position=\"stacked\">Nome</ion-label>\n        <ion-input required type=\"text\" max-length=\"10\" [(ngModel)]=\"atividade.nome\"></ion-input>\n      </ion-item>\n      <ion-item *ngIf=\"atividade\">\n        <ion-label position=\"stacked\">Termina em</ion-label>\n        <ion-datetime displayFormat=\"DD/MM/YYYY HH:mm\" [(ngModel)]=\"atividade.dataTermino\"></ion-datetime>\n      </ion-item>\n    </ion-list>\n    <ion-button expand=\"full\" (click)=\"save()\">Salvar</ion-button>\n  </div>\n</ion-content>\n"
 
 /***/ }),
 
@@ -106,13 +106,11 @@ var ProfessorAtividadeCriacaoPage = /** @class */ (function () {
         this.atividadeService = atividadeService;
         this.autenticacaoService = autenticacaoService;
         this.atividade = {
-            nome: '',
             professor: '',
-            problema: '',
-            tipo: '',
+            disciplina: '',
+            nome: '',
             dataTermino: new Date(),
-            iniciada: false,
-            codigo: ''
+            dataCriacao: new Date()
         };
         this.usuarioCorrente = null;
     }
@@ -134,9 +132,12 @@ var ProfessorAtividadeCriacaoPage = /** @class */ (function () {
                         this.usuarioCorrente = this.autenticacaoService.getID();
                         this.professorService.getByUsuario(this.usuarioCorrente).then(function (professor) {
                             _this.atividade.professor = professor[0].id;
+                            _this.atividade.dataCriacao = new Date(Date.now());
                             _this.atividadeService.add(_this.atividade).then(function () {
                                 loading.dismiss();
-                                _this.nav.navigateForward('/professor-atividade');
+                                _this.atividadeService.getByProfessorOrdenaPorData(_this.atividade.professor).subscribe(function (resultado) {
+                                    _this.nav.navigateBack('/professor-atividade-edicao/' + resultado[0].id);
+                                });
                             });
                         });
                         return [2 /*return*/];
@@ -155,6 +156,101 @@ var ProfessorAtividadeCriacaoPage = /** @class */ (function () {
             _services_atividade_service__WEBPACK_IMPORTED_MODULE_3__["AtividadeService"], _services_autenticacao_service__WEBPACK_IMPORTED_MODULE_2__["AutenticacaoService"]])
     ], ProfessorAtividadeCriacaoPage);
     return ProfessorAtividadeCriacaoPage;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/atividade.service.ts":
+/*!***********************************************!*\
+  !*** ./src/app/services/atividade.service.ts ***!
+  \***********************************************/
+/*! exports provided: AtividadeService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AtividadeService", function() { return AtividadeService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2/firestore */ "./node_modules/angularfire2/firestore/index.js");
+/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+var AtividadeService = /** @class */ (function () {
+    function AtividadeService(db) {
+        this.db = db;
+        this.collectionAtividades = db.collection('atividades');
+        this.listAtividades = this.collectionAtividades.snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    }
+    AtividadeService.prototype.getAll = function () {
+        return this.listAtividades;
+    };
+    AtividadeService.prototype.get = function (id) {
+        return this.collectionAtividades.doc(id).valueChanges();
+    };
+    //modificar: pegar a atividade que o aluno pertence
+    AtividadeService.prototype.getByCodigo = function (codigo) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.db.collection('atividades', function (ref) { return ref.where('codigo', '==', codigo); }).
+                snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+                return actions.map(function (a) {
+                    var data = a.payload.doc.data();
+                    var id = a.payload.doc.id;
+                    return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+                });
+            })).subscribe(function (data) {
+                resolve(data);
+            });
+        });
+    };
+    AtividadeService.prototype.getByProfessor = function (professor) {
+        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor).orderBy("disciplina").orderBy("nome"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    AtividadeService.prototype.getByProfessorOrdenaPorData = function (professor) {
+        return this.db.collection('atividades', function (ref) { return ref.where('professor', '==', professor).orderBy("dataCriacao", "desc"); }).
+            snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (actions) {
+            return actions.map(function (a) {
+                var data = a.payload.doc.data();
+                var id = a.payload.doc.id;
+                return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
+            });
+        }));
+    };
+    AtividadeService.prototype.add = function (atividade) {
+        return this.collectionAtividades.add(atividade);
+    };
+    AtividadeService.prototype.update = function (id, atividade) {
+        return this.collectionAtividades.doc(id).update(atividade);
+    };
+    AtividadeService.prototype.remove = function (id) {
+        return this.collectionAtividades.doc(id).delete();
+    };
+    AtividadeService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [angularfire2_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], AtividadeService);
+    return AtividadeService;
 }());
 
 

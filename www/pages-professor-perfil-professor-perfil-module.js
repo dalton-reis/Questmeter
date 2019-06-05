@@ -58,7 +58,7 @@ var ProfessorPerfilPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-title>Perfil</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list lines=\"full\">\n        <ion-item *ngIf=\"professor\">\n          <ion-label position=\"stacked\">Nome completo</ion-label>\n          <ion-input disabled=\"true\" type=\"text\" [(ngModel)]=\"professor.nomeCompleto\"></ion-input>\n        </ion-item>\n        <ion-item *ngIf=\"emailUsuarioCorrente\">\n          <ion-label position=\"stacked\">E-mail</ion-label>\n          <ion-input disabled=\"true\" type=\"email\" [(ngModel)]=\"emailUsuarioCorrente\"></ion-input>\n        </ion-item>\n    </ion-list>\n    <ion-button expand=\"full\">Excluir conta - ver</ion-button>\n    <ion-button expand=\"full\">Sair - ver</ion-button>\n</ion-content>"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"tertiary\">\n    <ion-title>Perfil</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list lines=\"full\">\n        <ion-item *ngIf=\"professor\">\n          <ion-label position=\"stacked\">Nome completo</ion-label>\n          <ion-input disabled=\"true\" type=\"text\" [(ngModel)]=\"professor.nomeCompleto\"></ion-input>\n        </ion-item>\n        <ion-item *ngIf=\"emailUsuarioCorrente\">\n          <ion-label position=\"stacked\">E-mail</ion-label>\n          <ion-input disabled=\"true\" type=\"email\" [(ngModel)]=\"emailUsuarioCorrente\"></ion-input>\n        </ion-item>\n    </ion-list>\n    <ion-button expand=\"full\" (click)=\"sair()\">Sair</ion-button>\n</ion-content>"
 
 /***/ }),
 
@@ -94,8 +94,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ProfessorPerfilPage = /** @class */ (function () {
-    function ProfessorPerfilPage(loadingController, professorService, autenticacaoService) {
+    function ProfessorPerfilPage(loadingController, nav, professorService, autenticacaoService) {
         this.loadingController = loadingController;
+        this.nav = nav;
         this.professorService = professorService;
         this.autenticacaoService = autenticacaoService;
         this.professor = {
@@ -134,13 +135,19 @@ var ProfessorPerfilPage = /** @class */ (function () {
             });
         });
     };
+    ProfessorPerfilPage.prototype.sair = function () {
+        var _this = this;
+        this.autenticacaoService.signOut().then(function () {
+            _this.nav.navigateForward('/abertura');
+        });
+    };
     ProfessorPerfilPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"])({
             selector: 'app-professor-perfil',
             template: __webpack_require__(/*! ./professor-perfil.page.html */ "./src/app/pages/professor-perfil/professor-perfil.page.html"),
             styles: [__webpack_require__(/*! ./professor-perfil.page.scss */ "./src/app/pages/professor-perfil/professor-perfil.page.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["LoadingController"],
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["LoadingController"], _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["NavController"],
             _services_professor_service__WEBPACK_IMPORTED_MODULE_2__["ProfessorService"], _services_autenticacao_service__WEBPACK_IMPORTED_MODULE_1__["AutenticacaoService"]])
     ], ProfessorPerfilPage);
     return ProfessorPerfilPage;
