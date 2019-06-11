@@ -1,0 +1,55 @@
+Introdução à Programação: questões de revisão
+
+Slides conteúdo unidade 1 ___
+
+__ Os computadores são máquinas programáveis utilizadas para:
+-> automatizar tarefas
+interpretar de forma autônoma a descrição dos enunciados
+gerar sequência de códigos automaticamente
+
+__ A sequência lógica e coerente destas ordens é representada através de:
+-> Algoritmos, Fluxogramas ou Diagramas
+enunciados descritos pelo usuário
+sequência de expressões matemáticas
+
+__ A solução de problemas que envolvam algoritmos tem:
+-> Entradas / Processos / Saídas
+sempre somente processo e saídas
+sempre somente processo
+
+__ O desenvolvimento de um software é realizado em diversas etapas denominadas de:
+-> ciclo de vida
+processos de execução algorítmica
+entradas, processos e saídas
+
+__ As abordagens mais comuns para o desenvolvimento de software atualmente são:
+-> estruturada e orientada a objetos
+instrucional de sequências
+algorítimica
+
+Slides conteúdo unidade 3 ___
+__ A linguagem Java é:
+-> Linguagem de programação de propósito geral, concorrente, baseada em classes e orientada a objetos
+não é orientada a obejtos
+tipo de programação funcional
+
+__ A linguagem Java é:
+-> case sensitive (diferencia maiúsculo de minúsculo)
+não case sensitive
+fracamente tipada
+
+__ A linguagem Java gera:
+-> bytecodes (.class)
+direto o código executável
+código específico para um tipo de plataforma
+
+__ A Orientação a Objetos modela o mundo a partir dos objetos existentes:
+-> no mundo real
+descritos nos enunciados dos problemas
+declarados em linhas de código
+
+__ Os objetos da OO têm:
+-> atributos e métodos próprios
+variáveis e ações próprias
+comandos de execução
+
