@@ -27,6 +27,28 @@ __ As abordagens mais comuns para o desenvolvimento de software atualmente são:
 instrucional de sequências
 algorítimica
 
+Slides conteúdo unidade 2 ___
+__ Quais são as principais etapas na solução de um problema:
+-> entrada (recursos) / processos (regras) / saídas (resultados)
+
+__ As etapas da especificação da solução de um problema com base em um software são: 
+-> 1. interpretação; 2. verificar as entradas; 3. identificar saídas; 4. definir processos; 5. descrever a solução; 6. fazer teste
+1. interpretação; 2. definir processos; 3. descrever a solução; 4. verificar as entradas; 5. identificar saídas; 6. fazer teste
+1. interpretação; 2. descrever a solução; 3. definir processos; 4. verificar as entradas; 5. identificar saídas; 6. fazer teste
+
+
+__ Em um programa podem existir comandos executados apenas em determinadas situações. Neste caso se usa:
+-> Estruturas de Controle de Seleção
+Estruturas de Controle de repetição
+Estruturas de Chamadas de Sub-rotinas
+
+__ Quando um programa precisa executar comandos para executar repetidas vezes uma mesma situação:
+-> Estruturas de Controle de repetição
+Estruturas de Controle de Seleção
+Estruturas de Chamadas de Sub-rotinas
+
+
+
 Slides conteúdo unidade 3 ___
 __ A linguagem Java é:
 -> Linguagem de programação de propósito geral, concorrente, baseada em classes e orientada a objetos
@@ -52,4 +74,183 @@ __ Os objetos da OO têm:
 -> atributos e métodos próprios
 variáveis e ações próprias
 comandos de execução
+
+__ Um programa desktop em Java é executado a partir de:
+-> uma classe que deve ter um método main
+um método main, mas não precisa ter uma classe
+uma classe denominada como Classe Main
+
+__ O que podemos considerar como nomes pré-existentes na linguagem que tem algum significado:
+-> palavras reservadas
+comandos condicionais
+comandos de repetição
+
+__ O que podemos considerar como nomes criados pelo programador:
+-> identificadores
+palavras reservadas
+variáveis
+
+__ Qual é forma correta de declarar uma variável em Java?
+-> int numero = 10;
+int void numero = 10;
+void int numero = 10;
+
+__ Em qual dos casos é fortemente aconselhável inicializar a variável numero?
+-> numero += 2;
+numero = peso + 13;
+numero = peso + altura;
+
+__ As Entrada e Saída no Java podem ser feitas com as classes:
+-> Scanner e System
+Math e System
+Scanner e Math
+
+__ Como pode ser criado um objeto para usar a classe Scanner?
+-> Scanner tec= new Scanner (System.in);
+Scanner tec= Scanner (System.in);
+Scanner tec= new Scanner ();
+
+__ É um pacote que tem bibliotecas de classe diponível na linguagem Java:
+-> java.io
+java.EntradaSaida
+java.consoleIO
+
+__ Para gerar uma documentação de uma linha em Java podemos usar:
+-> //
+@@
+$$
+
+__ Para gerar uma documentação de uma linha ou mais linhas em Java podemos usar:
+-> /*   */
+@@  @@
+$$  $$
+
+Slides conteúdo unidade 4 ___
+__ Executam instruções de acordo com uma determinada condição
+-> Seleção
+Repetição
+Chamada de sub-rotina
+
+__ Executam instruções em um número repetido de vezes
+-> Repetição
+Seleção
+Chamada de sub-rotina
+
+__ Executam a chamada de sub-rotinas com propriedades específicas
+-> Chamada de sub-rotina
+Seleção
+Repetição
+
+__ Uma condição de múltipla escolha poderia ser:
+-> switch case
+while 
+do while
+
+__ Executa sempre pelo menos uma vez e repete dependendo da condição:
+-> do while
+switch case
+if else
+
+__ São operadores Relacionais:
+-> ==, !=, <=, >
+==, %, !=, &&
+<, >, ==, $$
+
+Slides conteúdo unidade 5 ___
+__ As estruturas de Repetição também são conhecidas por:
+-> laços ou loop
+condicionais
+múltipla escolha
+
+__ São comandos de Repetição:
+-> for, while, do while
+for, if else, while
+while, do while, if else
+
+__ Quando é mais aconselhável usar o comando de Repetição for:
+-> quando se sabe o número de vezes que o laço será executado
+quando não se tem certeza sobre o número de vezes que o laço será executado, podendo inclusive nunca ser executado
+quando não se tem certeza sobre o número de vezes que o laço será executado, mas se sabe que ele tem que ser executado pelo menos uma vez
+
+Slides conteúdo unidade 6 ___
+__ A Orientação a Objetos define o mundo a partir de:
+-> conceitos (Classes) e entidades concretas (Objetos)
+comandos abstratos para representar um mundo
+Conjunto de entrada/processo/saída
+
+__ Cada classe deve possuir:
+-> um nome (único) para diferenciá-la de outras classes
+um nome que pode ser reutilizado de uma outra classe
+sempre usando um nome de uma varáivel já existente
+
+__ As classes possuem:
+-> atributos (dados) e métodos (operações)
+atributos, mas não métodos
+métodos, mas não atributos
+
+__ Um objeto também é chamado de:
+-> instância de uma classe
+variável única do sub-programa
+variável de classe
+
+__ A representação de uma classe deve ser feita a partir de um diagrama denominado
+-> Diagrama de Classes
+Fluxograma de Classes
+Representação das Classes
+
+__ O diagrama de Classes é representado por um retângulo com
+-> três áreas
+duas áreas
+quatro áreas
+
+__ Para ser executada no Java, uma classe precisa ter
+-> método main
+variável main
+nenhuma das alternativas acima
+
+__ Métodos declarados em classes são:
+-> são estruturas de controle em nível de unidade
+não permitem modularizar os programas
+não permitem reutilização de código
+
+__ Métodos declarados em classes são:
+-> todas as alternativas estão corretas
+são estruturas de controle em nível de unidade
+permitem modularizar os programas
+permitem reutilização de código
+
+__ Os atributos de uma classe são:
+-> todas as alternativas estão corretas
+são propriedades ou características de uma classe
+descrevem o estado de um objeto
+são declarados dentro da classe,porém fora dos métodos
+
+__ Um objeto em Java é criado chamando-se o método 
+-> new()
+construct
+generate class
+
+Slides conteúdo unidade 7 ___
+__ Existem diversos tipos de estruturas de dados, tais como:
+-> vetores, matrizes, listas, filas, pilhas, árvores
+vetores, constantes, sub-programas
+vetores, sub-programas, classes, objetos
+
+__ Os vetores também são conhecidos como
+-> tipos estruturados Unidimensionais
+tipos estruturados de classe
+tipos estruturados de objeto
+
+__ O que define a posição do elemento no vetor:
+-> índice
+objeto
+positionVet
+
+__ Quantos elementos tem o int numeros[] = new int[15]
+-> 16
+15
+pode ser 15 ou 16 dependendo como se faz a indexação
+
+
+
 

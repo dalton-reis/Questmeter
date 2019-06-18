@@ -1,0 +1,9 @@
+Randomizar a posição correta da questão por aluno ... assim se o aluno olhar o que o colega clicou e tentar "colar" tem a chance de responder errado
+
+Mostrar na tela de respostas quais são as corretas e quais pontos
+
+Quando termina de cadastrar as repostas e voltar ir para aba das questões
+
+
+---
+Primeira questão da unidade 2 falta respostas erradas
