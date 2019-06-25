@@ -1,12 +1,36 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/professor-atividade/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Resultado respostas</ion-title>
+    <ion-title>Apresentação</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <div id="chart_div" style="position: relative; width: 100%; height: 100%;"></div>
+  <div id="div_iniciar">
+    <ion-item lines="none">
+      <ion-label>Digite o token da turma para fazer a atividade</ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label style="font-weight: bold">{{ tokenTurma }}</ion-label>
+    </ion-item>
+    <ion-button expand="full" (click)="iniciarAtividade()">Iniciar atividade</ion-button>
+  </div>
+  
+  <div id="div_questoes" style="visibility: hidden">
+    
+    <ion-item *ngIf="questaoCorrente" lines="none">
+      <ion-label>
+        Questão: {{ questaoCorrente.apelido }}
+        <p>{{ questaoCorrente.problema }}</p>
+      </ion-label>
+    </ion-item>
+    
+    <div id="div_chart" style="position: relative; width: 100%; height: 100%;"></div>
+    <ion-button id="btn_proximo" expand="full" (click)="proximaQuestao()">Próxima questão</ion-button>
+  </div>
+  
+  <ion-button id="btn_ranking" expand="full" style="visibility: hidden" (click)="mostrarRanking()">Ranking</ion-button>
+  <ion-button id="btn_finalizar" expand="full" style="visibility: hidden" (click)="finalizar()">Finalizar sem mostrar o Ranking</ion-button>
 </ion-content>
