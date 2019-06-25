@@ -13741,7 +13741,7 @@ var QueryParams = /** @class */ (function () {
     QueryParams.prototype.startAt = function (indexValue, key) {
         var newParams = this.copy_();
         newParams.startSet_ = true;
-        if (!(indexValue !== undefined)) {
+        if (indexValue === undefined) {
             indexValue = null;
         }
         newParams.indexStartValue_ = indexValue;
@@ -13763,7 +13763,7 @@ var QueryParams = /** @class */ (function () {
     QueryParams.prototype.endAt = function (indexValue, key) {
         var newParams = this.copy_();
         newParams.endSet_ = true;
-        if (!(indexValue !== undefined)) {
+        if (indexValue === undefined) {
             indexValue = null;
         }
         newParams.indexEndValue_ = indexValue;
@@ -15409,6 +15409,7 @@ function registerDatabase(instance) {
         Reference: Reference,
         Query: Query,
         Database: Database,
+        DataSnapshot: DataSnapshot,
         enableLogging: enableLogging,
         INTERNAL: INTERNAL,
         ServerValue: ServerValue,
@@ -15420,14 +15421,15 @@ function registerDatabase(instance) {
 }
 registerDatabase(firebase);
 
-exports.registerDatabase = registerDatabase;
+exports.DataSnapshot = DataSnapshot;
 exports.Database = Database;
+exports.OnDisconnect = OnDisconnect;
 exports.Query = Query;
 exports.Reference = Reference;
-exports.enableLogging = enableLogging;
 exports.ServerValue = ServerValue;
-exports.DataSnapshot = DataSnapshot;
-exports.OnDisconnect = OnDisconnect;
+exports.enableLogging = enableLogging;
+exports.registerDatabase = registerDatabase;
+//# sourceMappingURL=index.cjs.js.map
 
 
 /***/ }),
@@ -15476,9 +15478,12 @@ and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
 
 function __extends(d, b) {
     extendStatics(d, b);
@@ -15486,12 +15491,15 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
     }
-    return t;
+    return __assign.apply(this, arguments);
 }
 
 function __rest(s, e) {
@@ -15535,8 +15543,8 @@ function __generator(thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -15604,7 +15612,7 @@ function __asyncGenerator(thisArg, _arguments, generator) {
     return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
     function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
     function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
     function fulfill(value) { resume("next", value); }
     function reject(value) { resume("throw", value); }
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
@@ -15613,13 +15621,15 @@ function __asyncGenerator(thisArg, _arguments, generator) {
 function __asyncDelegator(o) {
     var i, p;
     return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; }; }
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
 }
 
 function __asyncValues(o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator];
-    return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 }
 
 function __makeTemplateObject(cooked, raw) {
@@ -16023,12 +16033,24 @@ var Service = /** @class */ (function () {
      * @param region_ The region to call functions in.
      */
     function Service(app_, region_) {
+        var _this = this;
         if (region_ === void 0) { region_ = 'us-central1'; }
         this.app_ = app_;
         this.region_ = region_;
         this.serializer = new Serializer();
         this.emulatorOrigin = null;
+        this.INTERNAL = {
+            delete: function () {
+                return _this.deleteService();
+            }
+        };
         this.contextProvider = new ContextProvider(app_);
+        // Cancels all ongoing requests when resolved.
+        this.cancelAllRequests = new Promise(function (resolve) {
+            _this.deleteService = function () {
+                return resolve();
+            };
+        });
     }
     Object.defineProperty(Service.prototype, "app", {
         get: function () {
@@ -16154,10 +16176,15 @@ var Service = /** @class */ (function () {
                         timeout = options.timeout || 70000;
                         return [4 /*yield*/, Promise.race([
                                 this.postJSON(url, body, headers),
-                                failAfter(timeout)
+                                failAfter(timeout),
+                                this.cancelAllRequests
                             ])];
                     case 2:
                         response = _a.sent();
+                        // If service was deleted, interrupted response throws an error.
+                        if (!response) {
+                            throw new HttpsErrorImpl('cancelled', 'Firebase Functions instance was deleted.');
+                        }
                         error = _errorForResponse(response.status, response.json, this.serializer);
                         if (error) {
                             throw error;
@@ -16221,6 +16248,7 @@ function registerFunctions(instance) {
 registerFunctions(firebase);
 
 exports.registerFunctions = registerFunctions;
+//# sourceMappingURL=index.cjs.js.map
 
 
 /***/ }),
@@ -16269,9 +16297,12 @@ and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
 
 function __extends(d, b) {
     extendStatics(d, b);
@@ -16279,12 +16310,15 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
     }
-    return t;
+    return __assign.apply(this, arguments);
 }
 
 function __rest(s, e) {
@@ -16328,8 +16362,8 @@ function __generator(thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -16397,7 +16431,7 @@ function __asyncGenerator(thisArg, _arguments, generator) {
     return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
     function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
     function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
     function fulfill(value) { resume("next", value); }
     function reject(value) { resume("throw", value); }
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
@@ -16406,13 +16440,15 @@ function __asyncGenerator(thisArg, _arguments, generator) {
 function __asyncDelegator(o) {
     var i, p;
     return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; }; }
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
 }
 
 function __asyncValues(o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator];
-    return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 }
 
 function __makeTemplateObject(cooked, raw) {
@@ -16435,22 +16471,1304 @@ function __importDefault(mod) {
 
 /***/ }),
 
-/***/ "./node_modules/@firebase/messaging/dist/index.esm.js":
-/*!************************************************************!*\
-  !*** ./node_modules/@firebase/messaging/dist/index.esm.js ***!
-  \************************************************************/
-/*! exports provided: registerMessaging, isSupported */
+/***/ "./node_modules/@firebase/installations/dist/index.esm.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@firebase/installations/dist/index.esm.js ***!
+  \****************************************************************/
+/*! exports provided: registerInstallations */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerMessaging", function() { return registerMessaging; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerInstallations", function() { return registerInstallations; });
+/* harmony import */ var _firebase_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @firebase/app */ "./node_modules/@firebase/app/dist/index.cjs.js");
+/* harmony import */ var _firebase_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_firebase_app__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _firebase_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @firebase/util */ "./node_modules/@firebase/util/dist/index.cjs.js");
+/* harmony import */ var _firebase_util__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_firebase_util__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var idb__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! idb */ "./node_modules/idb/build/idb.js");
+/* harmony import */ var idb__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(idb__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+function __exportStar(m, exports) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+
+function __values(o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+}
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result.default = mod;
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+var tslib_1 = /*#__PURE__*/Object.freeze({
+    __extends: __extends,
+    get __assign () { return __assign; },
+    __rest: __rest,
+    __decorate: __decorate,
+    __param: __param,
+    __metadata: __metadata,
+    __awaiter: __awaiter,
+    __generator: __generator,
+    __exportStar: __exportStar,
+    __values: __values,
+    __read: __read,
+    __spread: __spread,
+    __await: __await,
+    __asyncGenerator: __asyncGenerator,
+    __asyncDelegator: __asyncDelegator,
+    __asyncValues: __asyncValues,
+    __makeTemplateObject: __makeTemplateObject,
+    __importStar: __importStar,
+    __importDefault: __importDefault
+});
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var PENDING_TIMEOUT_MS = 10000;
+var PACKAGE_VERSION = 'w:0.1.0'; // Will be replaced by Rollup
+var INTERNAL_AUTH_VERSION = 'FIS_v2';
+var INSTALLATIONS_API_URL = 'https://firebaseinstallations.googleapis.com/v1';
+var TOKEN_EXPIRATION_BUFFER = 60 * 60 * 1000; // One hour
+var SERVICE = 'installations';
+var SERVICE_NAME = 'Installations';
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var _a;
+var ERROR_DESCRIPTION_MAP = (_a = {},
+    _a["missing-app-config-values" /* MISSING_APP_CONFIG_VALUES */] = 'Missing App configuration values.',
+    _a["create-installation-failed" /* CREATE_INSTALLATION_FAILED */] = 'Could not register Firebase Installation.',
+    _a["generate-token-failed" /* GENERATE_TOKEN_FAILED */] = 'Could not generate Auth Token.',
+    _a["not-registered" /* NOT_REGISTERED */] = 'Firebase Installation is not registered.',
+    _a["installation-not-found" /* INSTALLATION_NOT_FOUND */] = 'Firebase Installation not found.',
+    _a["request-failed" /* REQUEST_FAILED */] = '{$requestName} request failed with error "{$serverCode} {$serverStatus}: {$serverMessage}"',
+    _a["app-offline" /* APP_OFFLINE */] = 'Could not process request. Application offline.',
+    _a["delete-pending-registration" /* DELETE_PENDING_REGISTRATION */] = "Can't delete installation while there is a pending registration request.",
+    _a);
+var ERROR_FACTORY = new _firebase_util__WEBPACK_IMPORTED_MODULE_1__["ErrorFactory"](SERVICE, SERVICE_NAME, ERROR_DESCRIPTION_MAP);
+/** Returns true if error is a FirebaseError that is based on an error from the server. */
+function isServerError(error) {
+    return (error instanceof _firebase_util__WEBPACK_IMPORTED_MODULE_1__["FirebaseError"] &&
+        error.code.includes("request-failed" /* REQUEST_FAILED */));
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function extractAppConfig(app) {
+    if (!app || !app.options) {
+        throw ERROR_FACTORY.create("missing-app-config-values" /* MISSING_APP_CONFIG_VALUES */);
+    }
+    var appName = app.name;
+    var _a = app.options, projectId = _a.projectId, apiKey = _a.apiKey, appId = _a.appId;
+    if (!appName || !projectId || !apiKey || !appId) {
+        throw ERROR_FACTORY.create("missing-app-config-values" /* MISSING_APP_CONFIG_VALUES */);
+    }
+    return { appName: appName, projectId: projectId, apiKey: apiKey, appId: appId };
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function getInstallationsEndpoint(_a) {
+    var projectId = _a.projectId;
+    return INSTALLATIONS_API_URL + "/projects/" + projectId + "/installations";
+}
+function extractAuthTokenInfoFromResponse(response) {
+    return {
+        token: response.token,
+        requestStatus: 2 /* COMPLETED */,
+        expiresIn: getExpiresInFromResponseExpiresIn(response.expiresIn),
+        creationTime: Date.now()
+    };
+}
+function getErrorFromResponse(requestName, response) {
+    return __awaiter(this, void 0, void 0, function () {
+        var responseJson, errorData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, response.json()];
+                case 1:
+                    responseJson = _a.sent();
+                    errorData = responseJson.error;
+                    return [2 /*return*/, ERROR_FACTORY.create("request-failed" /* REQUEST_FAILED */, {
+                            requestName: requestName,
+                            serverCode: errorData.code,
+                            serverMessage: errorData.message,
+                            serverStatus: errorData.status
+                        })];
+            }
+        });
+    });
+}
+function getHeaders(_a) {
+    var apiKey = _a.apiKey;
+    return new Headers({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'x-goog-api-key': apiKey
+    });
+}
+function getHeadersWithAuth(appConfig, _a) {
+    var refreshToken = _a.refreshToken;
+    var headers = getHeaders(appConfig);
+    headers.append('Authorization', getAuthorizationHeader(refreshToken));
+    return headers;
+}
+function getExpiresInFromResponseExpiresIn(responseExpiresIn) {
+    // This works because the server will never respond with fractions of a second.
+    return Number(responseExpiresIn.replace('s', '000'));
+}
+function getAuthorizationHeader(refreshToken) {
+    return INTERNAL_AUTH_VERSION + " " + refreshToken;
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function createInstallation(appConfig, _a) {
+    var fid = _a.fid;
+    return __awaiter(this, void 0, void 0, function () {
+        var endpoint, headers, body, request, response, responseValue, registeredInstallationEntry;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    endpoint = getInstallationsEndpoint(appConfig);
+                    headers = getHeaders(appConfig);
+                    body = {
+                        fid: fid,
+                        authVersion: INTERNAL_AUTH_VERSION,
+                        appId: appConfig.appId,
+                        sdkVersion: PACKAGE_VERSION
+                    };
+                    request = {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(body)
+                    };
+                    return [4 /*yield*/, fetch(endpoint, request)];
+                case 1:
+                    response = _b.sent();
+                    if (!response.ok) return [3 /*break*/, 3];
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    responseValue = _b.sent();
+                    registeredInstallationEntry = {
+                        fid: fid,
+                        registrationStatus: 2 /* COMPLETED */,
+                        refreshToken: responseValue.refreshToken,
+                        authToken: extractAuthTokenInfoFromResponse(responseValue.authToken)
+                    };
+                    return [2 /*return*/, registeredInstallationEntry];
+                case 3: throw getErrorFromResponse('Create Installation', response);
+            }
+        });
+    });
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/** Returns a promise that resolves after given time passes. */
+function sleep(ms) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, ms);
+    });
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function bufferToBase64UrlSafe(buffer) {
+    var array = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+    var b64 = btoa(String.fromCharCode.apply(String, __spread(array)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_');
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/** Generates a new FID using random values from Web Crypto API. */
+function generateFid() {
+    // A valid FID has exactly 22 base64 characters, which is 132 bits, or 16.5
+    // bytes. our implementation generates a 17 byte array instead.
+    var fidByteArray = new Uint8Array(17);
+    crypto.getRandomValues(fidByteArray);
+    // Replace the first 4 random bits with the constant FID header of 0b0111.
+    fidByteArray[0] = 112 + (fidByteArray[0] % 16);
+    return encode(fidByteArray);
+}
+/** Converts a FID Uint8Array to a base64 string representation. */
+function encode(fidByteArray) {
+    var b64String = bufferToBase64UrlSafe(fidByteArray);
+    // Remove the 23rd character that was added because of the extra 4 bits at the
+    // end of our 17 byte array, and the '=' padding.
+    return b64String.substr(0, 22);
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var DATABASE_NAME = 'firebase-installations-database';
+var DATABASE_VERSION = 1;
+var OBJECT_STORE_NAME = 'firebase-installations-store';
+var dbPromise = Object(idb__WEBPACK_IMPORTED_MODULE_2__["openDb"])(DATABASE_NAME, DATABASE_VERSION, function (upgradeDB) {
+    // We don't use 'break' in this switch statement, the fall-through
+    // behavior is what we want, because if there are multiple versions between
+    // the old version and the current version, we want ALL the migrations
+    // that correspond to those versions to run, not only the last one.
+    switch (upgradeDB.oldVersion) {
+        case 0:
+            upgradeDB.createObjectStore(OBJECT_STORE_NAME);
+    }
+});
+/** Assigns or overwrites the record for the given key with the given value. */
+function set(appConfig, value) {
+    return __awaiter(this, void 0, void 0, function () {
+        var key, db, tx;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    key = getKey(appConfig);
+                    return [4 /*yield*/, dbPromise];
+                case 1:
+                    db = _a.sent();
+                    tx = db.transaction(OBJECT_STORE_NAME, 'readwrite');
+                    tx.objectStore(OBJECT_STORE_NAME).put(value, key);
+                    return [4 /*yield*/, tx.complete];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/, value];
+            }
+        });
+    });
+}
+/** Removes record(s) from the objectStore that match the given key. */
+function remove(appConfig) {
+    return __awaiter(this, void 0, void 0, function () {
+        var key, db, tx;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    key = getKey(appConfig);
+                    return [4 /*yield*/, dbPromise];
+                case 1:
+                    db = _a.sent();
+                    tx = db.transaction(OBJECT_STORE_NAME, 'readwrite');
+                    tx.objectStore(OBJECT_STORE_NAME).delete(key);
+                    return [2 /*return*/, tx.complete];
+            }
+        });
+    });
+}
+/**
+ * Atomically updates a record with the result of updateFn, which gets
+ * called with the current value. If newValue is undefined, the record is
+ * deleted instead.
+ * @return Updated value
+ */
+function update(appConfig, updateFn) {
+    return __awaiter(this, void 0, void 0, function () {
+        var key, db, tx, store, oldValue, newValue;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    key = getKey(appConfig);
+                    return [4 /*yield*/, dbPromise];
+                case 1:
+                    db = _a.sent();
+                    tx = db.transaction(OBJECT_STORE_NAME, 'readwrite');
+                    store = tx.objectStore(OBJECT_STORE_NAME);
+                    return [4 /*yield*/, store.get(key)];
+                case 2:
+                    oldValue = _a.sent();
+                    newValue = updateFn(oldValue);
+                    if (newValue === oldValue) {
+                        return [2 /*return*/, newValue];
+                    }
+                    if (newValue === undefined) {
+                        store.delete(key);
+                    }
+                    else {
+                        store.put(newValue, key);
+                    }
+                    return [4 /*yield*/, tx.complete];
+                case 3:
+                    _a.sent();
+                    return [2 /*return*/, newValue];
+            }
+        });
+    });
+}
+function getKey(appConfig) {
+    return appConfig.appName + "!" + appConfig.appId;
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+ * Updates and returns the InstallationEntry from the database.
+ * Also triggers a registration request if it is necessary and possible.
+ */
+function getInstallationEntry(appConfig) {
+    return __awaiter(this, void 0, void 0, function () {
+        var registrationPromise, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _a = {};
+                    return [4 /*yield*/, update(appConfig, function (oldEntry) {
+                            var installationEntry = updateOrCreateFid(oldEntry);
+                            var entryWithPromise = triggerRegistrationIfNecessary(appConfig, installationEntry);
+                            registrationPromise = entryWithPromise.registrationPromise;
+                            return entryWithPromise.installationEntry;
+                        })];
+                case 1: return [2 /*return*/, (_a.installationEntry = _b.sent(),
+                        _a.registrationPromise = registrationPromise,
+                        _a)];
+            }
+        });
+    });
+}
+function updateOrCreateFid(oldEntry) {
+    var entry = oldEntry || {
+        fid: generateFid(),
+        registrationStatus: 0 /* NOT_STARTED */
+    };
+    if (hasInstallationRequestTimedOut(entry)) {
+        return {
+            fid: entry.fid,
+            registrationStatus: 0 /* NOT_STARTED */
+        };
+    }
+    return entry;
+}
+/**
+ * If the Firebase Installation is not registered yet, this will trigger the registration
+ * and return an InProgressInstallationEntry.
+ */
+function triggerRegistrationIfNecessary(appConfig, installationEntry) {
+    if (installationEntry.registrationStatus === 0 /* NOT_STARTED */) {
+        if (!navigator.onLine) {
+            // Registration required but app is offline.
+            var registrationPromiseWithError = Promise.reject(ERROR_FACTORY.create("app-offline" /* APP_OFFLINE */));
+            return {
+                installationEntry: installationEntry,
+                registrationPromise: registrationPromiseWithError
+            };
+        }
+        // Try registering. Change status to IN_PROGRESS.
+        var inProgressEntry = {
+            fid: installationEntry.fid,
+            registrationStatus: 1 /* IN_PROGRESS */,
+            registrationTime: Date.now()
+        };
+        var registrationPromise = registerInstallation(appConfig, inProgressEntry);
+        return { installationEntry: inProgressEntry, registrationPromise: registrationPromise };
+    }
+    else if (installationEntry.registrationStatus === 1 /* IN_PROGRESS */) {
+        return {
+            installationEntry: installationEntry,
+            registrationPromise: waitUntilFidRegistration(appConfig)
+        };
+    }
+    else {
+        return { installationEntry: installationEntry };
+    }
+}
+/** This will be executed only once for each new Firebase Installation. */
+function registerInstallation(appConfig, installationEntry) {
+    return __awaiter(this, void 0, void 0, function () {
+        var registeredInstallationEntry, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 8]);
+                    return [4 /*yield*/, createInstallation(appConfig, installationEntry)];
+                case 1:
+                    registeredInstallationEntry = _a.sent();
+                    return [4 /*yield*/, set(appConfig, registeredInstallationEntry)];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 8];
+                case 3:
+                    e_1 = _a.sent();
+                    if (!(isServerError(e_1) && e_1.serverCode === 409)) return [3 /*break*/, 5];
+                    // Server returned a "FID can not be used" error.
+                    // Generate a new ID next time.
+                    return [4 /*yield*/, remove(appConfig)];
+                case 4:
+                    // Server returned a "FID can not be used" error.
+                    // Generate a new ID next time.
+                    _a.sent();
+                    return [3 /*break*/, 7];
+                case 5: 
+                // Registration failed. Set FID as not registered.
+                return [4 /*yield*/, set(appConfig, {
+                        fid: installationEntry.fid,
+                        registrationStatus: 0 /* NOT_STARTED */
+                    })];
+                case 6:
+                    // Registration failed. Set FID as not registered.
+                    _a.sent();
+                    _a.label = 7;
+                case 7: throw e_1;
+                case 8: return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Call if FID registration is pending. */
+function waitUntilFidRegistration(appConfig) {
+    return __awaiter(this, void 0, void 0, function () {
+        var entry;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, updateInstallationRequest(appConfig)];
+                case 1:
+                    entry = _a.sent();
+                    _a.label = 2;
+                case 2:
+                    if (!(entry.registrationStatus === 1 /* IN_PROGRESS */)) return [3 /*break*/, 5];
+                    // createInstallation request still in progress.
+                    return [4 /*yield*/, sleep(100)];
+                case 3:
+                    // createInstallation request still in progress.
+                    _a.sent();
+                    return [4 /*yield*/, updateInstallationRequest(appConfig)];
+                case 4:
+                    entry = _a.sent();
+                    return [3 /*break*/, 2];
+                case 5:
+                    if (entry.registrationStatus === 0 /* NOT_STARTED */) {
+                        throw ERROR_FACTORY.create("create-installation-failed" /* CREATE_INSTALLATION_FAILED */);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/**
+ * Called only if there is a CreateInstallation request in progress.
+ *
+ * Updates the InstallationEntry in the DB based on the status of the
+ * CreateInstallation request.
+ *
+ * Returns the updated InstallationEntry.
+ */
+function updateInstallationRequest(appConfig) {
+    return update(appConfig, function (oldEntry) {
+        if (!oldEntry) {
+            throw ERROR_FACTORY.create("installation-not-found" /* INSTALLATION_NOT_FOUND */);
+        }
+        if (hasInstallationRequestTimedOut(oldEntry)) {
+            return {
+                fid: oldEntry.fid,
+                registrationStatus: 0 /* NOT_STARTED */
+            };
+        }
+        return oldEntry;
+    });
+}
+function hasInstallationRequestTimedOut(installationEntry) {
+    return (installationEntry.registrationStatus === 1 /* IN_PROGRESS */ &&
+        installationEntry.registrationTime + PENDING_TIMEOUT_MS < Date.now());
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function getId(app) {
+    return __awaiter(this, void 0, void 0, function () {
+        var appConfig, _a, installationEntry, registrationPromise;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    appConfig = extractAppConfig(app);
+                    return [4 /*yield*/, getInstallationEntry(appConfig)];
+                case 1:
+                    _a = _b.sent(), installationEntry = _a.installationEntry, registrationPromise = _a.registrationPromise;
+                    if (registrationPromise) {
+                        // Suppress registration errors as they are not a problem for getId.
+                        registrationPromise.catch(function () { });
+                    }
+                    return [2 /*return*/, installationEntry.fid];
+            }
+        });
+    });
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function generateAuthToken(appConfig, installationEntry) {
+    return __awaiter(this, void 0, void 0, function () {
+        var endpoint, headers, body, request, response, responseValue, completedAuthToken;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    endpoint = getGenerateAuthTokenEndpoint(appConfig, installationEntry);
+                    headers = getHeadersWithAuth(appConfig, installationEntry);
+                    body = {
+                        installation: {
+                            sdkVersion: PACKAGE_VERSION
+                        }
+                    };
+                    request = {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(body)
+                    };
+                    return [4 /*yield*/, fetch(endpoint, request)];
+                case 1:
+                    response = _a.sent();
+                    if (!response.ok) return [3 /*break*/, 3];
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    responseValue = _a.sent();
+                    completedAuthToken = extractAuthTokenInfoFromResponse(responseValue);
+                    return [2 /*return*/, completedAuthToken];
+                case 3: throw getErrorFromResponse('Generate Auth Token', response);
+            }
+        });
+    });
+}
+function getGenerateAuthTokenEndpoint(appConfig, _a) {
+    var fid = _a.fid;
+    return getInstallationsEndpoint(appConfig) + "/" + fid + "/authTokens:generate";
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function getToken(app) {
+    return __awaiter(this, void 0, void 0, function () {
+        var appConfig;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    appConfig = extractAppConfig(app);
+                    return [4 /*yield*/, completeInstallationRegistration(appConfig)];
+                case 1:
+                    _a.sent();
+                    // At this point we either have a Registered Installation in the DB, or we've
+                    // already thrown an error.
+                    return [2 /*return*/, fetchAuthToken(appConfig)];
+            }
+        });
+    });
+}
+function completeInstallationRegistration(appConfig) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, installationEntry, registrationPromise;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, getInstallationEntry(appConfig)];
+                case 1:
+                    _a = _b.sent(), installationEntry = _a.installationEntry, registrationPromise = _a.registrationPromise;
+                    if (!registrationPromise) return [3 /*break*/, 3];
+                    // A createInstallation request is in progress. Wait until it finishes.
+                    return [4 /*yield*/, registrationPromise];
+                case 2:
+                    // A createInstallation request is in progress. Wait until it finishes.
+                    _b.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    if (installationEntry.registrationStatus !== 2 /* COMPLETED */) {
+                        // Installation ID can't be registered.
+                        throw ERROR_FACTORY.create("create-installation-failed" /* CREATE_INSTALLATION_FAILED */);
+                    }
+                    _b.label = 4;
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function fetchAuthToken(appConfig) {
+    return __awaiter(this, void 0, void 0, function () {
+        var tokenPromise, entry, authToken, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, update(appConfig, function (oldEntry) {
+                        if (!isEntryRegistered(oldEntry)) {
+                            throw ERROR_FACTORY.create("not-registered" /* NOT_REGISTERED */);
+                        }
+                        var oldAuthToken = oldEntry.authToken;
+                        if (isAuthTokenValid(oldAuthToken)) {
+                            // There is a valid token in the DB.
+                            return oldEntry;
+                        }
+                        else if (oldAuthToken.requestStatus === 1 /* IN_PROGRESS */) {
+                            // There already is a token request in progress.
+                            tokenPromise = waitUntilAuthTokenRequest(appConfig);
+                            return oldEntry;
+                        }
+                        else {
+                            // No token or token expired.
+                            if (!navigator.onLine) {
+                                throw ERROR_FACTORY.create("app-offline" /* APP_OFFLINE */);
+                            }
+                            var inProgressEntry = makeAuthTokenRequestInProgressEntry(oldEntry);
+                            tokenPromise = fetchAuthTokenFromServer(appConfig, inProgressEntry);
+                            return inProgressEntry;
+                        }
+                    })];
+                case 1:
+                    entry = _b.sent();
+                    if (!tokenPromise) return [3 /*break*/, 3];
+                    return [4 /*yield*/, tokenPromise];
+                case 2:
+                    _a = _b.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    _a = entry.authToken;
+                    _b.label = 4;
+                case 4:
+                    authToken = _a;
+                    return [2 /*return*/, authToken.token];
+            }
+        });
+    });
+}
+/**
+ * Call only if FID is registered and Auth Token request is in progress.
+ */
+function waitUntilAuthTokenRequest(appConfig) {
+    return __awaiter(this, void 0, void 0, function () {
+        var entry, authToken;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, updateAuthTokenRequest(appConfig)];
+                case 1:
+                    entry = _a.sent();
+                    _a.label = 2;
+                case 2:
+                    if (!(entry.authToken.requestStatus === 1 /* IN_PROGRESS */)) return [3 /*break*/, 5];
+                    // generateAuthToken still in progress.
+                    return [4 /*yield*/, sleep(100)];
+                case 3:
+                    // generateAuthToken still in progress.
+                    _a.sent();
+                    return [4 /*yield*/, updateAuthTokenRequest(appConfig)];
+                case 4:
+                    entry = _a.sent();
+                    return [3 /*break*/, 2];
+                case 5:
+                    authToken = entry.authToken;
+                    if (authToken.requestStatus === 0 /* NOT_STARTED */) {
+                        throw ERROR_FACTORY.create("generate-token-failed" /* GENERATE_TOKEN_FAILED */);
+                    }
+                    else {
+                        return [2 /*return*/, authToken];
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/**
+ * Called only if there is a GenerateAuthToken request in progress.
+ *
+ * Updates the InstallationEntry in the DB based on the status of the
+ * GenerateAuthToken request.
+ *
+ * Returns the updated InstallationEntry.
+ */
+function updateAuthTokenRequest(appConfig) {
+    return update(appConfig, function (oldEntry) {
+        if (!isEntryRegistered(oldEntry)) {
+            throw ERROR_FACTORY.create("not-registered" /* NOT_REGISTERED */);
+        }
+        var oldAuthToken = oldEntry.authToken;
+        if (hasAuthTokenRequestTimedOut(oldAuthToken)) {
+            return __assign({}, oldEntry, { authToken: { requestStatus: 0 /* NOT_STARTED */ } });
+        }
+        return oldEntry;
+    });
+}
+function fetchAuthTokenFromServer(appConfig, installationEntry) {
+    return __awaiter(this, void 0, void 0, function () {
+        var authToken, updatedInstallationEntry, e_1, updatedInstallationEntry;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 8]);
+                    return [4 /*yield*/, generateAuthToken(appConfig, installationEntry)];
+                case 1:
+                    authToken = _a.sent();
+                    updatedInstallationEntry = __assign({}, installationEntry, { authToken: authToken });
+                    return [4 /*yield*/, set(appConfig, updatedInstallationEntry)];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/, authToken];
+                case 3:
+                    e_1 = _a.sent();
+                    if (!(isServerError(e_1) && (e_1.serverCode === 401 || e_1.serverCode === 404))) return [3 /*break*/, 5];
+                    // Server returned a "FID not found" or a "Invalid authentication" error.
+                    // Generate a new ID next time.
+                    return [4 /*yield*/, remove(appConfig)];
+                case 4:
+                    // Server returned a "FID not found" or a "Invalid authentication" error.
+                    // Generate a new ID next time.
+                    _a.sent();
+                    return [3 /*break*/, 7];
+                case 5:
+                    updatedInstallationEntry = __assign({}, installationEntry, { authToken: { requestStatus: 0 /* NOT_STARTED */ } });
+                    return [4 /*yield*/, set(appConfig, updatedInstallationEntry)];
+                case 6:
+                    _a.sent();
+                    _a.label = 7;
+                case 7: throw e_1;
+                case 8: return [2 /*return*/];
+            }
+        });
+    });
+}
+function isEntryRegistered(installationEntry) {
+    return (installationEntry !== undefined &&
+        installationEntry.registrationStatus === 2 /* COMPLETED */);
+}
+function isAuthTokenValid(authToken) {
+    return (authToken.requestStatus === 2 /* COMPLETED */ &&
+        !isAuthTokenExpired(authToken));
+}
+function isAuthTokenExpired(authToken) {
+    var now = Date.now();
+    return (now < authToken.creationTime ||
+        authToken.creationTime + authToken.expiresIn < now + TOKEN_EXPIRATION_BUFFER);
+}
+/** Returns an updated InstallationEntry with an InProgressAuthToken. */
+function makeAuthTokenRequestInProgressEntry(oldEntry) {
+    var inProgressAuthToken = {
+        requestStatus: 1 /* IN_PROGRESS */,
+        requestTime: Date.now()
+    };
+    return __assign({}, oldEntry, { authToken: inProgressAuthToken });
+}
+function hasAuthTokenRequestTimedOut(authToken) {
+    return (authToken.requestStatus === 1 /* IN_PROGRESS */ &&
+        authToken.requestTime + PENDING_TIMEOUT_MS < Date.now());
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function deleteInstallation(appConfig, installationEntry) {
+    return __awaiter(this, void 0, void 0, function () {
+        var endpoint, headers, request, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    endpoint = getDeleteEndpoint(appConfig, installationEntry);
+                    headers = getHeadersWithAuth(appConfig, installationEntry);
+                    request = {
+                        method: 'DELETE',
+                        headers: headers
+                    };
+                    return [4 /*yield*/, fetch(endpoint, request)];
+                case 1:
+                    response = _a.sent();
+                    if (!response.ok) {
+                        throw getErrorFromResponse('Delete Installation', response);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function getDeleteEndpoint(appConfig, _a) {
+    var fid = _a.fid;
+    return getInstallationsEndpoint(appConfig) + "/" + fid;
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function deleteInstallation$1(app) {
+    return __awaiter(this, void 0, void 0, function () {
+        var appConfig, entry;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    appConfig = extractAppConfig(app);
+                    return [4 /*yield*/, update(appConfig, function (oldEntry) {
+                            if (oldEntry &&
+                                oldEntry.registrationStatus === 0 /* NOT_STARTED */) {
+                                // Delete the unregistered entry without sending a deleteInstallation request.
+                                return undefined;
+                            }
+                            return oldEntry;
+                        })];
+                case 1:
+                    entry = _a.sent();
+                    if (!entry) return [3 /*break*/, 6];
+                    if (!(entry.registrationStatus === 1 /* IN_PROGRESS */)) return [3 /*break*/, 2];
+                    // Can't delete while trying to register.
+                    throw ERROR_FACTORY.create("delete-pending-registration" /* DELETE_PENDING_REGISTRATION */);
+                case 2:
+                    if (!(entry.registrationStatus === 2 /* COMPLETED */)) return [3 /*break*/, 6];
+                    if (!!navigator.onLine) return [3 /*break*/, 3];
+                    throw ERROR_FACTORY.create("app-offline" /* APP_OFFLINE */);
+                case 3: return [4 /*yield*/, deleteInstallation(appConfig, entry)];
+                case 4:
+                    _a.sent();
+                    return [4 /*yield*/, remove(appConfig)];
+                case 5:
+                    _a.sent();
+                    _a.label = 6;
+                case 6: return [2 /*return*/];
+            }
+        });
+    });
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function registerInstallations(instance) {
+    var installationsName = 'installations';
+    var factoryMethod = function (app) {
+        // Throws if app isn't configured properly.
+        extractAppConfig(app);
+        return {
+            app: app,
+            getId: function () { return getId(app); },
+            getToken: function () { return getToken(app); },
+            delete: function () { return deleteInstallation$1(app); }
+        };
+    };
+    instance.INTERNAL.registerService(installationsName, factoryMethod);
+}
+registerInstallations(_firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a);
+
+
+//# sourceMappingURL=index.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@firebase/messaging/dist/index.esm.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@firebase/messaging/dist/index.esm.js ***!
+  \************************************************************/
+/*! exports provided: isSupported, registerMessaging */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isSupported", function() { return isSupported; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerMessaging", function() { return registerMessaging; });
 /* harmony import */ var _firebase_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @firebase/app */ "./node_modules/@firebase/app/dist/index.cjs.js");
 /* harmony import */ var _firebase_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_firebase_app__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "./node_modules/@firebase/messaging/node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _firebase_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @firebase/util */ "./node_modules/@firebase/util/dist/index.cjs.js");
 /* harmony import */ var _firebase_util__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_firebase_util__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -16489,103 +17807,64 @@ __webpack_require__.r(__webpack_exports__);
  * limitations under the License.
  */
 var _a;
-var ERROR_CODES = {
-    AVAILABLE_IN_WINDOW: 'only-available-in-window',
-    AVAILABLE_IN_SW: 'only-available-in-sw',
-    SHOULD_BE_INHERITED: 'should-be-overriden',
-    BAD_SENDER_ID: 'bad-sender-id',
-    INCORRECT_GCM_SENDER_ID: 'incorrect-gcm-sender-id',
-    PERMISSION_DEFAULT: 'permission-default',
-    PERMISSION_BLOCKED: 'permission-blocked',
-    UNSUPPORTED_BROWSER: 'unsupported-browser',
-    NOTIFICATIONS_BLOCKED: 'notifications-blocked',
-    FAILED_DEFAULT_REGISTRATION: 'failed-serviceworker-registration',
-    SW_REGISTRATION_EXPECTED: 'sw-registration-expected',
-    GET_SUBSCRIPTION_FAILED: 'get-subscription-failed',
-    INVALID_SAVED_TOKEN: 'invalid-saved-token',
-    SW_REG_REDUNDANT: 'sw-reg-redundant',
-    TOKEN_SUBSCRIBE_FAILED: 'token-subscribe-failed',
-    TOKEN_SUBSCRIBE_NO_TOKEN: 'token-subscribe-no-token',
-    TOKEN_SUBSCRIBE_NO_PUSH_SET: 'token-subscribe-no-push-set',
-    TOKEN_UNSUBSCRIBE_FAILED: 'token-unsubscribe-failed',
-    TOKEN_UPDATE_FAILED: 'token-update-failed',
-    TOKEN_UPDATE_NO_TOKEN: 'token-update-no-token',
-    USE_SW_BEFORE_GET_TOKEN: 'use-sw-before-get-token',
-    INVALID_DELETE_TOKEN: 'invalid-delete-token',
-    DELETE_TOKEN_NOT_FOUND: 'delete-token-not-found',
-    DELETE_SCOPE_NOT_FOUND: 'delete-scope-not-found',
-    BG_HANDLER_FUNCTION_EXPECTED: 'bg-handler-function-expected',
-    NO_WINDOW_CLIENT_TO_MSG: 'no-window-client-to-msg',
-    UNABLE_TO_RESUBSCRIBE: 'unable-to-resubscribe',
-    NO_FCM_TOKEN_FOR_RESUBSCRIBE: 'no-fcm-token-for-resubscribe',
-    FAILED_TO_DELETE_TOKEN: 'failed-to-delete-token',
-    NO_SW_IN_REG: 'no-sw-in-reg',
-    BAD_SCOPE: 'bad-scope',
-    BAD_VAPID_KEY: 'bad-vapid-key',
-    BAD_SUBSCRIPTION: 'bad-subscription',
-    BAD_TOKEN: 'bad-token',
-    BAD_PUSH_SET: 'bad-push-set',
-    FAILED_DELETE_VAPID_KEY: 'failed-delete-vapid-key',
-    INVALID_PUBLIC_VAPID_KEY: 'invalid-public-vapid-key',
-    USE_PUBLIC_KEY_BEFORE_GET_TOKEN: 'use-public-key-before-get-token',
-    PUBLIC_KEY_DECRYPTION_FAILED: 'public-vapid-key-decryption-failed'
-};
 var ERROR_MAP = (_a = {},
-    _a[ERROR_CODES.AVAILABLE_IN_WINDOW] = 'This method is available in a Window context.',
-    _a[ERROR_CODES.AVAILABLE_IN_SW] = 'This method is available in a service worker ' + 'context.',
-    _a[ERROR_CODES.SHOULD_BE_INHERITED] = 'This method should be overriden by ' + 'extended classes.',
-    _a[ERROR_CODES.BAD_SENDER_ID] = "Please ensure that 'messagingSenderId' is set " +
+    _a["only-available-in-window" /* AVAILABLE_IN_WINDOW */] = 'This method is available in a Window context.',
+    _a["only-available-in-sw" /* AVAILABLE_IN_SW */] = 'This method is available in a service worker ' + 'context.',
+    _a["should-be-overriden" /* SHOULD_BE_INHERITED */] = 'This method should be overriden by ' + 'extended classes.',
+    _a["bad-sender-id" /* BAD_SENDER_ID */] = "Please ensure that 'messagingSenderId' is set " +
         'correctly in the options passed into firebase.initializeApp().',
-    _a[ERROR_CODES.PERMISSION_DEFAULT] = 'The required permissions were not granted and ' + 'dismissed instead.',
-    _a[ERROR_CODES.PERMISSION_BLOCKED] = 'The required permissions were not granted and ' + 'blocked instead.',
-    _a[ERROR_CODES.UNSUPPORTED_BROWSER] = "This browser doesn't support the API's " +
+    _a["permission-default" /* PERMISSION_DEFAULT */] = 'The required permissions were not granted and ' + 'dismissed instead.',
+    _a["permission-blocked" /* PERMISSION_BLOCKED */] = 'The required permissions were not granted and ' + 'blocked instead.',
+    _a["unsupported-browser" /* UNSUPPORTED_BROWSER */] = "This browser doesn't support the API's " +
         'required to use the firebase SDK.',
-    _a[ERROR_CODES.NOTIFICATIONS_BLOCKED] = 'Notifications have been blocked.',
-    _a[ERROR_CODES.FAILED_DEFAULT_REGISTRATION] = 'We are unable to register the ' +
+    _a["notifications-blocked" /* NOTIFICATIONS_BLOCKED */] = 'Notifications have been blocked.',
+    _a["failed-serviceworker-registration" /* FAILED_DEFAULT_REGISTRATION */] = 'We are unable to register the ' +
         'default service worker. {$browserErrorMessage}',
-    _a[ERROR_CODES.SW_REGISTRATION_EXPECTED] = 'A service worker registration was the ' + 'expected input.',
-    _a[ERROR_CODES.GET_SUBSCRIPTION_FAILED] = 'There was an error when trying to get ' +
+    _a["sw-registration-expected" /* SW_REGISTRATION_EXPECTED */] = 'A service worker registration was the ' + 'expected input.',
+    _a["get-subscription-failed" /* GET_SUBSCRIPTION_FAILED */] = 'There was an error when trying to get ' +
         'any existing Push Subscriptions.',
-    _a[ERROR_CODES.INVALID_SAVED_TOKEN] = 'Unable to access details of the saved token.',
-    _a[ERROR_CODES.SW_REG_REDUNDANT] = 'The service worker being used for push was made ' + 'redundant.',
-    _a[ERROR_CODES.TOKEN_SUBSCRIBE_FAILED] = 'A problem occured while subscribing the ' + 'user to FCM: {$message}',
-    _a[ERROR_CODES.TOKEN_SUBSCRIBE_NO_TOKEN] = 'FCM returned no token when subscribing ' + 'the user to push.',
-    _a[ERROR_CODES.TOKEN_SUBSCRIBE_NO_PUSH_SET] = 'FCM returned an invalid response ' + 'when getting an FCM token.',
-    _a[ERROR_CODES.TOKEN_UNSUBSCRIBE_FAILED] = 'A problem occured while unsubscribing the ' + 'user from FCM: {$message}',
-    _a[ERROR_CODES.TOKEN_UPDATE_FAILED] = 'A problem occured while updating the ' + 'user from FCM: {$message}',
-    _a[ERROR_CODES.TOKEN_UPDATE_NO_TOKEN] = 'FCM returned no token when updating ' + 'the user to push.',
-    _a[ERROR_CODES.USE_SW_BEFORE_GET_TOKEN] = 'The useServiceWorker() method may only be called once and must be ' +
+    _a["invalid-saved-token" /* INVALID_SAVED_TOKEN */] = 'Unable to access details of the saved token.',
+    _a["sw-reg-redundant" /* SW_REG_REDUNDANT */] = 'The service worker being used for push was made ' + 'redundant.',
+    _a["token-subscribe-failed" /* TOKEN_SUBSCRIBE_FAILED */] = 'A problem occured while subscribing the ' + 'user to FCM: {$message}',
+    _a["token-subscribe-no-token" /* TOKEN_SUBSCRIBE_NO_TOKEN */] = 'FCM returned no token when subscribing ' + 'the user to push.',
+    _a["token-subscribe-no-push-set" /* TOKEN_SUBSCRIBE_NO_PUSH_SET */] = 'FCM returned an invalid response ' + 'when getting an FCM token.',
+    _a["token-unsubscribe-failed" /* TOKEN_UNSUBSCRIBE_FAILED */] = 'A problem occured while unsubscribing the ' + 'user from FCM: {$message}',
+    _a["token-update-failed" /* TOKEN_UPDATE_FAILED */] = 'A problem occured while updating the ' + 'user from FCM: {$message}',
+    _a["token-update-no-token" /* TOKEN_UPDATE_NO_TOKEN */] = 'FCM returned no token when updating ' + 'the user to push.',
+    _a["use-sw-before-get-token" /* USE_SW_BEFORE_GET_TOKEN */] = 'The useServiceWorker() method may only be called once and must be ' +
         'called before calling getToken() to ensure your service worker is used.',
-    _a[ERROR_CODES.INVALID_DELETE_TOKEN] = 'You must pass a valid token into ' +
+    _a["invalid-delete-token" /* INVALID_DELETE_TOKEN */] = 'You must pass a valid token into ' +
         'deleteToken(), i.e. the token from getToken().',
-    _a[ERROR_CODES.DELETE_TOKEN_NOT_FOUND] = 'The deletion attempt for token could not ' +
+    _a["delete-token-not-found" /* DELETE_TOKEN_NOT_FOUND */] = 'The deletion attempt for token could not ' +
         'be performed as the token was not found.',
-    _a[ERROR_CODES.DELETE_SCOPE_NOT_FOUND] = 'The deletion attempt for service worker ' +
+    _a["delete-scope-not-found" /* DELETE_SCOPE_NOT_FOUND */] = 'The deletion attempt for service worker ' +
         'scope could not be performed as the scope was not found.',
-    _a[ERROR_CODES.BG_HANDLER_FUNCTION_EXPECTED] = 'The input to ' + 'setBackgroundMessageHandler() must be a function.',
-    _a[ERROR_CODES.NO_WINDOW_CLIENT_TO_MSG] = 'An attempt was made to message a ' + 'non-existant window client.',
-    _a[ERROR_CODES.UNABLE_TO_RESUBSCRIBE] = 'There was an error while re-subscribing ' +
+    _a["bg-handler-function-expected" /* BG_HANDLER_FUNCTION_EXPECTED */] = 'The input to ' + 'setBackgroundMessageHandler() must be a function.',
+    _a["no-window-client-to-msg" /* NO_WINDOW_CLIENT_TO_MSG */] = 'An attempt was made to message a ' + 'non-existant window client.',
+    _a["unable-to-resubscribe" /* UNABLE_TO_RESUBSCRIBE */] = 'There was an error while re-subscribing ' +
         'the FCM token for push messaging. Will have to resubscribe the ' +
         'user on next visit. {$message}',
-    _a[ERROR_CODES.NO_FCM_TOKEN_FOR_RESUBSCRIBE] = 'Could not find an FCM token ' +
+    _a["no-fcm-token-for-resubscribe" /* NO_FCM_TOKEN_FOR_RESUBSCRIBE */] = 'Could not find an FCM token ' +
         'and as a result, unable to resubscribe. Will have to resubscribe the ' +
         'user on next visit.',
-    _a[ERROR_CODES.FAILED_TO_DELETE_TOKEN] = 'Unable to delete the currently saved token.',
-    _a[ERROR_CODES.NO_SW_IN_REG] = 'Even though the service worker registration was ' +
+    _a["failed-to-delete-token" /* FAILED_TO_DELETE_TOKEN */] = 'Unable to delete the currently saved token.',
+    _a["no-sw-in-reg" /* NO_SW_IN_REG */] = 'Even though the service worker registration was ' +
         'successful, there was a problem accessing the service worker itself.',
-    _a[ERROR_CODES.INCORRECT_GCM_SENDER_ID] = "Please change your web app manifest's " +
+    _a["incorrect-gcm-sender-id" /* INCORRECT_GCM_SENDER_ID */] = "Please change your web app manifest's " +
         "'gcm_sender_id' value to '103953800507' to use Firebase messaging.",
-    _a[ERROR_CODES.BAD_SCOPE] = 'The service worker scope must be a string with at ' +
+    _a["bad-scope" /* BAD_SCOPE */] = 'The service worker scope must be a string with at ' +
         'least one character.',
-    _a[ERROR_CODES.BAD_VAPID_KEY] = 'The public VAPID key is not a Uint8Array with 65 bytes.',
-    _a[ERROR_CODES.BAD_SUBSCRIPTION] = 'The subscription must be a valid ' + 'PushSubscription.',
-    _a[ERROR_CODES.BAD_TOKEN] = 'The FCM Token used for storage / lookup was not ' +
+    _a["bad-vapid-key" /* BAD_VAPID_KEY */] = 'The public VAPID key is not a Uint8Array with 65 bytes.',
+    _a["bad-subscription" /* BAD_SUBSCRIPTION */] = 'The subscription must be a valid ' + 'PushSubscription.',
+    _a["bad-token" /* BAD_TOKEN */] = 'The FCM Token used for storage / lookup was not ' +
         'a valid token string.',
-    _a[ERROR_CODES.BAD_PUSH_SET] = 'The FCM push set used for storage / lookup was not ' +
+    _a["bad-push-set" /* BAD_PUSH_SET */] = 'The FCM push set used for storage / lookup was not ' +
         'not a valid push set string.',
-    _a[ERROR_CODES.FAILED_DELETE_VAPID_KEY] = 'The VAPID key could not be deleted.',
-    _a[ERROR_CODES.INVALID_PUBLIC_VAPID_KEY] = 'The public VAPID key must be a string.',
-    _a[ERROR_CODES.PUBLIC_KEY_DECRYPTION_FAILED] = 'The public VAPID key did not equal ' + '65 bytes when decrypted.',
+    _a["failed-delete-vapid-key" /* FAILED_DELETE_VAPID_KEY */] = 'The VAPID key could not be deleted.',
+    _a["invalid-public-vapid-key" /* INVALID_PUBLIC_VAPID_KEY */] = 'The public VAPID key must be a string.',
+    _a["use-public-key-before-get-token" /* USE_PUBLIC_KEY_BEFORE_GET_TOKEN */] = 'The usePublicVapidKey() method may only be called once and must be ' +
+        'called before calling getToken() to ensure your VAPID key is used.',
+    _a["public-vapid-key-decryption-failed" /* PUBLIC_KEY_DECRYPTION_FAILED */] = 'The public VAPID key did not equal ' + '65 bytes when decrypted.',
     _a);
 var errorFactory = new _firebase_util__WEBPACK_IMPORTED_MODULE_2__["ErrorFactory"]('messaging', 'Messaging', ERROR_MAP);
 
@@ -16819,19 +18098,19 @@ var IidModel = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 4:
                         err_1 = _a.sent();
-                        throw errorFactory.create(ERROR_CODES.TOKEN_SUBSCRIBE_FAILED);
+                        throw errorFactory.create("token-subscribe-failed" /* TOKEN_SUBSCRIBE_FAILED */);
                     case 5:
                         if (responseData.error) {
                             message = responseData.error.message;
-                            throw errorFactory.create(ERROR_CODES.TOKEN_SUBSCRIBE_FAILED, {
+                            throw errorFactory.create("token-subscribe-failed" /* TOKEN_SUBSCRIBE_FAILED */, {
                                 message: message
                             });
                         }
                         if (!responseData.token) {
-                            throw errorFactory.create(ERROR_CODES.TOKEN_SUBSCRIBE_NO_TOKEN);
+                            throw errorFactory.create("token-subscribe-no-token" /* TOKEN_SUBSCRIBE_NO_TOKEN */);
                         }
                         if (!responseData.pushSet) {
-                            throw errorFactory.create(ERROR_CODES.TOKEN_SUBSCRIBE_NO_PUSH_SET);
+                            throw errorFactory.create("token-subscribe-no-push-set" /* TOKEN_SUBSCRIBE_NO_PUSH_SET */);
                         }
                         return [2 /*return*/, {
                                 token: responseData.token,
@@ -16881,16 +18160,16 @@ var IidModel = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 4:
                         err_2 = _a.sent();
-                        throw errorFactory.create(ERROR_CODES.TOKEN_UPDATE_FAILED);
+                        throw errorFactory.create("token-update-failed" /* TOKEN_UPDATE_FAILED */);
                     case 5:
                         if (responseData.error) {
                             message = responseData.error.message;
-                            throw errorFactory.create(ERROR_CODES.TOKEN_UPDATE_FAILED, {
+                            throw errorFactory.create("token-update-failed" /* TOKEN_UPDATE_FAILED */, {
                                 message: message
                             });
                         }
                         if (!responseData.token) {
-                            throw errorFactory.create(ERROR_CODES.TOKEN_UPDATE_NO_TOKEN);
+                            throw errorFactory.create("token-update-no-token" /* TOKEN_UPDATE_NO_TOKEN */);
                         }
                         return [2 /*return*/, responseData.token];
                 }
@@ -16927,14 +18206,14 @@ var IidModel = /** @class */ (function () {
                         responseData = _a.sent();
                         if (responseData.error) {
                             message = responseData.error.message;
-                            throw errorFactory.create(ERROR_CODES.TOKEN_UNSUBSCRIBE_FAILED, {
+                            throw errorFactory.create("token-unsubscribe-failed" /* TOKEN_UNSUBSCRIBE_FAILED */, {
                                 message: message
                             });
                         }
                         return [3 /*break*/, 5];
                     case 4:
                         err_3 = _a.sent();
-                        throw errorFactory.create(ERROR_CODES.TOKEN_UNSUBSCRIBE_FAILED);
+                        throw errorFactory.create("token-unsubscribe-failed" /* TOKEN_UNSUBSCRIBE_FAILED */);
                     case 5: return [2 /*return*/];
                 }
             });
@@ -16960,7 +18239,7 @@ var IidModel = /** @class */ (function () {
  * limitations under the License.
  */
 function base64ToArrayBuffer(base64String) {
-    var padding = '='.repeat((4 - base64String.length % 4) % 4);
+    var padding = '='.repeat((4 - (base64String.length % 4)) % 4);
     var base64 = (base64String + padding)
         .replace(/\-/g, '+')
         .replace(/_/g, '/');
@@ -17236,7 +18515,7 @@ var TokenDetailsModel = /** @class */ (function (_super) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_1__["__awaiter"])(this, void 0, void 0, function () {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_1__["__generator"])(this, function (_a) {
                 if (!fcmToken) {
-                    throw errorFactory.create(ERROR_CODES.BAD_TOKEN);
+                    throw errorFactory.create("bad-token" /* BAD_TOKEN */);
                 }
                 validateInputs({ fcmToken: fcmToken });
                 return [2 /*return*/, this.getIndex('fcmToken', fcmToken)];
@@ -17252,7 +18531,7 @@ var TokenDetailsModel = /** @class */ (function (_super) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_1__["__awaiter"])(this, void 0, void 0, function () {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_1__["__generator"])(this, function (_a) {
                 if (!swScope) {
-                    throw errorFactory.create(ERROR_CODES.BAD_SCOPE);
+                    throw errorFactory.create("bad-scope" /* BAD_SCOPE */);
                 }
                 validateInputs({ swScope: swScope });
                 return [2 /*return*/, this.get(swScope)];
@@ -17267,22 +18546,22 @@ var TokenDetailsModel = /** @class */ (function (_super) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_1__["__awaiter"])(this, void 0, void 0, function () {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_1__["__generator"])(this, function (_a) {
                 if (!tokenDetails.swScope) {
-                    throw errorFactory.create(ERROR_CODES.BAD_SCOPE);
+                    throw errorFactory.create("bad-scope" /* BAD_SCOPE */);
                 }
                 if (!tokenDetails.vapidKey) {
-                    throw errorFactory.create(ERROR_CODES.BAD_VAPID_KEY);
+                    throw errorFactory.create("bad-vapid-key" /* BAD_VAPID_KEY */);
                 }
                 if (!tokenDetails.endpoint || !tokenDetails.auth || !tokenDetails.p256dh) {
-                    throw errorFactory.create(ERROR_CODES.BAD_SUBSCRIPTION);
+                    throw errorFactory.create("bad-subscription" /* BAD_SUBSCRIPTION */);
                 }
                 if (!tokenDetails.fcmSenderId) {
-                    throw errorFactory.create(ERROR_CODES.BAD_SENDER_ID);
+                    throw errorFactory.create("bad-sender-id" /* BAD_SENDER_ID */);
                 }
                 if (!tokenDetails.fcmToken) {
-                    throw errorFactory.create(ERROR_CODES.BAD_TOKEN);
+                    throw errorFactory.create("bad-token" /* BAD_TOKEN */);
                 }
                 if (!tokenDetails.fcmPushSet) {
-                    throw errorFactory.create(ERROR_CODES.BAD_PUSH_SET);
+                    throw errorFactory.create("bad-push-set" /* BAD_PUSH_SET */);
                 }
                 validateInputs(tokenDetails);
                 return [2 /*return*/, this.put(tokenDetails)];
@@ -17304,13 +18583,13 @@ var TokenDetailsModel = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         if (typeof token !== 'string' || token.length === 0) {
-                            return [2 /*return*/, Promise.reject(errorFactory.create(ERROR_CODES.INVALID_DELETE_TOKEN))];
+                            return [2 /*return*/, Promise.reject(errorFactory.create("invalid-delete-token" /* INVALID_DELETE_TOKEN */))];
                         }
                         return [4 /*yield*/, this.getTokenDetailsFromToken(token)];
                     case 1:
                         details = _a.sent();
                         if (!details) {
-                            throw errorFactory.create(ERROR_CODES.DELETE_TOKEN_NOT_FOUND);
+                            throw errorFactory.create("delete-token-not-found" /* DELETE_TOKEN_NOT_FOUND */);
                         }
                         return [4 /*yield*/, this.delete(details.swScope)];
                     case 2:
@@ -17330,44 +18609,44 @@ var TokenDetailsModel = /** @class */ (function (_super) {
 function validateInputs(input) {
     if (input.fcmToken) {
         if (typeof input.fcmToken !== 'string' || input.fcmToken.length === 0) {
-            throw errorFactory.create(ERROR_CODES.BAD_TOKEN);
+            throw errorFactory.create("bad-token" /* BAD_TOKEN */);
         }
     }
     if (input.swScope) {
         if (typeof input.swScope !== 'string' || input.swScope.length === 0) {
-            throw errorFactory.create(ERROR_CODES.BAD_SCOPE);
+            throw errorFactory.create("bad-scope" /* BAD_SCOPE */);
         }
     }
     if (input.vapidKey) {
         if (!(input.vapidKey instanceof Uint8Array) ||
             input.vapidKey.length !== 65) {
-            throw errorFactory.create(ERROR_CODES.BAD_VAPID_KEY);
+            throw errorFactory.create("bad-vapid-key" /* BAD_VAPID_KEY */);
         }
     }
     if (input.endpoint) {
         if (typeof input.endpoint !== 'string' || input.endpoint.length === 0) {
-            throw errorFactory.create(ERROR_CODES.BAD_SUBSCRIPTION);
+            throw errorFactory.create("bad-subscription" /* BAD_SUBSCRIPTION */);
         }
     }
     if (input.auth) {
         if (!(input.auth instanceof ArrayBuffer)) {
-            throw errorFactory.create(ERROR_CODES.BAD_SUBSCRIPTION);
+            throw errorFactory.create("bad-subscription" /* BAD_SUBSCRIPTION */);
         }
     }
     if (input.p256dh) {
         if (!(input.p256dh instanceof ArrayBuffer)) {
-            throw errorFactory.create(ERROR_CODES.BAD_SUBSCRIPTION);
+            throw errorFactory.create("bad-subscription" /* BAD_SUBSCRIPTION */);
         }
     }
     if (input.fcmSenderId) {
         if (typeof input.fcmSenderId !== 'string' ||
             input.fcmSenderId.length === 0) {
-            throw errorFactory.create(ERROR_CODES.BAD_SENDER_ID);
+            throw errorFactory.create("bad-sender-id" /* BAD_SENDER_ID */);
         }
     }
     if (input.fcmPushSet) {
         if (typeof input.fcmPushSet !== 'string' || input.fcmPushSet.length === 0) {
-            throw errorFactory.create(ERROR_CODES.BAD_PUSH_SET);
+            throw errorFactory.create("bad-push-set" /* BAD_PUSH_SET */);
         }
     }
 }
@@ -17413,7 +18692,7 @@ var VapidDetailsModel = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         if (typeof swScope !== 'string' || swScope.length === 0) {
-                            throw errorFactory.create(ERROR_CODES.BAD_SCOPE);
+                            throw errorFactory.create("bad-scope" /* BAD_SCOPE */);
                         }
                         return [4 /*yield*/, this.get(swScope)];
                     case 1:
@@ -17431,10 +18710,10 @@ var VapidDetailsModel = /** @class */ (function (_super) {
             var details;
             return Object(tslib__WEBPACK_IMPORTED_MODULE_1__["__generator"])(this, function (_a) {
                 if (typeof swScope !== 'string' || swScope.length === 0) {
-                    throw errorFactory.create(ERROR_CODES.BAD_SCOPE);
+                    throw errorFactory.create("bad-scope" /* BAD_SCOPE */);
                 }
                 if (vapidKey === null || vapidKey.length !== UNCOMPRESSED_PUBLIC_KEY_SIZE) {
-                    throw errorFactory.create(ERROR_CODES.BAD_VAPID_KEY);
+                    throw errorFactory.create("bad-vapid-key" /* BAD_VAPID_KEY */);
                 }
                 details = {
                     swScope: swScope,
@@ -17458,7 +18737,7 @@ var VapidDetailsModel = /** @class */ (function (_super) {
                     case 1:
                         vapidKey = _a.sent();
                         if (!vapidKey) {
-                            throw errorFactory.create(ERROR_CODES.DELETE_SCOPE_NOT_FOUND);
+                            throw errorFactory.create("delete-scope-not-found" /* DELETE_SCOPE_NOT_FOUND */);
                         }
                         return [4 /*yield*/, this.delete(swScope)];
                     case 2:
@@ -17498,7 +18777,7 @@ var BaseController = /** @class */ (function () {
         var _this = this;
         if (!app.options[SENDER_ID_OPTION_NAME] ||
             typeof app.options[SENDER_ID_OPTION_NAME] !== 'string') {
-            throw errorFactory.create(ERROR_CODES.BAD_SENDER_ID);
+            throw errorFactory.create("bad-sender-id" /* BAD_SENDER_ID */);
         }
         this.messagingSenderId = app.options[SENDER_ID_OPTION_NAME];
         this.tokenDetailsModel = new TokenDetailsModel();
@@ -17520,7 +18799,7 @@ var BaseController = /** @class */ (function () {
                     case 0:
                         currentPermission = this.getNotificationPermission_();
                         if (currentPermission === 'denied') {
-                            throw errorFactory.create(ERROR_CODES.NOTIFICATIONS_BLOCKED);
+                            throw errorFactory.create("notifications-blocked" /* NOTIFICATIONS_BLOCKED */);
                         }
                         else if (currentPermission !== 'granted') {
                             // We must wait for permission to be granted
@@ -17730,25 +19009,25 @@ var BaseController = /** @class */ (function () {
     // The following methods should only be available in the window.
     //
     BaseController.prototype.requestPermission = function () {
-        throw errorFactory.create(ERROR_CODES.AVAILABLE_IN_WINDOW);
+        throw errorFactory.create("only-available-in-window" /* AVAILABLE_IN_WINDOW */);
     };
     BaseController.prototype.useServiceWorker = function (registration) {
-        throw errorFactory.create(ERROR_CODES.AVAILABLE_IN_WINDOW);
+        throw errorFactory.create("only-available-in-window" /* AVAILABLE_IN_WINDOW */);
     };
     BaseController.prototype.usePublicVapidKey = function (b64PublicKey) {
-        throw errorFactory.create(ERROR_CODES.AVAILABLE_IN_WINDOW);
+        throw errorFactory.create("only-available-in-window" /* AVAILABLE_IN_WINDOW */);
     };
     BaseController.prototype.onMessage = function (nextOrObserver, error, completed) {
-        throw errorFactory.create(ERROR_CODES.AVAILABLE_IN_WINDOW);
+        throw errorFactory.create("only-available-in-window" /* AVAILABLE_IN_WINDOW */);
     };
     BaseController.prototype.onTokenRefresh = function (nextOrObserver, error, completed) {
-        throw errorFactory.create(ERROR_CODES.AVAILABLE_IN_WINDOW);
+        throw errorFactory.create("only-available-in-window" /* AVAILABLE_IN_WINDOW */);
     };
     //
     // The following methods are used by the service worker only.
     //
     BaseController.prototype.setBackgroundMessageHandler = function (callback) {
-        throw errorFactory.create(ERROR_CODES.AVAILABLE_IN_SW);
+        throw errorFactory.create("only-available-in-sw" /* AVAILABLE_IN_SW */);
     };
     //
     // The following methods are used by the service themselves and not exposed
@@ -17930,7 +19209,7 @@ var SwController = /** @class */ (function (_super) {
                         return [3 /*break*/, 3];
                     case 2:
                         err_1 = _a.sent();
-                        throw errorFactory.create(ERROR_CODES.UNABLE_TO_RESUBSCRIBE, {
+                        throw errorFactory.create("unable-to-resubscribe" /* UNABLE_TO_RESUBSCRIBE */, {
                             message: err_1
                         });
                     case 3:
@@ -18058,7 +19337,7 @@ var SwController = /** @class */ (function (_super) {
      */
     SwController.prototype.setBackgroundMessageHandler = function (callback) {
         if (!callback || typeof callback !== 'function') {
-            throw errorFactory.create(ERROR_CODES.BG_HANDLER_FUNCTION_EXPECTED);
+            throw errorFactory.create("bg-handler-function-expected" /* BG_HANDLER_FUNCTION_EXPECTED */);
         }
         this.bgMessageHandler = callback;
     };
@@ -18107,7 +19386,7 @@ var SwController = /** @class */ (function (_super) {
                 // NOTE: This returns a promise in case this API is abstracted later on to
                 // do additional work
                 if (!client) {
-                    throw errorFactory.create(ERROR_CODES.NO_WINDOW_CLIENT_TO_MSG);
+                    throw errorFactory.create("no-window-client-to-msg" /* NO_WINDOW_CLIENT_TO_MSG */);
                 }
                 client.postMessage(message);
                 return [2 /*return*/];
@@ -18128,7 +19407,12 @@ var SwController = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, getClientList()];
                     case 1:
                         clientList = _a.sent();
-                        return [2 /*return*/, clientList.some(function (client) { return client.visibilityState === 'visible'; })];
+                        return [2 /*return*/, clientList.some(function (client) {
+                                return client.visibilityState === 'visible' &&
+                                    // Ignore chrome-extension clients as that matches the background pages
+                                    // of extensions, which are always considered visible.
+                                    !client.url.startsWith('chrome-extension://');
+                            })];
                 }
             });
         });
@@ -18185,7 +19469,7 @@ var SwController = /** @class */ (function (_super) {
                     case 1:
                         swReg = _a.sent();
                         if (!swReg) {
-                            throw errorFactory.create(ERROR_CODES.SW_REGISTRATION_EXPECTED);
+                            throw errorFactory.create("sw-registration-expected" /* SW_REGISTRATION_EXPECTED */);
                         }
                         return [4 /*yield*/, this.getVapidDetailsModel().getVapidFromSWScope(swReg.scope)];
                     case 2:
@@ -18318,10 +19602,10 @@ var WindowController = /** @class */ (function (_super) {
                             return [2 /*return*/];
                         }
                         else if (permissionResult === 'denied') {
-                            throw errorFactory.create(ERROR_CODES.PERMISSION_BLOCKED);
+                            throw errorFactory.create("permission-blocked" /* PERMISSION_BLOCKED */);
                         }
                         else {
-                            throw errorFactory.create(ERROR_CODES.PERMISSION_DEFAULT);
+                            throw errorFactory.create("permission-default" /* PERMISSION_DEFAULT */);
                         }
                         return [2 /*return*/];
                 }
@@ -18337,10 +19621,10 @@ var WindowController = /** @class */ (function (_super) {
      */
     WindowController.prototype.useServiceWorker = function (registration) {
         if (!(registration instanceof ServiceWorkerRegistration)) {
-            throw errorFactory.create(ERROR_CODES.SW_REGISTRATION_EXPECTED);
+            throw errorFactory.create("sw-registration-expected" /* SW_REGISTRATION_EXPECTED */);
         }
         if (this.registrationToUse != null) {
-            throw errorFactory.create(ERROR_CODES.USE_SW_BEFORE_GET_TOKEN);
+            throw errorFactory.create("use-sw-before-get-token" /* USE_SW_BEFORE_GET_TOKEN */);
         }
         this.registrationToUse = registration;
     };
@@ -18352,14 +19636,14 @@ var WindowController = /** @class */ (function (_super) {
      */
     WindowController.prototype.usePublicVapidKey = function (publicKey) {
         if (typeof publicKey !== 'string') {
-            throw errorFactory.create(ERROR_CODES.INVALID_PUBLIC_VAPID_KEY);
+            throw errorFactory.create("invalid-public-vapid-key" /* INVALID_PUBLIC_VAPID_KEY */);
         }
         if (this.publicVapidKeyToUse != null) {
-            throw errorFactory.create(ERROR_CODES.USE_PUBLIC_KEY_BEFORE_GET_TOKEN);
+            throw errorFactory.create("use-public-key-before-get-token" /* USE_PUBLIC_KEY_BEFORE_GET_TOKEN */);
         }
         var parsedKey = base64ToArrayBuffer(publicKey);
         if (parsedKey.length !== 65) {
-            throw errorFactory.create(ERROR_CODES.PUBLIC_KEY_DECRYPTION_FAILED);
+            throw errorFactory.create("public-vapid-key-decryption-failed" /* PUBLIC_KEY_DECRYPTION_FAILED */);
         }
         this.publicVapidKeyToUse = parsedKey;
     };
@@ -18407,7 +19691,7 @@ var WindowController = /** @class */ (function (_super) {
         return new Promise(function (resolve, reject) {
             if (!serviceWorker) {
                 // This is a rare scenario but has occured in firefox
-                reject(errorFactory.create(ERROR_CODES.NO_SW_IN_REG));
+                reject(errorFactory.create("no-sw-in-reg" /* NO_SW_IN_REG */));
                 return;
             }
             // Because the Promise function is called on next tick there is a
@@ -18417,7 +19701,7 @@ var WindowController = /** @class */ (function (_super) {
                 return;
             }
             if (serviceWorker.state === 'redundant') {
-                reject(errorFactory.create(ERROR_CODES.SW_REG_REDUNDANT));
+                reject(errorFactory.create("sw-reg-redundant" /* SW_REG_REDUNDANT */));
                 return;
             }
             var stateChangeListener = function () {
@@ -18425,7 +19709,7 @@ var WindowController = /** @class */ (function (_super) {
                     resolve(registration);
                 }
                 else if (serviceWorker.state === 'redundant') {
-                    reject(errorFactory.create(ERROR_CODES.SW_REG_REDUNDANT));
+                    reject(errorFactory.create("sw-reg-redundant" /* SW_REG_REDUNDANT */));
                 }
                 else {
                     // Return early and wait to next state change
@@ -18453,7 +19737,7 @@ var WindowController = /** @class */ (function (_super) {
             scope: DEFAULT_SW_SCOPE
         })
             .catch(function (err) {
-            throw errorFactory.create(ERROR_CODES.FAILED_DEFAULT_REGISTRATION, {
+            throw errorFactory.create("failed-serviceworker-registration" /* FAILED_DEFAULT_REGISTRATION */, {
                 browserErrorMessage: err.message
             });
         })
@@ -18550,7 +19834,7 @@ function manifestCheck() {
                         return [2 /*return*/];
                     }
                     if (manifestContent.gcm_sender_id !== '103953800507') {
-                        throw errorFactory.create(ERROR_CODES.INCORRECT_GCM_SENDER_ID);
+                        throw errorFactory.create("incorrect-gcm-sender-id" /* INCORRECT_GCM_SENDER_ID */);
                     }
                     return [2 /*return*/];
             }
@@ -18578,7 +19862,7 @@ function registerMessaging(instance) {
     var messagingName = 'messaging';
     var factoryMethod = function (app) {
         if (!isSupported()) {
-            throw errorFactory.create(ERROR_CODES.UNSUPPORTED_BROWSER);
+            throw errorFactory.create("unsupported-browser" /* UNSUPPORTED_BROWSER */);
         }
         if (self && 'ServiceWorkerGlobalScope' in self) {
             // Running in ServiceWorker context
@@ -18628,6 +19912,7 @@ function isSWControllerSupported() {
 }
 
 
+//# sourceMappingURL=index.esm.js.map
 
 
 /***/ }),
@@ -18676,9 +19961,12 @@ and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
 
 function __extends(d, b) {
     extendStatics(d, b);
@@ -18686,12 +19974,15 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
     }
-    return t;
+    return __assign.apply(this, arguments);
 }
 
 function __rest(s, e) {
@@ -18735,8 +20026,8 @@ function __generator(thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -18804,7 +20095,7 @@ function __asyncGenerator(thisArg, _arguments, generator) {
     return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
     function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
     function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
     function fulfill(value) { resume("next", value); }
     function reject(value) { resume("throw", value); }
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
@@ -18813,13 +20104,1446 @@ function __asyncGenerator(thisArg, _arguments, generator) {
 function __asyncDelegator(o) {
     var i, p;
     return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; }; }
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
 }
 
 function __asyncValues(o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator];
-    return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result.default = mod;
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@firebase/performance/dist/index.cjs.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@firebase/performance/dist/index.cjs.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var firebase = _interopDefault(__webpack_require__(/*! @firebase/app */ "./node_modules/@firebase/app/dist/index.cjs.js"));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/@firebase/performance/node_modules/tslib/tslib.es6.js");
+var util = __webpack_require__(/*! @firebase/util */ "./node_modules/@firebase/util/dist/index.cjs.js");
+__webpack_require__(/*! @firebase/installations */ "./node_modules/@firebase/installations/dist/index.esm.js");
+var logger$1 = __webpack_require__(/*! @firebase/logger */ "./node_modules/@firebase/logger/dist/index.esm.js");
+
+/**
+ * Copyright 2017 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var SDK_VERSION = '0.2.1';
+/** The prefix for start User Timing marks used for creating Traces. */
+var TRACE_START_MARK_PREFIX = 'FB-PERF-TRACE-START';
+/** The prefix for stop User Timing marks used for creating Traces. */
+var TRACE_STOP_MARK_PREFIX = 'FB-PERF-TRACE-STOP';
+/** The prefix for User Timing measure used for creating Traces. */
+var TRACE_MEASURE_PREFIX = 'FB-PERF-TRACE-MEASURE';
+/** The prefix for out of the box page load Trace name. */
+var OOB_TRACE_PAGE_LOAD_PREFIX = '_wt_';
+var FIRST_PAINT_COUNTER_NAME = '_fp';
+var FIRST_CONTENTFUL_PAINT_COUNTER_NAME = '_fcp';
+var FIRST_INPUT_DELAY_COUNTER_NAME = '_fid';
+var CONFIG_LOCAL_STORAGE_KEY = '@firebase/performance/config';
+var CONFIG_EXPIRY_LOCAL_STORAGE_KEY = '@firebase/performance/configexpire';
+var SERVICE = 'performance';
+var SERVICE_NAME = 'Performance';
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var _a;
+var ERROR_DESCRIPTION_MAP = (_a = {},
+    _a["trace started" /* TRACE_STARTED_BEFORE */] = 'Trace {$traceName} was started before.',
+    _a["trace stopped" /* TRACE_STOPPED_BEFORE */] = 'Trace {$traceName} is not running.',
+    _a["no window" /* NO_WINDOW */] = 'Window is not available.',
+    _a["no app id" /* NO_APP_ID */] = 'App id is not available.',
+    _a["no project id" /* NO_PROJECT_ID */] = 'Project id is not available.',
+    _a["no api key" /* NO_API_KEY */] = 'Api key is not available.',
+    _a["invalid cc log" /* INVALID_CC_LOG */] = 'Attempted to queue invalid cc event',
+    _a["FB not default" /* FB_NOT_DEFAULT */] = 'Performance can only start when Firebase app instance is the default one.',
+    _a["RC response not ok" /* RC_NOT_OK */] = 'RC response is not ok',
+    _a);
+var ERROR_FACTORY = new util.ErrorFactory(SERVICE, SERVICE_NAME, ERROR_DESCRIPTION_MAP);
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var apiInstance;
+var windowInstance;
+/**
+ * This class holds a reference to various browser related objects injected by set methods.
+ */
+var Api = /** @class */ (function () {
+    function Api(window) {
+        if (!window) {
+            throw ERROR_FACTORY.create("no window" /* NO_WINDOW */);
+        }
+        this.performance = window.performance;
+        this.PerformanceObserver = window.PerformanceObserver;
+        this.windowLocation = window.location;
+        this.navigator = window.navigator;
+        this.document = window.document;
+        this.localStorage = window.localStorage;
+        if (window.perfMetrics && window.perfMetrics.onFirstInputDelay) {
+            this.onFirstInputDelay = window.perfMetrics.onFirstInputDelay;
+        }
+    }
+    Api.prototype.getUrl = function () {
+        // Do not capture the string query part of url.
+        return this.windowLocation.href.split('?')[0];
+    };
+    Api.prototype.mark = function (name) {
+        if (!this.performance || !this.performance.mark)
+            return;
+        this.performance.mark(name);
+    };
+    Api.prototype.measure = function (measureName, mark1, mark2) {
+        if (!this.performance || !this.performance.measure)
+            return;
+        this.performance.measure(measureName, mark1, mark2);
+    };
+    Api.prototype.getEntriesByType = function (type) {
+        if (!this.performance || !this.performance.getEntriesByType)
+            return [];
+        return this.performance.getEntriesByType(type);
+    };
+    Api.prototype.getEntriesByName = function (name) {
+        if (!this.performance || !this.performance.getEntriesByName)
+            return [];
+        return this.performance.getEntriesByName(name);
+    };
+    Api.prototype.getTimeOrigin = function () {
+        // Polyfill the time origin with performance.timing.navigationStart.
+        return (this.performance &&
+            (this.performance.timeOrigin || this.performance.timing.navigationStart));
+    };
+    Api.prototype.setupObserver = function (entryType, callback) {
+        if (!this.PerformanceObserver)
+            return;
+        var observer = new this.PerformanceObserver(function (list) {
+            for (var _i = 0, _a = list.getEntries(); _i < _a.length; _i++) {
+                var entry = _a[_i];
+                // `entry` is a PerformanceEntry instance.
+                callback(entry);
+            }
+        });
+        // Start observing the entry types you care about.
+        observer.observe({ entryTypes: [entryType] });
+    };
+    Api.getInstance = function () {
+        if (apiInstance === undefined) {
+            apiInstance = new Api(windowInstance);
+        }
+        return apiInstance;
+    };
+    return Api;
+}());
+function setupApi(window) {
+    windowInstance = window;
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var settingsServiceInstance;
+var SettingsService = /** @class */ (function () {
+    function SettingsService() {
+        // The variable which controls logging of automatic traces and HTTP/S network monitoring.
+        this.instrumentationEnabled = true;
+        // The variable which controls logging of custom traces.
+        this.dataCollectionEnabled = true;
+        // Configuration flags set through remote config.
+        this.loggingEnabled = false;
+        // Sampling rate between 0 and 1.
+        this.tracesSamplingRate = 1;
+        this.networkRequestsSamplingRate = 1;
+        // Address of logging service.
+        this.logEndPointUrl = 'https://firebaselogging.googleapis.com/v0cc/log?format=json_proto';
+        this.logSource = 462;
+        // Flags which control per session logging of traces and network requests.
+        this.logTraceAfterSampling = false;
+        this.logNetworkAfterSampling = false;
+        // TTL of config retrieved from remote config in hours.
+        this.configTimeToLive = 12;
+    }
+    SettingsService.prototype.getAppId = function () {
+        var appId = this.firebaseAppInstance &&
+            this.firebaseAppInstance.options &&
+            this.firebaseAppInstance.options.appId;
+        if (!appId) {
+            throw ERROR_FACTORY.create("no app id" /* NO_APP_ID */);
+        }
+        return appId;
+    };
+    SettingsService.prototype.getProjectId = function () {
+        var projectId = this.firebaseAppInstance &&
+            this.firebaseAppInstance.options &&
+            this.firebaseAppInstance.options.projectId;
+        if (!projectId) {
+            throw ERROR_FACTORY.create("no project id" /* NO_PROJECT_ID */);
+        }
+        return projectId;
+    };
+    SettingsService.prototype.getApiKey = function () {
+        var apiKey = this.firebaseAppInstance &&
+            this.firebaseAppInstance.options &&
+            this.firebaseAppInstance.options.apiKey;
+        if (!apiKey) {
+            throw ERROR_FACTORY.create("no api key" /* NO_API_KEY */);
+        }
+        return apiKey;
+    };
+    SettingsService.getInstance = function () {
+        if (settingsServiceInstance === undefined) {
+            settingsServiceInstance = new SettingsService();
+        }
+        return settingsServiceInstance;
+    };
+    return SettingsService;
+}());
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var iid;
+function getIidPromise() {
+    var iidPromise = SettingsService.getInstance()
+        .firebaseAppInstance.installations()
+        .getId();
+    iidPromise.then(function (iidVal) {
+        iid = iidVal;
+    });
+    return iidPromise;
+}
+// This method should be used after the iid is retrieved by getIidPromise method.
+function getIid() {
+    return iid;
+}
+function getAuthTokenPromise() {
+    var authTokenPromise = SettingsService.getInstance()
+        .firebaseAppInstance.installations()
+        .getToken();
+    authTokenPromise.then(function (authTokenVal) {
+    });
+    return authTokenPromise;
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var VisibilityState;
+(function (VisibilityState) {
+    VisibilityState[VisibilityState["UNKNOWN"] = 0] = "UNKNOWN";
+    VisibilityState[VisibilityState["VISIBLE"] = 1] = "VISIBLE";
+    VisibilityState[VisibilityState["HIDDEN"] = 2] = "HIDDEN";
+    VisibilityState[VisibilityState["PRERENDER"] = 3] = "PRERENDER";
+    VisibilityState[VisibilityState["UNLOADED"] = 4] = "UNLOADED";
+})(VisibilityState || (VisibilityState = {}));
+function getServiceWorkerStatus() {
+    var navigator = Api.getInstance().navigator;
+    if ('serviceWorker' in navigator) {
+        if (navigator.serviceWorker.controller) {
+            return 2 /* CONTROLLED */;
+        }
+        else {
+            return 3 /* UNCONTROLLED */;
+        }
+    }
+    else {
+        return 1 /* UNSUPPORTED */;
+    }
+}
+function getVisibilityState() {
+    var document = Api.getInstance().document;
+    var visibilityState = document.visibilityState;
+    switch (visibilityState) {
+        case 'visible':
+            return VisibilityState.VISIBLE;
+        case 'hidden':
+            return VisibilityState.HIDDEN;
+        case 'prerender':
+            return VisibilityState.PRERENDER;
+        default:
+            return VisibilityState.UNKNOWN;
+    }
+}
+function getEffectiveConnectionType() {
+    var navigator = Api.getInstance().navigator;
+    var navigatorConnection = navigator.connection;
+    var effectiveType = navigatorConnection && navigatorConnection.effectiveType;
+    switch (effectiveType) {
+        case 'slow-2g':
+            return 1 /* CONNECTION_SLOW_2G */;
+        case '2g':
+            return 2 /* CONNECTION_2G */;
+        case '3g':
+            return 3 /* CONNECTION_3G */;
+        case '4g':
+            return 4 /* CONNECTION_4G */;
+        default:
+            return 0 /* UNKNOWN */;
+    }
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var consoleLogger = new logger$1.Logger(SERVICE_NAME);
+consoleLogger.logLevel = logger$1.LogLevel.INFO;
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var REMOTE_CONFIG_SDK_VERSION = '0.0.1';
+// These values will be used if the remote config object is successfully
+// retrieved, but the template does not have these fields.
+var SECONDARY_CONFIGS = {
+    loggingEnabled: true
+};
+var FIS_AUTH_PREFIX = 'FIREBASE_INSTALLATIONS_AUTH';
+function getConfig(iid) {
+    var config = getStoredConfig();
+    if (config) {
+        processConfig(config);
+        return Promise.resolve();
+    }
+    return getRemoteConfig(iid)
+        .then(function (config) { return processConfig(config); })
+        .then(function (config) { return storeConfig(config); }, 
+    /** Do nothing for error, use defaults set in settings service. */ function () { });
+}
+function getStoredConfig() {
+    var localStorage = Api.getInstance().localStorage;
+    var expiryString = localStorage.getItem(CONFIG_EXPIRY_LOCAL_STORAGE_KEY);
+    if (!expiryString || !configValid(expiryString))
+        return;
+    var configStringified = localStorage.getItem(CONFIG_LOCAL_STORAGE_KEY);
+    if (!configStringified)
+        return;
+    try {
+        var configResponse = JSON.parse(configStringified);
+        return configResponse;
+    }
+    catch (_a) {
+        return;
+    }
+}
+function storeConfig(config) {
+    if (!config)
+        return;
+    var localStorage = Api.getInstance().localStorage;
+    localStorage.setItem(CONFIG_LOCAL_STORAGE_KEY, JSON.stringify(config));
+    localStorage.setItem(CONFIG_EXPIRY_LOCAL_STORAGE_KEY, String(Date.now() +
+        SettingsService.getInstance().configTimeToLive * 60 * 60 * 1000));
+}
+var COULD_NOT_GET_CONFIG_MSG = 'Could not fetch config, will use default configs';
+function getRemoteConfig(iid) {
+    // Perf needs auth token only to retrieve remote config.
+    return getAuthTokenPromise()
+        .then(function (authToken) {
+        var projectId = SettingsService.getInstance().getProjectId();
+        var configEndPoint = "https://firebaseremoteconfig.googleapis.com/v1/projects/" + projectId + "/namespaces/fireperf:fetch?key=" + SettingsService.getInstance().getApiKey();
+        var request = new Request(configEndPoint, {
+            method: 'POST',
+            headers: {
+                Authorization: FIS_AUTH_PREFIX + " " + authToken
+            },
+            body: JSON.stringify({
+                app_instance_id: iid,
+                app_instance_id_token: authToken,
+                app_id: SettingsService.getInstance().getAppId(),
+                app_version: SDK_VERSION,
+                sdk_version: REMOTE_CONFIG_SDK_VERSION
+            })
+        });
+        return fetch(request).then(function (response) {
+            if (response.ok) {
+                return response.json();
+            }
+            // In case response is not ok. This will be caught by catch.
+            throw ERROR_FACTORY.create("RC response not ok" /* RC_NOT_OK */);
+        });
+    })
+        .catch(function () {
+        consoleLogger.info(COULD_NOT_GET_CONFIG_MSG);
+        return undefined;
+    });
+}
+/**
+ * Processes config coming either from calling RC or from local storage.
+ * This method only runs if call is successful or config in storage
+ * is valie.
+ */
+function processConfig(config) {
+    if (!config)
+        return config;
+    var settingsServiceInstance = SettingsService.getInstance();
+    var entries = config.entries || {};
+    if (entries.fpr_enabled !== undefined) {
+        // TODO: Change the assignment of loggingEnabled once the received type is known.
+        settingsServiceInstance.loggingEnabled =
+            String(entries.fpr_enabled) === 'true';
+    }
+    else {
+        // Config retrieved successfully, but there is no fpr_enabled in template.
+        // Use secondary configs value.
+        settingsServiceInstance.loggingEnabled = SECONDARY_CONFIGS.loggingEnabled;
+    }
+    if (entries.fpr_log_source) {
+        settingsServiceInstance.logSource = Number(entries.fpr_log_source);
+    }
+    if (entries.fpr_log_endpoint_url) {
+        settingsServiceInstance.logEndPointUrl = entries.fpr_log_endpoint_url;
+    }
+    if (entries.fpr_vc_network_request_sampling_rate !== undefined) {
+        settingsServiceInstance.networkRequestsSamplingRate = Number(entries.fpr_vc_network_request_sampling_rate);
+    }
+    if (entries.fpr_vc_trace_sampling_rate !== undefined) {
+        settingsServiceInstance.tracesSamplingRate = Number(entries.fpr_vc_trace_sampling_rate);
+    }
+    // Set the per session trace and network logging flags.
+    settingsServiceInstance.logTraceAfterSampling = shouldLogAfterSampling(settingsServiceInstance.tracesSamplingRate);
+    settingsServiceInstance.logNetworkAfterSampling = shouldLogAfterSampling(settingsServiceInstance.networkRequestsSamplingRate);
+    return config;
+}
+function configValid(expiry) {
+    return Number(expiry) > Date.now();
+}
+function shouldLogAfterSampling(samplingRate) {
+    return Math.random() <= samplingRate;
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var initializationStatus = 1 /* notInitialized */;
+var initializationPromise;
+function getInitializationPromise() {
+    initializationStatus = 2 /* initializationPending */;
+    initializationPromise = initializationPromise || initializePerf();
+    return initializationPromise;
+}
+function isPerfInitialized() {
+    return initializationStatus === 3 /* initialized */;
+}
+function initializePerf() {
+    return getDocumentReadyComplete()
+        .then(function () { return getIidPromise(); })
+        .then(function (iid) { return getConfig(iid); })
+        .then(function () { return changeInitializationStatus(); }, function () { return changeInitializationStatus(); });
+}
+/**
+ * Returns a promise which resolves whenever the document readystate is complete or
+ * immediately if it is called after page load complete.
+ */
+function getDocumentReadyComplete() {
+    var document = Api.getInstance().document;
+    return new Promise(function (resolve) {
+        if (document && document.readyState !== 'complete') {
+            var handler_1 = function () {
+                if (document.readyState === 'complete') {
+                    document.removeEventListener('readystatechange', handler_1);
+                    resolve();
+                }
+            };
+            document.addEventListener('readystatechange', handler_1);
+        }
+        else {
+            resolve();
+        }
+    });
+}
+function changeInitializationStatus() {
+    initializationStatus = 3 /* initialized */;
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var DEFAULT_SEND_INTERVAL_MS = 10 * 1000;
+var INITIAL_SEND_TIME_DELAY_MS = 5.5 * 1000;
+// If end point does not work, the call will be tried for these many times.
+var DEFAULT_REMAINING_TRIES = 3;
+var remainingTries = DEFAULT_REMAINING_TRIES;
+var queue = [];
+function processQueue(timeOffset) {
+    setTimeout(function () {
+        // If there is no remainingTries left, stop retrying.
+        if (remainingTries === 0) {
+            return;
+        }
+        // If there are no events to process, wait for DEFAULT_SEND_INTERVAL_MS and try again.
+        if (!queue.length) {
+            return processQueue(DEFAULT_SEND_INTERVAL_MS);
+        }
+        // Capture a snapshot of the queue and empty the "official queue".
+        var staged = queue.slice();
+        queue = [];
+        // We will pass the JSON serialized event to the backend.
+        var log_event = staged.map(function (evt) { return ({
+            source_extension_json: evt.message,
+            event_time_ms: String(evt.eventTime)
+        }); });
+        var data = {
+            request_time_ms: String(Date.now()),
+            client_info: {
+                client_type: 1,
+                js_client_info: {}
+            },
+            log_source: SettingsService.getInstance().logSource,
+            log_event: log_event
+        };
+        fetch(SettingsService.getInstance().logEndPointUrl, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(function (res) {
+            if (!res.ok) {
+                consoleLogger.info('Call to Firebase backend failed.');
+            }
+            return res.json();
+        })
+            .then(function (res) {
+            // Find the next call wait time from the response.
+            var requestOffset = Math.max(DEFAULT_SEND_INTERVAL_MS, parseInt(res.next_request_wait_millis, 10));
+            remainingTries = DEFAULT_REMAINING_TRIES;
+            // Schedule the next process.
+            processQueue(requestOffset);
+        })
+            .catch(function () {
+            /**
+             * If the request fails for some reason, add the events that were attempted
+             * back to the primary queue to retry later.
+             */
+            queue = staged.concat(queue);
+            remainingTries--;
+            consoleLogger.info("Tries left: " + remainingTries + ".");
+            processQueue(DEFAULT_SEND_INTERVAL_MS);
+        });
+    }, timeOffset);
+}
+processQueue(INITIAL_SEND_TIME_DELAY_MS);
+function addToQueue(evt) {
+    if (!evt.eventTime || !evt.message) {
+        throw ERROR_FACTORY.create("invalid cc log" /* INVALID_CC_LOG */);
+    }
+    // Add the new event to the queue.
+    queue = queue.concat([evt]);
+}
+/** Log handler for cc service to send the performance logs to the server. */
+function ccHandler(serializer) {
+    // The underscores for loggerInstance and level parameters are added to avoid the
+    // noUnusedParameters related error.
+    return function (_loggerInstance, _level) {
+        var args = [];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            args[_i - 2] = arguments[_i];
+        }
+        var message = serializer.apply(void 0, args);
+        addToQueue({
+            message: message,
+            eventTime: Date.now()
+        });
+    };
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var logger;
+// This method is not called before initialization.
+function getLogger() {
+    if (logger)
+        return logger;
+    var ccLogger = ccHandler(serializer);
+    logger = new logger$1.Logger('@firebase/performance/cc');
+    logger.logHandler = ccLogger;
+    return logger;
+}
+function logTrace(trace) {
+    var settingsService = SettingsService.getInstance();
+    // Do not log if trace is auto generated and instrumentation is disabled.
+    if (!settingsService.instrumentationEnabled && trace.isAuto)
+        return;
+    // Do not log if trace is custom and data collection is disabled.
+    if (!settingsService.dataCollectionEnabled && !trace.isAuto)
+        return;
+    // Only log the page load auto traces if page is visible.
+    if (trace.isAuto && getVisibilityState() !== VisibilityState.VISIBLE)
+        return;
+    if (!settingsService.loggingEnabled || !settingsService.logTraceAfterSampling)
+        return;
+    if (isPerfInitialized()) {
+        sendTraceLog(trace);
+    }
+    else {
+        // Custom traces can be used before the initialization but logging
+        // should wait until after.
+        getInitializationPromise().then(function () { return sendTraceLog(trace); }, function () { return sendTraceLog(trace); });
+    }
+}
+function sendTraceLog(trace) {
+    if (getIid()) {
+        setTimeout(function () { return getLogger().log(trace, 1 /* Trace */); }, 0);
+    }
+}
+function logNetworkRequest(networkRequest) {
+    var settingsService = SettingsService.getInstance();
+    // Do not log network requests if instrumentation is disabled.
+    if (!settingsService.instrumentationEnabled)
+        return;
+    // Do not log the js sdk's call to cc service to avoid unnecessary cycle.
+    if (networkRequest.url === settingsService.logEndPointUrl.split('?')[0])
+        return;
+    if (!settingsService.loggingEnabled ||
+        !settingsService.logNetworkAfterSampling)
+        return;
+    setTimeout(function () { return getLogger().log(networkRequest, 0 /* NetworkRequest */); }, 0);
+}
+function serializer(resource, resourceType) {
+    if (resourceType === 0 /* NetworkRequest */) {
+        return serializeNetworkRequest(resource);
+    }
+    return serializeTrace(resource);
+}
+function serializeNetworkRequest(networkRequest) {
+    var networkRequestMetric = {
+        url: networkRequest.url,
+        http_method: 1,
+        http_response_code: 200,
+        response_payload_bytes: networkRequest.responsePayloadBytes,
+        client_start_time_us: networkRequest.startTimeUs,
+        time_to_response_initiated_us: networkRequest.timeToResponseInitiatedUs,
+        time_to_response_completed_us: networkRequest.timeToResponseCompletedUs
+    };
+    var perfMetric = {
+        application_info: getApplicationInfo(),
+        network_request_metric: networkRequestMetric
+    };
+    return JSON.stringify(perfMetric);
+}
+function serializeTrace(trace) {
+    var traceMetric = {
+        name: trace.name,
+        is_auto: trace.isAuto,
+        client_start_time_us: trace.startTimeUs,
+        duration_us: trace.durationUs
+    };
+    if (Object.keys(trace.counters).length !== 0) {
+        traceMetric.counters = convertToKeyValueArray(trace.counters);
+    }
+    var customAttributes = trace.getAttributes();
+    if (Object.keys(customAttributes).length !== 0) {
+        traceMetric.custom_attributes = convertToKeyValueArray(customAttributes);
+    }
+    var perfMetric = {
+        application_info: getApplicationInfo(),
+        trace_metric: traceMetric
+    };
+    return JSON.stringify(perfMetric);
+}
+function getApplicationInfo() {
+    return {
+        google_app_id: SettingsService.getInstance().getAppId(),
+        app_instance_id: getIid(),
+        web_app_info: {
+            sdk_version: SDK_VERSION,
+            page_url: Api.getInstance().getUrl(),
+            service_worker_status: getServiceWorkerStatus(),
+            visibility_state: getVisibilityState(),
+            effective_connection_type: getEffectiveConnectionType()
+        },
+        application_process_state: 0
+    };
+}
+function convertToKeyValueArray(obj) {
+    var keys = Object.keys(obj);
+    return keys.map(function (key) { return ({ key: key, value: obj[key] }); });
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var Trace = /** @class */ (function () {
+    /**
+     * @param name The name of the trace.
+     * @param isAuto If the trace is auto-instrumented.
+     * @param traceMeasureName The name of the measure marker in user timing specification. This field
+     * is only set when the trace is built for logging when the user directly uses the user timing
+     * api (performance.mark and performance.measure).
+     */
+    function Trace(name, isAuto, traceMeasureName) {
+        if (isAuto === void 0) { isAuto = false; }
+        this.name = name;
+        this.isAuto = isAuto;
+        this.state = 1 /* UNINITIALIZED */;
+        this.customAttributes = {};
+        this.counters = {};
+        this.api = Api.getInstance();
+        this.randomId = Math.floor(Math.random() * 1000000);
+        if (!this.isAuto) {
+            this.traceStartMark = TRACE_START_MARK_PREFIX + "-" + this.randomId + "-" + this.name;
+            this.traceStopMark = TRACE_STOP_MARK_PREFIX + "-" + this.randomId + "-" + this.name;
+            this.traceMeasure =
+                traceMeasureName ||
+                    TRACE_MEASURE_PREFIX + "-" + this.randomId + "-" + this.name;
+            if (traceMeasureName) {
+                // For the case of direct user timing traces, no start stop will happen. The measure object
+                // is already available.
+                this.calculateTraceMetrics();
+            }
+        }
+    }
+    /**
+     * Starts a trace. The measurement of the duration starts at this point.
+     */
+    Trace.prototype.start = function () {
+        if (this.state !== 1 /* UNINITIALIZED */) {
+            throw ERROR_FACTORY.create("trace started" /* TRACE_STARTED_BEFORE */, {
+                traceName: this.name
+            });
+        }
+        this.api.mark(this.traceStartMark);
+        this.state = 2 /* RUNNING */;
+    };
+    /**
+     * Stops the trace. The measurement of the duration of the trace stops at this point and trace
+     * is logged.
+     */
+    Trace.prototype.stop = function () {
+        if (this.state !== 2 /* RUNNING */) {
+            throw ERROR_FACTORY.create("trace stopped" /* TRACE_STOPPED_BEFORE */, {
+                traceName: this.name
+            });
+        }
+        this.state = 3 /* TERMINATED */;
+        this.api.mark(this.traceStopMark);
+        this.api.measure(this.traceMeasure, this.traceStartMark, this.traceStopMark);
+        this.calculateTraceMetrics();
+        logTrace(this);
+    };
+    /**
+     * Records a trace with predetermined values. If this method is used a trace is created and logged
+     * directly. No need to use start and stop methods.
+     * @param startTime Trace start time since epoch in millisec
+     * @param duration The duraction of the trace in millisec
+     * @param options An object which can optionally hold maps of custom metrics and custom attributes
+     */
+    Trace.prototype.record = function (startTime, duration, options) {
+        this.durationUs = Math.floor(duration * 1000);
+        this.startTimeUs = Math.floor(startTime * 1000);
+        if (options && options.attributes) {
+            this.customAttributes = tslib_1.__assign({}, options.attributes);
+        }
+        if (options && options.metrics) {
+            for (var _i = 0, _a = Object.keys(options.metrics); _i < _a.length; _i++) {
+                var metric = _a[_i];
+                if (!isNaN(Number(options.metrics[metric]))) {
+                    this.counters[metric] = Number(Math.floor(options.metrics[metric]));
+                }
+            }
+        }
+        logTrace(this);
+    };
+    /**
+     * Increments a custom metric by a certain number or 1 if number not specified. Will create a new
+     * custom metric if one with the given name does not exist.
+     * @param counter Name of the custom metric
+     * @param num Increment by value
+     */
+    Trace.prototype.incrementMetric = function (counter, num) {
+        if (num === void 0) { num = 1; }
+        if (this.counters[counter] === undefined) {
+            this.counters[counter] = 0;
+        }
+        this.counters[counter] += num;
+    };
+    /**
+     * Sets a custom metric to a specified value. Will create a new custom metric if one with the
+     * given name does not exist.
+     * @param counter Name of the custom metric
+     * @param num Set custom metric to this value
+     */
+    Trace.prototype.putMetric = function (counter, num) {
+        this.counters[counter] = num;
+    };
+    /**
+     * Returns the value of the custom metric by that name. If a custom metric with that name does
+     * not exist will return zero.
+     * @param counter
+     */
+    Trace.prototype.getMetric = function (counter) {
+        return this.counters[counter] || 0;
+    };
+    /**
+     * Sets a custom attribute of a trace to a certain value.
+     * @param attr
+     * @param value
+     */
+    Trace.prototype.putAttribute = function (attr, value) {
+        this.customAttributes[attr] = value;
+    };
+    /**
+     * Retrieves the value a custom attribute of a trace is set to.
+     * @param attr
+     */
+    Trace.prototype.getAttribute = function (attr) {
+        return this.customAttributes[attr];
+    };
+    Trace.prototype.removeAttribute = function (attr) {
+        if (this.customAttributes[attr] === undefined)
+            return;
+        delete this.customAttributes[attr];
+    };
+    Trace.prototype.getAttributes = function () {
+        return tslib_1.__assign({}, this.customAttributes);
+    };
+    Trace.prototype.setStartTime = function (startTime) {
+        this.startTimeUs = startTime;
+    };
+    Trace.prototype.setDuration = function (duration) {
+        this.durationUs = duration;
+    };
+    /**
+     * Calculates and assigns the duration and start time of the trace using the measure performance
+     * entry.
+     */
+    Trace.prototype.calculateTraceMetrics = function () {
+        var perfMeasureEntries = this.api.getEntriesByName(this.traceMeasure);
+        var perfMeasureEntry = perfMeasureEntries && perfMeasureEntries[0];
+        if (perfMeasureEntry) {
+            this.durationUs = Math.floor(perfMeasureEntry.duration * 1000);
+            this.startTimeUs = Math.floor((perfMeasureEntry.startTime + this.api.getTimeOrigin()) * 1000);
+        }
+    };
+    /**
+     * @param navigationTimings A single element array which contains the navigationTIming object of
+     * the page load
+     * @param paintTimings A array which contains paintTiming object of the page load
+     * @param firstInputDelay First input delay in millisec
+     */
+    Trace.createOobTrace = function (navigationTimings, paintTimings, firstInputDelay) {
+        var route = Api.getInstance().getUrl();
+        if (!route)
+            return;
+        var trace = new Trace(OOB_TRACE_PAGE_LOAD_PREFIX + route, true);
+        var timeOriginUs = Math.floor(Api.getInstance().getTimeOrigin() * 1000);
+        trace.setStartTime(timeOriginUs);
+        // navigationTimings includes only one element.
+        if (navigationTimings && navigationTimings[0]) {
+            trace.setDuration(Math.floor(navigationTimings[0].duration * 1000));
+            trace.incrementMetric('domInteractive', Math.floor(navigationTimings[0].domInteractive * 1000));
+            trace.incrementMetric('domContentLoadedEventEnd', Math.floor(navigationTimings[0].domContentLoadedEventEnd * 1000));
+            trace.incrementMetric('loadEventEnd', Math.floor(navigationTimings[0].loadEventEnd * 1000));
+        }
+        var FIRST_PAINT = 'first-paint';
+        var FIRST_CONTENTFUL_PAINT = 'first-contentful-paint';
+        if (paintTimings) {
+            var firstPaint = paintTimings.find(function (paintObject) { return paintObject.name === FIRST_PAINT; });
+            if (firstPaint && firstPaint.startTime) {
+                trace.incrementMetric(FIRST_PAINT_COUNTER_NAME, Math.floor(firstPaint.startTime * 1000));
+            }
+            var firstContentfulPaint = paintTimings.find(function (paintObject) { return paintObject.name === FIRST_CONTENTFUL_PAINT; });
+            if (firstContentfulPaint && firstContentfulPaint.startTime) {
+                trace.incrementMetric(FIRST_CONTENTFUL_PAINT_COUNTER_NAME, Math.floor(firstContentfulPaint.startTime * 1000));
+            }
+            if (firstInputDelay) {
+                trace.incrementMetric(FIRST_INPUT_DELAY_COUNTER_NAME, Math.floor(firstInputDelay * 1000));
+            }
+        }
+        logTrace(trace);
+    };
+    Trace.createUserTimingTrace = function (measureName) {
+        var trace = new Trace(measureName, false, measureName);
+        logTrace(trace);
+    };
+    return Trace;
+}());
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+function createNetworkRequestEntry(entry) {
+    var performanceEntry = entry;
+    if (!performanceEntry || performanceEntry.responseStart === undefined)
+        return;
+    var timeOrigin = Api.getInstance().getTimeOrigin();
+    var startTimeUs = Math.floor((performanceEntry.startTime + timeOrigin) * 1000);
+    var timeToResponseInitiatedUs = performanceEntry.responseStart
+        ? Math.floor((performanceEntry.responseStart - performanceEntry.startTime) * 1000)
+        : undefined;
+    var timeToResponseCompletedUs = Math.floor((performanceEntry.responseEnd - performanceEntry.startTime) * 1000);
+    // Remove the query params from logged network request url.
+    var url = performanceEntry.name && performanceEntry.name.split('?')[0];
+    var networkRequest = {
+        url: url,
+        responsePayloadBytes: performanceEntry.transferSize,
+        startTimeUs: startTimeUs,
+        timeToResponseInitiatedUs: timeToResponseInitiatedUs,
+        timeToResponseCompletedUs: timeToResponseCompletedUs
+    };
+    logNetworkRequest(networkRequest);
+}
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var FID_WAIT_TIME_MS = 5000;
+function setupOobResources() {
+    // Do not initialize unless iid is available.
+    if (!getIid())
+        return;
+    // The load event might not have fired yet, and that means performance navigation timing
+    // object has a duration of 0. The setup should run after all current tasks in js queue.
+    setTimeout(function () { return setupOobTraces(); }, 0);
+    setTimeout(function () { return setupNetworkRequests(); }, 0);
+    setTimeout(function () { return setupUserTimingTraces(); }, 0);
+}
+function setupNetworkRequests() {
+    var api = Api.getInstance();
+    var resources = api.getEntriesByType('resource');
+    for (var _i = 0, resources_1 = resources; _i < resources_1.length; _i++) {
+        var resource = resources_1[_i];
+        createNetworkRequestEntry(resource);
+    }
+    api.setupObserver('resource', createNetworkRequestEntry);
+}
+function setupOobTraces() {
+    var api = Api.getInstance();
+    var navigationTimings = api.getEntriesByType('navigation');
+    var paintTimings = api.getEntriesByType('paint');
+    // If First Input Desly polyfill is added to the page, report the fid value.
+    // https://github.com/GoogleChromeLabs/first-input-delay
+    if (api.onFirstInputDelay) {
+        // If the fid call back is not called for certain time, continue without it.
+        var timeoutId_1 = setTimeout(function () {
+            Trace.createOobTrace(navigationTimings, paintTimings);
+            timeoutId_1 = undefined;
+        }, FID_WAIT_TIME_MS);
+        api.onFirstInputDelay(function (fid) {
+            if (timeoutId_1) {
+                clearTimeout(timeoutId_1);
+                Trace.createOobTrace(navigationTimings, paintTimings, fid);
+            }
+        });
+    }
+    else {
+        Trace.createOobTrace(navigationTimings, paintTimings);
+    }
+}
+function setupUserTimingTraces() {
+    var api = Api.getInstance();
+    // Run through the measure performance entries collected up to this point.
+    var measures = api.getEntriesByType('measure');
+    for (var _i = 0, measures_1 = measures; _i < measures_1.length; _i++) {
+        var measure = measures_1[_i];
+        createUserTimingTrace(measure);
+    }
+    // Setup an observer to capture the measures from this point on.
+    api.setupObserver('measure', createUserTimingTrace);
+}
+function createUserTimingTrace(measure) {
+    var measureName = measure.name;
+    // Do not create a trace, if the user timing marks and measures are created by the sdk itself.
+    if (measureName.substring(0, TRACE_MEASURE_PREFIX.length) ===
+        TRACE_MEASURE_PREFIX)
+        return;
+    Trace.createUserTimingTrace(measureName);
+}
+
+/**
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var PerformanceController = /** @class */ (function () {
+    function PerformanceController(app) {
+        this.app = app;
+        getInitializationPromise().then(setupOobResources, setupOobResources);
+    }
+    PerformanceController.prototype.trace = function (name) {
+        return new Trace(name);
+    };
+    Object.defineProperty(PerformanceController.prototype, "instrumentationEnabled", {
+        get: function () {
+            return SettingsService.getInstance().instrumentationEnabled;
+        },
+        set: function (val) {
+            SettingsService.getInstance().instrumentationEnabled = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PerformanceController.prototype, "dataCollectionEnabled", {
+        get: function () {
+            return SettingsService.getInstance().dataCollectionEnabled;
+        },
+        set: function (val) {
+            SettingsService.getInstance().dataCollectionEnabled = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return PerformanceController;
+}());
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var DEFAULT_ENTRY_NAME = '[DEFAULT]';
+function registerPerformance(instance) {
+    var factoryMethod = function (app) {
+        if (app.name !== DEFAULT_ENTRY_NAME) {
+            throw ERROR_FACTORY.create("FB not default" /* FB_NOT_DEFAULT */);
+        }
+        SettingsService.getInstance().firebaseAppInstance = app;
+        return new PerformanceController(app);
+    };
+    // Register performance with firebase-app.
+    var namespaceExports = {};
+    instance.INTERNAL.registerService('performance', factoryMethod, namespaceExports);
+}
+if (window && fetch && Promise) {
+    setupApi(window);
+    registerPerformance(firebase);
+}
+else {
+    consoleLogger.info('Firebase Performance cannot start if browser does not support fetch and Promise.');
+}
+
+exports.registerPerformance = registerPerformance;
+//# sourceMappingURL=index.cjs.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@firebase/performance/node_modules/tslib/tslib.es6.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@firebase/performance/node_modules/tslib/tslib.es6.js ***!
+  \****************************************************************************/
+/*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__extends", function() { return __extends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__assign", function() { return __assign; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__rest", function() { return __rest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__decorate", function() { return __decorate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__param", function() { return __param; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__metadata", function() { return __metadata; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__awaiter", function() { return __awaiter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__generator", function() { return __generator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__exportStar", function() { return __exportStar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__values", function() { return __values; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__read", function() { return __read; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spread", function() { return __spread; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__await", function() { return __await; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncGenerator", function() { return __asyncGenerator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncDelegator", function() { return __asyncDelegator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncValues", function() { return __asyncValues; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__makeTemplateObject", function() { return __makeTemplateObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importStar", function() { return __importStar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importDefault", function() { return __importDefault; });
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+function __exportStar(m, exports) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+
+function __values(o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 }
 
 function __makeTemplateObject(cooked, raw) {
@@ -18876,35 +21600,30 @@ __webpack_require__.r(__webpack_exports__);
  * @fileoverview Constants used in the Firebase Storage library.
  */
 /**
- * Domain and scheme for API calls.
+ * Domain name for firebase storage.
  */
-var domainBase = 'https://firebasestorage.googleapis.com';
+var DEFAULT_HOST = 'firebasestorage.googleapis.com';
 /**
- * Domain and scheme for object downloads.
+ * The key in Firebase config json for the storage bucket.
  */
-var downloadBase = 'https://firebasestorage.googleapis.com';
-/**
- * Base URL for non-upload calls to the API.
- */
-var apiBaseUrl = '/v0';
-/**
- * Base URL for upload calls to the API.
- */
-var apiUploadBaseUrl = '/v0';
-var configOption = 'storageBucket';
+var CONFIG_STORAGE_BUCKET_KEY = 'storageBucket';
 /**
  * 2 minutes
+ *
+ * The timeout for all operations except upload.
  */
-var defaultMaxOperationRetryTime = 2 * 60 * 1000;
+var DEFAULT_MAX_OPERATION_RETRY_TIME = 2 * 60 * 1000;
 /**
  * 10 minutes
+ *
+ * The timeout for upload.
  */
-var defaultMaxUploadRetryTime = 10 * 60 * 100;
+var DEFAULT_MAX_UPLOAD_RETRY_TIME = 10 * 60 * 100;
 /**
  * This is the value of Number.MIN_SAFE_INTEGER, which is not well supported
  * enough for us to use it directly.
  */
-var minSafeInteger = -9007199254740991;
+var MIN_SAFE_INTEGER = -9007199254740991;
 
 /**
  * @license
@@ -19768,12 +22487,8 @@ var Location = /** @class */ (function () {
             loc.path_ = decodeURIComponent(loc.path);
         }
         var version = 'v[A-Za-z0-9_]+';
-        var httpRegex = new RegExp('^https?://firebasestorage\\.googleapis\\.com/' +
-            version +
-            '/b/' +
-            bucketDomain +
-            '/o' +
-            path, 'i');
+        var hostRegex = DEFAULT_HOST.replace(/[.]/g, '\\.');
+        var httpRegex = new RegExp("^https?://" + hostRegex + "/" + version + "/b/" + bucketDomain + "/o" + path, 'i');
         var httpIndices = { bucket: 1, path: 3 };
         var groups = [
             { regex: gsRegex, indices: gsIndices, postModify: gsModify },
@@ -19880,14 +22595,8 @@ function lastComponent(path) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function makeNormalUrl(urlPart) {
-    return domainBase + apiBaseUrl + urlPart;
-}
-function makeDownloadUrl(urlPart) {
-    return downloadBase + apiBaseUrl + urlPart;
-}
-function makeUploadUrl(urlPart) {
-    return domainBase + apiUploadBaseUrl + urlPart;
+function makeUrl(urlPart) {
+    return "https://" + DEFAULT_HOST + "/v0" + urlPart;
 }
 function makeQueryString(params) {
     var encode = encodeURIComponent;
@@ -20032,7 +22741,7 @@ function downloadUrlFromResourceString(metadata, resourceString) {
         var bucket = metadata['bucket'];
         var path = metadata['fullPath'];
         var urlPart = '/b/' + encode(bucket) + '/o/' + encode(path);
-        var base = makeDownloadUrl(urlPart);
+        var base = makeUrl(urlPart);
         var queryString = makeQueryString({
             alt: 'media',
             token: token
@@ -20203,6 +22912,22 @@ function nullFunctionSpec(opt_optional) {
     return new ArgSpec(validator, opt_optional);
 }
 
+/**
+ * @license
+ * Copyright 2017 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 function getBlobBuilder() {
     if (typeof BlobBuilder !== 'undefined') {
         return BlobBuilder;
@@ -20532,7 +23257,7 @@ function objectErrorHandler(location) {
 }
 function getMetadata(authWrapper, location, mappings) {
     var urlPart = location.fullServerUrl();
-    var url = makeNormalUrl(urlPart);
+    var url = makeUrl(urlPart);
     var method = 'GET';
     var timeout = authWrapper.maxOperationRetryTime();
     var requestInfo = new RequestInfo(url, method, metadataHandler(authWrapper, mappings), timeout);
@@ -20541,7 +23266,7 @@ function getMetadata(authWrapper, location, mappings) {
 }
 function getDownloadUrl(authWrapper, location, mappings) {
     var urlPart = location.fullServerUrl();
-    var url = makeNormalUrl(urlPart);
+    var url = makeUrl(urlPart);
     var method = 'GET';
     var timeout = authWrapper.maxOperationRetryTime();
     var requestInfo = new RequestInfo(url, method, downloadUrlHandler(authWrapper, mappings), timeout);
@@ -20550,7 +23275,7 @@ function getDownloadUrl(authWrapper, location, mappings) {
 }
 function updateMetadata(authWrapper, location, metadata, mappings) {
     var urlPart = location.fullServerUrl();
-    var url = makeNormalUrl(urlPart);
+    var url = makeUrl(urlPart);
     var method = 'PATCH';
     var body = toResourceString(metadata, mappings);
     var headers = { 'Content-Type': 'application/json; charset=utf-8' };
@@ -20563,7 +23288,7 @@ function updateMetadata(authWrapper, location, metadata, mappings) {
 }
 function deleteObject(authWrapper, location) {
     var urlPart = location.fullServerUrl();
-    var url = makeNormalUrl(urlPart);
+    var url = makeUrl(urlPart);
     var method = 'DELETE';
     var timeout = authWrapper.maxOperationRetryTime();
     function handler(xhr, text) { }
@@ -20623,7 +23348,7 @@ function multipartUpload(authWrapper, location, mappings, blob, opt_metadata) {
         throw cannotSliceBlob();
     }
     var urlParams = { name: metadata['fullPath'] };
-    var url = makeUploadUrl(urlPart);
+    var url = makeUrl(urlPart);
     var method = 'POST';
     var timeout = authWrapper.maxUploadRetryTime();
     var requestInfo = new RequestInfo(url, method, metadataHandler(authWrapper, mappings), timeout);
@@ -20666,7 +23391,7 @@ function createResumableUpload(authWrapper, location, mappings, blob, opt_metada
     var urlPart = location.bucketOnlyServerUrl();
     var metadata = metadataForUpload_(location, blob, opt_metadata);
     var urlParams = { name: metadata['fullPath'] };
-    var url = makeUploadUrl(urlPart);
+    var url = makeUrl(urlPart);
     var method = 'POST';
     var headers = {
         'X-Goog-Upload-Protocol': 'resumable',
@@ -20904,8 +23629,8 @@ var UploadTask = /** @class */ (function () {
      * @param blob The blob to upload.
      */
     function UploadTask(ref, authWrapper, location, mappings, blob, metadata) {
-        if (metadata === void 0) { metadata = null; }
         var _this = this;
+        if (metadata === void 0) { metadata = null; }
         this.transferred_ = 0;
         this.needToFetchStatus_ = false;
         this.needToFetchMetadata_ = false;
@@ -21692,7 +24417,7 @@ var FailRequest = /** @class */ (function () {
 var RequestMap = /** @class */ (function () {
     function RequestMap() {
         this.map_ = {};
-        this.id_ = minSafeInteger;
+        this.id_ = MIN_SAFE_INTEGER;
     }
     /**
      * Registers the given request with this map.
@@ -21744,12 +24469,12 @@ var AuthWrapper = /** @class */ (function () {
         this.requestMaker_ = requestMaker;
         this.pool_ = pool;
         this.service_ = service;
-        this.maxOperationRetryTime_ = defaultMaxOperationRetryTime;
-        this.maxUploadRetryTime_ = defaultMaxUploadRetryTime;
+        this.maxOperationRetryTime_ = DEFAULT_MAX_OPERATION_RETRY_TIME;
+        this.maxUploadRetryTime_ = DEFAULT_MAX_UPLOAD_RETRY_TIME;
         this.requestMap_ = new RequestMap();
     }
     AuthWrapper.extractBucket_ = function (config) {
-        var bucketString = config[configOption] || null;
+        var bucketString = config[CONFIG_STORAGE_BUCKET_KEY] || null;
         if (bucketString == null) {
             return null;
         }
@@ -22251,13 +24976,6 @@ var Service = /** @class */ (function () {
         validate('setMaxUploadRetryTime', [nonNegativeNumberSpec()], arguments);
         this.authWrapper_.setMaxUploadRetryTime(time);
     };
-    Object.defineProperty(Service.prototype, "maxOperationRetryTime", {
-        get: function () {
-            return this.authWrapper_.maxOperationRetryTime();
-        },
-        enumerable: true,
-        configurable: true
-    });
     Service.prototype.setMaxOperationRetryTime = function (time) {
         validate('setMaxOperationRetryTime', [nonNegativeNumberSpec()], arguments);
         this.authWrapper_.setMaxOperationRetryTime(time);
@@ -22335,6 +25053,7 @@ function registerStorage(instance) {
 registerStorage(_firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a);
 
 
+//# sourceMappingURL=index.esm.js.map
 
 
 /***/ }),
@@ -22359,6 +25078,7 @@ __webpack_require__(/*! @firebase/firestore */ "./node_modules/@firebase/firesto
 __webpack_require__(/*! @firebase/functions */ "./node_modules/@firebase/functions/dist/index.cjs.js");
 __webpack_require__(/*! @firebase/messaging */ "./node_modules/@firebase/messaging/dist/index.esm.js");
 __webpack_require__(/*! @firebase/storage */ "./node_modules/@firebase/storage/dist/index.esm.js");
+__webpack_require__(/*! @firebase/performance */ "./node_modules/@firebase/performance/dist/index.cjs.js");
 
 /**
  * @license
@@ -22447,6 +25167,22 @@ __webpack_require__(/*! @firebase/storage */ "./node_modules/@firebase/storage/d
 
 /**
  * @license
+ * Copyright 2017 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
  * Copyright 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22481,6 +25217,333 @@ __webpack_require__(/*! @firebase/storage */ "./node_modules/@firebase/storage/d
 console.warn("\nIt looks like you're using the development build of the Firebase JS SDK.\nWhen deploying Firebase apps to production, it is advisable to only import\nthe individual SDK components you intend to use.\n\nFor the module builds, these are available in the following manner\n(replace <PACKAGE> with the name of a component - i.e. auth, database, etc):\n\nCommonJS Modules:\nconst firebase = require('firebase/app');\nrequire('firebase/<PACKAGE>');\n\nES Modules:\nimport firebase from 'firebase/app';\nimport 'firebase/<PACKAGE>';\n\nTypescript:\nimport * as firebase from 'firebase/app';\nimport 'firebase/<PACKAGE>';\n");
 
 module.exports = firebase;
+//# sourceMappingURL=index.cjs.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/idb/build/idb.js":
+/*!***************************************!*\
+  !*** ./node_modules/idb/build/idb.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+   true ? factory(exports) :
+  undefined;
+}(this, function (exports) { 'use strict';
+
+  function toArray(arr) {
+    return Array.prototype.slice.call(arr);
+  }
+
+  function promisifyRequest(request) {
+    return new Promise(function(resolve, reject) {
+      request.onsuccess = function() {
+        resolve(request.result);
+      };
+
+      request.onerror = function() {
+        reject(request.error);
+      };
+    });
+  }
+
+  function promisifyRequestCall(obj, method, args) {
+    var request;
+    var p = new Promise(function(resolve, reject) {
+      request = obj[method].apply(obj, args);
+      promisifyRequest(request).then(resolve, reject);
+    });
+
+    p.request = request;
+    return p;
+  }
+
+  function promisifyCursorRequestCall(obj, method, args) {
+    var p = promisifyRequestCall(obj, method, args);
+    return p.then(function(value) {
+      if (!value) return;
+      return new Cursor(value, p.request);
+    });
+  }
+
+  function proxyProperties(ProxyClass, targetProp, properties) {
+    properties.forEach(function(prop) {
+      Object.defineProperty(ProxyClass.prototype, prop, {
+        get: function() {
+          return this[targetProp][prop];
+        },
+        set: function(val) {
+          this[targetProp][prop] = val;
+        }
+      });
+    });
+  }
+
+  function proxyRequestMethods(ProxyClass, targetProp, Constructor, properties) {
+    properties.forEach(function(prop) {
+      if (!(prop in Constructor.prototype)) return;
+      ProxyClass.prototype[prop] = function() {
+        return promisifyRequestCall(this[targetProp], prop, arguments);
+      };
+    });
+  }
+
+  function proxyMethods(ProxyClass, targetProp, Constructor, properties) {
+    properties.forEach(function(prop) {
+      if (!(prop in Constructor.prototype)) return;
+      ProxyClass.prototype[prop] = function() {
+        return this[targetProp][prop].apply(this[targetProp], arguments);
+      };
+    });
+  }
+
+  function proxyCursorRequestMethods(ProxyClass, targetProp, Constructor, properties) {
+    properties.forEach(function(prop) {
+      if (!(prop in Constructor.prototype)) return;
+      ProxyClass.prototype[prop] = function() {
+        return promisifyCursorRequestCall(this[targetProp], prop, arguments);
+      };
+    });
+  }
+
+  function Index(index) {
+    this._index = index;
+  }
+
+  proxyProperties(Index, '_index', [
+    'name',
+    'keyPath',
+    'multiEntry',
+    'unique'
+  ]);
+
+  proxyRequestMethods(Index, '_index', IDBIndex, [
+    'get',
+    'getKey',
+    'getAll',
+    'getAllKeys',
+    'count'
+  ]);
+
+  proxyCursorRequestMethods(Index, '_index', IDBIndex, [
+    'openCursor',
+    'openKeyCursor'
+  ]);
+
+  function Cursor(cursor, request) {
+    this._cursor = cursor;
+    this._request = request;
+  }
+
+  proxyProperties(Cursor, '_cursor', [
+    'direction',
+    'key',
+    'primaryKey',
+    'value'
+  ]);
+
+  proxyRequestMethods(Cursor, '_cursor', IDBCursor, [
+    'update',
+    'delete'
+  ]);
+
+  // proxy 'next' methods
+  ['advance', 'continue', 'continuePrimaryKey'].forEach(function(methodName) {
+    if (!(methodName in IDBCursor.prototype)) return;
+    Cursor.prototype[methodName] = function() {
+      var cursor = this;
+      var args = arguments;
+      return Promise.resolve().then(function() {
+        cursor._cursor[methodName].apply(cursor._cursor, args);
+        return promisifyRequest(cursor._request).then(function(value) {
+          if (!value) return;
+          return new Cursor(value, cursor._request);
+        });
+      });
+    };
+  });
+
+  function ObjectStore(store) {
+    this._store = store;
+  }
+
+  ObjectStore.prototype.createIndex = function() {
+    return new Index(this._store.createIndex.apply(this._store, arguments));
+  };
+
+  ObjectStore.prototype.index = function() {
+    return new Index(this._store.index.apply(this._store, arguments));
+  };
+
+  proxyProperties(ObjectStore, '_store', [
+    'name',
+    'keyPath',
+    'indexNames',
+    'autoIncrement'
+  ]);
+
+  proxyRequestMethods(ObjectStore, '_store', IDBObjectStore, [
+    'put',
+    'add',
+    'delete',
+    'clear',
+    'get',
+    'getAll',
+    'getKey',
+    'getAllKeys',
+    'count'
+  ]);
+
+  proxyCursorRequestMethods(ObjectStore, '_store', IDBObjectStore, [
+    'openCursor',
+    'openKeyCursor'
+  ]);
+
+  proxyMethods(ObjectStore, '_store', IDBObjectStore, [
+    'deleteIndex'
+  ]);
+
+  function Transaction(idbTransaction) {
+    this._tx = idbTransaction;
+    this.complete = new Promise(function(resolve, reject) {
+      idbTransaction.oncomplete = function() {
+        resolve();
+      };
+      idbTransaction.onerror = function() {
+        reject(idbTransaction.error);
+      };
+      idbTransaction.onabort = function() {
+        reject(idbTransaction.error);
+      };
+    });
+  }
+
+  Transaction.prototype.objectStore = function() {
+    return new ObjectStore(this._tx.objectStore.apply(this._tx, arguments));
+  };
+
+  proxyProperties(Transaction, '_tx', [
+    'objectStoreNames',
+    'mode'
+  ]);
+
+  proxyMethods(Transaction, '_tx', IDBTransaction, [
+    'abort'
+  ]);
+
+  function UpgradeDB(db, oldVersion, transaction) {
+    this._db = db;
+    this.oldVersion = oldVersion;
+    this.transaction = new Transaction(transaction);
+  }
+
+  UpgradeDB.prototype.createObjectStore = function() {
+    return new ObjectStore(this._db.createObjectStore.apply(this._db, arguments));
+  };
+
+  proxyProperties(UpgradeDB, '_db', [
+    'name',
+    'version',
+    'objectStoreNames'
+  ]);
+
+  proxyMethods(UpgradeDB, '_db', IDBDatabase, [
+    'deleteObjectStore',
+    'close'
+  ]);
+
+  function DB(db) {
+    this._db = db;
+  }
+
+  DB.prototype.transaction = function() {
+    return new Transaction(this._db.transaction.apply(this._db, arguments));
+  };
+
+  proxyProperties(DB, '_db', [
+    'name',
+    'version',
+    'objectStoreNames'
+  ]);
+
+  proxyMethods(DB, '_db', IDBDatabase, [
+    'close'
+  ]);
+
+  // Add cursor iterators
+  // TODO: remove this once browsers do the right thing with promises
+  ['openCursor', 'openKeyCursor'].forEach(function(funcName) {
+    [ObjectStore, Index].forEach(function(Constructor) {
+      // Don't create iterateKeyCursor if openKeyCursor doesn't exist.
+      if (!(funcName in Constructor.prototype)) return;
+
+      Constructor.prototype[funcName.replace('open', 'iterate')] = function() {
+        var args = toArray(arguments);
+        var callback = args[args.length - 1];
+        var nativeObject = this._store || this._index;
+        var request = nativeObject[funcName].apply(nativeObject, args.slice(0, -1));
+        request.onsuccess = function() {
+          callback(request.result);
+        };
+      };
+    });
+  });
+
+  // polyfill getAll
+  [Index, ObjectStore].forEach(function(Constructor) {
+    if (Constructor.prototype.getAll) return;
+    Constructor.prototype.getAll = function(query, count) {
+      var instance = this;
+      var items = [];
+
+      return new Promise(function(resolve) {
+        instance.iterateCursor(query, function(cursor) {
+          if (!cursor) {
+            resolve(items);
+            return;
+          }
+          items.push(cursor.value);
+
+          if (count !== undefined && items.length == count) {
+            resolve(items);
+            return;
+          }
+          cursor.continue();
+        });
+      });
+    };
+  });
+
+  function openDb(name, version, upgradeCallback) {
+    var p = promisifyRequestCall(indexedDB, 'open', [name, version]);
+    var request = p.request;
+
+    if (request) {
+      request.onupgradeneeded = function(event) {
+        if (upgradeCallback) {
+          upgradeCallback(new UpgradeDB(request.result, event.oldVersion, request.transaction));
+        }
+      };
+    }
+
+    return p.then(function(db) {
+      return new DB(db);
+    });
+  }
+
+  function deleteDb(name) {
+    return promisifyRequestCall(indexedDB, 'deleteDatabase', [name]);
+  }
+
+  exports.openDb = openDb;
+  exports.deleteDb = deleteDb;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
 
 
 /***/ }),
