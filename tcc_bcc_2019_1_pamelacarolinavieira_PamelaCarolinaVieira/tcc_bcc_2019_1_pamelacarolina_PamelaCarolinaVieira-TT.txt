@@ -1,0 +1,30 @@
+Questmeter - Pâmela Carolina Vieira - Tutorial:
+
+1.	Instalar o Node.js. Disponível em: https://nodejs.org/en/
+2.	Instalar o Cordova através do terminal de comando com o comando abaixo:
+
+sudo npm install -g cordova
+
+3.	Instalar o Ionic através do terminal de comando com o comando abaixo:
+
+sudo npm install -g ionic
+
+4.	Ainda no terminal, navegar até a pasta raiz do projeto (pasta "Questmeter") e executar um dos comandos abaixo:
+
+a)	Para testar na web:
+ionic serve
+
+b)	Para emular no iOS (precisa ter macOs e Xcode):
+ionic cordova platform add ios
+ionic cordova build ios
+ionic cordova emulate ios
+
+c)	Para testar no Android (precisa ter o Android Studio):
+ionic cordova platform add android
+ionic cordova run android
+
+5.	Para mais informações de instalação e execução do aplicativo acessar:
+
+https://ionicframework.com/docs/v1/guide/installation.html
+https://ionicframework.com/docs/v1/guide/testing.html
+
