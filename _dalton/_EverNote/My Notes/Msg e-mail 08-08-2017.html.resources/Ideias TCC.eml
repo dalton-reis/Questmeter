@@ -1,0 +1,174 @@
+Received: from SC1P15201MB2335.LAMP152.PROD.OUTLOOK.COM (10.165.133.150) by
+ CP2P15201MB2323.LAMP152.PROD.OUTLOOK.COM (10.167.164.151) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
+ 15.1.1320.16 via Mailbox Transport; Tue, 8 Aug 2017 16:01:53 +0000
+Received: from RO1P152CA0010.LAMP152.PROD.OUTLOOK.COM (10.165.140.145) by
+ SC1P15201MB2335.LAMP152.PROD.OUTLOOK.COM (10.165.133.150) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id
+ 15.1.1320.16; Tue, 8 Aug 2017 16:01:52 +0000
+Received: from CY1NAM02FT028.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e45::204) by RO1P152CA0010.outlook.office365.com
+ (2a01:111:e400:7b19::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.1.1320.16 via
+ Frontend Transport; Tue, 8 Aug 2017 16:01:51 +0000
+Authentication-Results: spf=pass (sender IP is 209.85.215.52)
+ smtp.mailfrom=gmail.com; furb.br; dkim=pass (signature was verified)
+ header.d=gmail.com;furb.br; dmarc=pass action=none header.from=gmail.com;
+Received-SPF: Pass (protection.outlook.com: domain of gmail.com designates
+ 209.85.215.52 as permitted sender) receiver=protection.outlook.com;
+ client-ip=209.85.215.52; helo=mail-lf0-f52.google.com;
+Received: from mail-lf0-f52.google.com (209.85.215.52) by
+ CY1NAM02FT028.mail.protection.outlook.com (10.152.75.132) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P384) id
+ 15.1.1304.16 via Frontend Transport; Tue, 8 Aug 2017 16:01:50 +0000
+Received: by mail-lf0-f52.google.com with SMTP id y15so16750449lfd.5
+        for <dalton@furb.br>; Tue, 08 Aug 2017 09:01:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=JcQw6Lop/E0dQ6m5c2ncyRo6sCMcDkutpwmZQ0ymbnI=;
+        b=Fvw2PFjKfEhjDswfK5ePIgea4Fh37ib1KrnL1g9Npo7e/i4wOA+wrpkm4OX1JVUX3h
+         mi1O6gIwug0XbeS/LTMehU64xR+50Np4exPap+frJ0d7B8qdVc6ysVf9FPuXNDLVUkv9
+         CTYbiEqnxhmaNopswangZXlIeyqnkhWg0awHFAeT6c1niTq308B4spBCHReGarfYsgOG
+         p3pf/yv92oKriqt8PcnSRtN5kMu6zfIPff8MINOJdC/yI3Ct9IbYJw4y/ZIhYHLm5aRi
+         zzOTv416gzNrNy0Q0vMKqJb1xLXZoCAueoieuseuZ0libKeXDitrNOW1Hmq3LxZie1Gc
+         Xybg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=JcQw6Lop/E0dQ6m5c2ncyRo6sCMcDkutpwmZQ0ymbnI=;
+        b=AT2WVTKsCbA8+D1wNyR/u0NveqLheMuuSD/duHgJ4Dkozd1/UnntjGRBUPlpYH/10Z
+         iBYBsOrhAwUrKkj4bWMpSPlWaLRjnOZYP1LiR9oP+ULkeecS4v/fEuSYOESSf9VIO1z0
+         eoUA1QNESrcQ0xjvFIszbG5OCahZSwzWN41N/cjE+eyKXFwIL/oqspCeJN6empoONn57
+         /3P9Z+cX/gLgDSBUWiu0UUK0UVnrC3IDiqHH+7epdOWWIfwmEs3Q5udsK/ozTgFvYlt3
+         ikE0V8LyncZIyK7U026hz1oDbuMYkVsjvU448UsjWT0Wcc49awoorcw+MsjQBpJyAcwV
+         8z/g==
+X-Gm-Message-State: AHYfb5jd/x2KOmt3uoHUTh8iyJ9AJzsRwdk+8w5YUHUchpJjoEseB1gg
+	wPRqEI/bU4fN80Z07cVUOGehFFJnYVkP
+X-Received: by 10.25.178.215 with SMTP id t84mr1696995lfk.51.1502208108655;
+ Tue, 08 Aug 2017 09:01:48 -0700 (PDT)
+Received: by 10.25.195.146 with HTTP; Tue, 8 Aug 2017 09:01:48 -0700 (PDT)
+From: =?UTF-8?Q?P=C3=A2mela_Vieira?= <vieira.pamela.c@gmail.com>
+Date: Tue, 8 Aug 2017 13:01:48 -0300
+Message-ID: <CALbqBpLw_WJHAPoh-2cqyrM-XoskkdZzo520h9SzcwGD-U+NMw@mail.gmail.com>
+Subject: Ideias TCC
+To: dalton@furb.br
+Content-Type: multipart/alternative; boundary="f403045f4fd4b1f8a4055640142c"
+Return-Path: vieira.pamela.c@gmail.com
+X-MS-Exchange-Organization-Network-Message-Id: 03972459-a98b-42d3-45b1-08d4de76c7f2
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 0c2d222a-ecda-4b70-960a-acef6ced3052:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-Forefront-Antispam-Report: CIP:209.85.215.52;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(8156002)(2980300002)(438002)(199003)(189002)(108464003)(110136004)(8576002)(5660300001)(87572001)(189998001)(7116003)(6916009)(86362001)(9896002)(42186005)(1096003)(83322999)(93516999)(246002)(59536001)(498394004)(63696999)(54356999)(50986999)(221733001)(3480700004)(106466001)(61266001)(512874002)(82202002)(2351001)(55446002)(956001)(2361001)(73392002)(73972006)(7636002)(356003)(81442002)(8676002)(626005)(305945005)(7596002)(84326002)(76482006)(16003)(236005);DIR:INB;SFP:;SCL:1;SRVR:SC1P15201MB2335;H:mail-lf0-f52.google.com;FPR:;SPF:Pass;PTR:mail-lf0-f52.google.com;A:1;MX:1;LANG:pt;
+X-Microsoft-Exchange-Diagnostics: 1;CY1NAM02FT028;1:0nvpxiG1kaSwN1k9uKfIFcZdzgLM4THIwD2R0VxzRFgpClMDmsCKEgCSLbAA5HRN6k2tZjd8Sn0NogXlRVsHAL5mwcPknutQUY8usVKfGC9EztTYXxgJQ2jiPJUth6UaEf5yUTW4kyDW32EHB15wwsi8kx7e/Corjjz6uN3tYHUzN0xzTswUCzvuaszn2lwNUoDt55SEy1pam44GLEk4ewGxk+2VI9BzJzBtuqI9neVXqs0b/J+4g+A0XyEfJSN8b9mgdSDUHGSX0PuO3yccAYdD5bftGFOiI45ToAeuScXcgfsULeOf69nVNkg8FpnPz14UoXQeTca3y6BB8Tgn5UkVwGiYX4HaNLHA2HVukZ7CgLeSstA5BdtrAsE2azBVGclVkrwUE2bIjCoAfa/6UrYczTBWe2BVU18vNHOw8Nhl7XtoIJt2GebGbE5x0PlY1IWREknweA1Ppsak0lnKaeNOoPAWes3NY2vnK8ztR5NjB52xOk/34TyNC2RdXjOD8a7heVJ+XtfnRvaDpflc2a27yW6ffsPi6ikMnddlEhBAHkmDB7RnCkjOAZ0TPvE9vagwlTXDyA6WwUjnusa9yWhyZkZaXrpYS4FjJ8/npLwymMkvgYoukTnU1B7ZY+/F0/r8WxmbGSV7k1y8GN0X1zoZJvGju9G7uCGnJbShY3iXAB2mHoHv6GvbT7j32bpayJGc5LNiOpt0aC0VnB1le4lS1n4hOvWH7Zsd/FQdC5kt2DVu5uqWZwtbdfCWXzvgqwykRlof10JB40HSgH05inrKOaM0FKtjrNDQdQ7xG/Hhmme59XRRiHASViLZxl3M7OOOCgKgoHppmXqALka1qgPAv3blR6N7EIaQrS+jFMqkRaLPwldRTUK2uqGlIscxb/b5ib3zoupOVa6szA2/1s6F5EudSGZoEd2n7DEkh20=
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 03972459-a98b-42d3-45b1-08d4de76c7f2
+X-DkimResult-Test: Passed
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(300000500095)(300135000095)(300000501095)(300135300095)(23075)(22001)(300000502095)(300135100095)(8251501002)(3001016)(300000503095)(300135400095)(3010002)(71702078)(300000504095)(300135200095)(300000505095)(300135600095)(300000506095)(300135500095);SRVR:SC1P15201MB2335;
+X-Microsoft-Exchange-Diagnostics: 1;SC1P15201MB2335;3:fEw5BylL2DH+17Zyt3kJJ1LA25DoravqklgKAMPTihmYUBK+ZHGxo0FT3IQMU+X2ER8xYsjadTykpPEA+oRS1y3oSTZlyid1OgfDIpAOANU23aQKEMBeqsaj4M7GFx+Z7iw+UW6WkJOFpuZueozvatWQZVp8MLsfzG5bCFDNmj/9tb/KOX2ZoyQwEuuOLYEImMa39PKK6YovOviczZcm/wcmEn9d38yBMuquKueheFdx4P5VQcr7u1dmNJ9sptsYFV4T6l/gtY2F9MBHIbfQ+hsCf5QsGR1ejNTelnoADvfdkdZwYJH2ud9T1H6Wi/slT2hW3CUUH8RIPcX4A8uoUfH2sZ9RTXggkwrXChHaens=;25:DkDs7uc/9QmKENzaGXTuU3qdDkXVdVq0JQL6fv+90gwSAAVS8mu0l2zLZDuudrWK6sshFMSdtkB9pY5Y8+vPB/8erDSl2qq9g0vB4HnEgECJwzfm3IIpp+3baIcOcB6kXNgmWXZoTB7PzSJ5nq4h/h5WQt0vBAK/VmOF4JOMjxI1wSKXxGo1djoxqff11LFGz++nAC2JQr4xH0RjzbQnwx9Sy0rSr55RZs4V8u05gSdWqJF5foSX0fY1HHq9/9uUMgzsyWa1+xkYKQEVyHYkEq0K10vT8GrYqTjWZmrSfOZ1Dui+631MoIYZ2QiPVEVDf7Bj+v6+CZJ1ia892E1Z1A==
+X-MS-TrafficTypeDiagnostic: SC1P15201MB2335:
+X-Microsoft-Exchange-Diagnostics: 1;SC1P15201MB2335;31:IBJ++09J7Q/1bJkaQgFnPhbqArmozKxR5pcEOZ9miI18QTMlJ8LDfj9YKySwQE5mgHIZJ34bGHvPy2q4cmQvRJgfoeIYPylk9L08ZaPLLYq1HWiRO4UD7nLxYdNVVIeFA+w6+s+Qv/Mqyhg2hnMQPwfzAsfOosVNICGlVJ7gaVAgp4hv/3CRJU+zUUkJp0ySYuxsgc7KAY6Rq1FliT5jguI49PSX/iO2IdpwVyQYQyc=;20:iwah7bWyGfEMtQ+ZHLWhkhSaLINjGmNwbENOXnE4/q+bV3s0dwoADRka5NQj9761v8na0ktwrLFtfbkPqzwLiNnJxqvU8Fd5tdNO0uAliu4GzpAZLjqeEsQec45nzfOY1pml4cofj6iG+jqNFtbMBUcnin6y3pLLThgXTyCjBjhd0jIpObwR9XjZ2CfMzWWk8jozAAo4DytVdFzoo6rjBclRRXVP5XrLTToGdXqSkF1FSPePHYlM8M/wl28MwkjO;4:WZXHwRiGU+gaDfY+18kxaya6t0sZEaWAO3a2qwyIRAFOW4A0VCRcy42SMplyn2HYRhaDY2x8Wxd5QwSbGxC/FY5+CMsddywDthWqiPKd0bbzo1mDsCddRTGcFvvEwR6KvxYlk3FigQQxhHh8OltBz1cFdTjQuN2Bs/cK+eiPZVJfwhKol5rGyNm8Vb+TPvUeIDqmBTWB62uNiSE/WPHs4nSjTst13P5s4lsmJDb68hGfx9HrkkAw5v5vFthqRNrI
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(100000700101)(100105000095)(100000701101)(100105300095)(100000702101)(100105100095)(2401047)(13016025)(8121501046)(13018025)(9101536074)(3002001)(93006095)(93005095)(10201501046)(100000703101)(100105400095)(201708071742011)(100000704101)(100105200095)(100000705101)(100105500095);SRVR:SC1P15201MB2335;BCL:0;PCL:0;RULEID:(100000800101)(100110000095)(100000801101)(100110300095)(100000802101)(100110100095)(100000803101)(100110400095)(100000804101)(100110200095)(100000805101)(100110500095);SRVR:SC1P15201MB2335;
+X-MS-Exchange-Organization-SCL: 1
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;SC1P15201MB2335;23:YBzZAUBvYc9sMyWL6mAHCOLpebdpElDrhPfS3ER?=
+ =?us-ascii?Q?BZfZL+z+ddNaH4iLmBzU4lXoOTX3bbIGSqVkj1cTFOJxdEwGA1nBgoyjdreR?=
+ =?us-ascii?Q?Nu7DI8TrCe5R7Z/JXPlVmuyXcXtJXElFwgJU7hVgkoJck1nbBfm/3lJzCL52?=
+ =?us-ascii?Q?hXz1M2OGIxRb2ojYIcKWhTHiPqpUrCqcutYhlVoOqqYo1x99hyC5T0oUJbj8?=
+ =?us-ascii?Q?EfiL4Vq8Ln24eHnKK8v9+n6MtCh610zVhMPggYWAD49fHJHfLMGGCUaeCvL7?=
+ =?us-ascii?Q?G8IEJcVDezrIFvFtFJ2aEsccLrSQZ+hqDbDzG3DWBbUfQM1XVlQh8CGE8lYU?=
+ =?us-ascii?Q?e6cfv9EbBH97p4FRqe9refkDPyq9S0TSwwqfud9I5ZUXNI4AzMfXK8fw6Y7O?=
+ =?us-ascii?Q?e4UIqe6L5mLwP1HJ8hUdM+MfOYbdyIIQOTzKbsg99529LCUNrowhIv5VP+5e?=
+ =?us-ascii?Q?B2vwS6F1fxgerlwXxIwRh/a6D+8NsL+08ugC3rdTfsu19gJC8u9774pTsMbd?=
+ =?us-ascii?Q?WlqLe6LEv8ovdhDntvYvi1/BT5p01SmZ8wwsiqDhQaTE6gg/U811AKqFHKMR?=
+ =?us-ascii?Q?r98TjPwZsZTsrf+vYfhriEbAa3s2MsrdUlCV9yvzrmcqb7Tkg6JtkGViSYM3?=
+ =?us-ascii?Q?iPylQ6CnxoMm4ZI0hNNsYHHIpF8TiP+8xRUodZrZHox0IGBu1n0iHBlMfmhM?=
+ =?us-ascii?Q?KVm5sDsAuA7LpzsIM5x0kWwDdSTHH748TC8kBPAQf0OT2b2wSQadU7nlRfzN?=
+ =?us-ascii?Q?p4PhnJAQgsHckXAZvQHZwkdbbilAd+UudUt/goM9ptoTIcXH6H1faMflIj5P?=
+ =?us-ascii?Q?QKHHmzhbF81S9DuwWZtJ2Yc6vaB/BqVTnpd5Jf/wEXe5aJVOaaNTDZflufko?=
+ =?us-ascii?Q?qMTCxquotZv0qx6ExoB/Bfb6Qd1Nacrhag6LAbjVUE9T/UL3xEN9B7HN+2RV?=
+ =?us-ascii?Q?PgSjHL4+nRprNiwweKDP6++Ps6XOTTdj1WXnV/D+LjMdvqxxMY66utIXBJmJ?=
+ =?us-ascii?Q?wYwyro90v28nf1+qnOrlZvP4BBXB6ZCkvu+OgWB/4/wo03wIjZkS3xWlQfrO?=
+ =?us-ascii?Q?oqOgRhwjQpQKzlZENLVkoA2Pr5x8kMgojqzEqYt48H9i1eooF1XirqNcD0pw?=
+ =?us-ascii?Q?YOuOTrPxG+/4=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;SC1P15201MB2335;6:1Bwijh0bQvKDiyVrYJ88YprqLSPzcdCWm6Hp73ZwysYFlsBzYk5SHXmBY4gaBesGRUusRbjgSoXBKYLiwHssbN6lsp9IkPhHqCwOgdqKrCMPeiONZJuSmUCdNhj8nUnKXYijZssgMDcniFcSuQvuHeDefuGGo2Hzkci1EyxX36y92fjDubW5a8ipuYgk6AbLj/P7dVsNe5oefP2G4fhUyiZRTr0wHD4I7L/k2zcuUfk017fIkfDGHwXr+orHgZFcj6r/G6zMhi5LEePGw/Jxo5q2GcTZALSI/aIKI/89YxvZV/wuPmw4M1GWf9Nbbly76j+iJPELHukIaiA3FRoqpw==;5:eJVeNa8Wm3K5H+naFPO5pVPZYG1yawIGDGKVaPStQ7lofoqwlbP4pgl7v9SZkQyy1JsxqA888YXwdB16z0Pph2fWfyfKUlNAfNdD8+frSUl6yQB/B0+W9xP+WQhNzlEVtl/tmk2hMNl6+OssAreBFw==;24:v3aFo85WdQ7PCFb/0DRjPLvZ/Ce5NGCNFwXGrVkpFQwSBTF+dqe8D6KTK7NHZUP2/gr+TvN4OR8oRu4aOlUAfAgJiwlQcfbUl1wtuvANJ6E=;7:3vYlpd3rvD6jIbIpN3d8lxOi2lnlB7Gb7PuAhgN3jDh5HnxqWHK+quw0Nyc+BQufdlLoG7f6RIRnpith4v3kSXBMNrDUKqAuYZs/7TnJ2ZFhOa5mfI/2OL+aWGBBpiBBexadoQXS40mKvL8GQIXbCmxDpR5k53/Oz04e2oButKQSthb0ncR2bqp4F8R6juir/F9OpISMdzUcFx2B0Ry4QVI4xOOFLibAGxtEc3EHD1o=
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2017 16:01:50.6727
+ (UTC)
+X-MS-Exchange-CrossTenant-Id: 0c2d222a-ecda-4b70-960a-acef6ced3052
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SC1P15201MB2335
+X-MS-Exchange-Organization-AuthSource: CY1NAM02FT028.eop-nam02.prod.protection.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.4373835
+X-MS-Exchange-Processed-By-BccFoldering: 15.01.1320.000
+X-Microsoft-Exchange-Diagnostics:
+	1;CP2P15201MB2323;27:orfNhD5PHiZoT7H0BDxdDexvRNsLxIiKAQIl88x87UfVoQt4brH0AJdRr5RJeb0rh+cgx8KXBYx9Y+aHMreVcPTioiWSvhqON7iwAmryGKLjCTvntTIQYmo3vaGWihT0
+MIME-Version: 1.0
+
+--f403045f4fd4b1f8a4055640142c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Microsoft-Exchange-Diagnostics:
+	1;CP2P15201MB2323;27:orfNhD5PHiZoT7H0BDxdDexvRNsLxIiKAQIl88x87UfVoQt4brH0AJdRr5RJeb0rh+cgx8KXBYx9Y+aHMreVcPTioiWSvhqON7iwAmryGKLjCTvntTIQYmo3vaGWihT0
+
+Boa tarde professor,
+
+Conforme t=C3=ADnhamos conversado ontem, estou lhe enviando um e-mail para
+trocar ideias para o TCC.
+
+Eu possuo as seguintes mat=C3=A9rias para serem cursadas ainda:
+Fase 6 - Pesquisa operacional
+Fase 7 - Processamento de imagens
+Fase 7 - Inova=C3=A7=C3=A3o tecnol=C3=B3gica
+Fase 8 - Desenvolvimento de Jogos e Entretenimento Digital
+Fase 8 - Trabalho de Conclus=C3=A3o de Curso I
+Fase 9 - Trabalho de Conclus=C3=A3o de Curso II
+
+Pretendo come=C3=A7ar o TCC 1 no semestre que vem (2018-1) e o TCC 2 no pr=
+=C3=B3ximo
+(2018-2), mas ainda n=C3=A3o possuo ideias ou =C3=A1reas de interesse para =
+fazer o
+TCC e gostaria da sua ajuda.
+
+Obrigada,
+*P=C3=A2mela Carolina Vieira*
+vieira.pamela.c@gmail.com
+(47) 9659-2323
+
+--f403045f4fd4b1f8a4055640142c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Microsoft-Exchange-Diagnostics:
+	1;CP2P15201MB2323;27:orfNhD5PHiZoT7H0BDxdDexvRNsLxIiKAQIl88x87UfVoQt4brH0AJdRr5RJeb0rh+cgx8KXBYx9Y+aHMreVcPTioiWSvhqON7iwAmryGKLjCTvntTIQYmo3vaGWihT0
+
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><d=
+iv dir=3D"ltr">Boa tarde professor,<div><br></div><div>Conforme t=C3=ADnham=
+os conversado ontem, estou lhe enviando um e-mail para trocar ideias para o=
+ TCC.</div><div><br></div><div>Eu possuo as seguintes mat=C3=A9rias para se=
+rem cursadas ainda:</div><div><div><font face=3D"Arial" color=3D"#000000"><=
+span style=3D"font-size:12px">Fase 6 - Pesquisa operacional</span></font></=
+div><div><font face=3D"Arial" color=3D"#000000"><span style=3D"font-size:12=
+px">Fase 7 - Processamento de imagens</span></font></div><div><font face=3D=
+"Arial" color=3D"#000000"><span style=3D"font-size:12px">Fase 7 - Inova=C3=
+=A7=C3=A3o tecnol=C3=B3gica</span></font></div><div><font face=3D"Arial" co=
+lor=3D"#000000"><span style=3D"font-size:12px">Fase 8 - Desenvolvimento de =
+Jogos e Entretenimento Digital</span></font></div><div><font face=3D"Arial"=
+ color=3D"#000000"><span style=3D"font-size:12px">Fase 8 - Trabalho de Conc=
+lus=C3=A3o de Curso I</span></font></div><div><font face=3D"Arial" color=3D=
+"#000000"><span style=3D"font-size:12px">Fase 9 - Trabalho de Conclus=C3=A3=
+o de Curso II</span></font></div><div><font face=3D"Arial" color=3D"#000000=
+"><span style=3D"font-size:12px"><br></span></font></div><div><font face=3D=
+"Arial" color=3D"#000000"><span style=3D"font-size:12px">Pretendo come=C3=
+=A7ar o TCC 1 no semestre que vem (2018-1) e o TCC 2 no pr=C3=B3ximo (2018-=
+2), mas ainda n=C3=A3o possuo ideias ou =C3=A1reas de interesse para fazer =
+o TCC e gostaria da sua ajuda.</span></font></div><div><br></div>Obrigada,&=
+nbsp;<br><div class=3D"gmail_signature"><div dir=3D"ltr"><b><font color=3D"=
+#444444" size=3D"2">P=C3=A2mela Carolina Vieira</font></b><div><font color=
+=3D"#666666" size=3D"2"><a href=3D"mailto:vieira.pamela.c@gmail.com" target=
+=3D"_blank">vieira.pamela.c@gmail.com</a></font></div><div><font color=3D"#=
+666666" size=3D"2">(47) 9659-2323</font></div></div></div>
+</div></div>
+
+--f403045f4fd4b1f8a4055640142c--
